@@ -1,0 +1,136 @@
+##DESCRIPTION
+##  Algebra problem: graph parabolas--quadratic growth rate model (logistic)
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"PGgraphmacros.pl",
+"AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+$lin = 0.4;
+$quad = 0.0001;
+$f = Formula("$lin x - $quad x^2");
+$xint = $lin/$quad;
+$xv = $xint / 2;
+$yv = $f->eval(x=>$xv);
+
+$xmin = -1000;
+$ymin =-500;
+$xmax= 5000;
+$ymax= 500;
+
+Context("Point");
+$vertex = Compute("($xv, $yv)");
+
+Context("Inequalities");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+Context()->flags->set(ignoreEndpointTypes => 1);
+$decrease = Compute("[$xint,$xmax]");
+
+Context("Numeric");
+#graph
+$xgrid = ($xmax - $xmin)/1000;
+$ygrid = ($ymax - $ymin)/100;
+
+$gr[0] = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,500]);
+$gr[0] -> lb('reset'); #remove default label and tick marks
+
+$gr[0] -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr[0] -> lb(new Label ( 50,0.94*$ymax,'g(x)','blue','left','bottom'));
+
+foreach my $i (1..5) {
+ $xscale =1000*$i;
+ $yscale =100*$i;
+  $gr[0] -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr[0] -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr[0] -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr[0],
+              "$f for x in [0,$xmax] using color:red and weight:2");
+($gr[0]->fn)[0]->steps(200);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+ 
+BEGIN_PGML
+
+Commercial fishermen rely on a steady supply of fish in their area. To avoid overfishing, they adjust their harvest to the size of the population. The function
+>>[``g(x) = [$f] ``]<<
+gives the annual rate of growth, in tons per year, of a fish population of biomass [`m`] tons.
+
+
+a. 
+Find the vertex of the graph. What does it tell us about the fish population?  
+Vertex: [________]{$vertex} [@AnswerFormatHelp("points") @]*  
+The coordinates of the vertex tell us that largest annual increase in biomass, [____]{$yv} tons/year, occurs when the biomass is [______]{$xv} tons.
+b. 
+Sketch the graph for [`0\le x\le 5000`].  
+c. 
+For what values of [`x`] (within the graph) does the fish population decrease rather than increase?  
+[____________]{$decrease} [@AnswerFormatHelp("inequalities") @]*  
+Suggest a reason why the population might decrease.
+
+END_PGML
+  
+
+Context()->normalStrings;
+
+BEGIN_PGML_SOLUTION
+a. 
+The [`x`]-coordinate of the vertex lies halfway between the two [`x`]-intercepts at [`x=0`] and [`x=[$xint]`], namely [`x_v = [$xv]`]. The [`y`]-coordinate can be computed by evaluating [`g(x_v) = g([$xv]) = [$yv]`].  
+  
+b. 
+[@image(insertGraph($gr[0]), width=>200, height=>225, tex_size=>700)@]*  
+  
+c. 
+The population is decreasing when the annual growth rate is negative, that is, when the graph of [`g(x)`] lies below the [`x`] axis: [`4000 \lt x \le 5000`]. The population might decrease when there are too many fish because there would not be enough food to support all of them.
+
+
+END_PGML_SOLUTION
+##############################################################
+#
+
+$showPartialCorrectAnswers = 0;
+
+
+ENDDOCUMENT();        

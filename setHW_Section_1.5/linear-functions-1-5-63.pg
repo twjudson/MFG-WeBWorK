@@ -1,0 +1,151 @@
+##DESCRIPTION
+##  Algebra problem: identify linear function from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.5')
+## Problem1('41')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# little RANDOMNESS!
+
+$m = 0.12; 
+$yintercept = 25.4;
+
+$f = Formula(" $m*x + $yintercept ");
+
+$x[0] = 3;
+$x[1] = 4;
+$x[2] = 8;
+$x[3] = 10;
+$x[4] = 12;
+$x[5] = 15;
+$x[6] = 22;
+$x[7] = random(16,21);
+
+foreach my $i (0..7) {
+   $y[$i] = $f->eval(x=>$x[$i]);
+};
+
+
+
+$xmin = -2;
+$xmax = 24;
+$xgrid = 13;
+$ymin = 25;
+$ymax = 29;
+$ygrid = 8;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+#$gr -> lb(new Label (0.94*$xmax, 0.05,'W','blue','left','bottom'));
+#$gr -> lb(new Label (.2, 0.94*$ymax,'L','blue','left','bottom'));
+foreach my $i (1..6) {
+$xscale =5*$i;
+$yscale =$i+24;
+$gr -> lb(new Label ( $xscale,0.4*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.25*$xmin,$yscale,$yscale,'black','center','middle'));
+};
+
+add_functions( $gr,
+"$f for x in [0, $xmax] using color:red and weight:2");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+A spring is suspended from the ceiling. The table shows the length of the spring in centimeters as it is stretched by hanging various weights from it.
+    
+[@
+DataTable(
+  [
+    ["Weight, kg","\\( $x[0] \\) ",  "\\( $x[1] \\) ",  "\\( $x[2] \\) ",  "\\( $x[3] \\)" ,  "\\( $x[4] \\) ",  "\\( $x[5] \\) ",  "\\( $x[6] \\) "],
+    ['Length, cm', "\\( $y[0] \\) ",   "\\( $y[1] \\) " ,  "\\( $y[2] \\) " , "\\( $y[3] \\) ",   "\\( $y[4] \\) " ,  "\\( $y[5] \\) " , "\\( $y[6] \\) "  ]
+  ], 
+  caption => 'Spring length for different weights', 
+  align => '| l | c |c | c | c | c|c |c | ',
+  midrules=>1,
+ );
+@]***  
+
+
+a. 
+Plot the data on graph paper and draw a straight line through the points. Estimate the [`y`]-intercept of your graph.
+
+    [`y=`][___]{Compute("$yintercept")->cmp(  tolType => 'absolute',  tolerance => .1,)}
+
+b. 
+Find an equation for the line.
+
+    [`y=`][__________]{$f->cmp(  tolType => 'absolute',  tolerance => .1,)}
+
+c. 
+If the spring is stretched to [$y[7]] cm, how heavy is the attached weight?
+
+    [___]{Compute("$x[7]")->cmp(  tolType => 'absolute',  tolerance => .1,)} kg
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*
+
+    From the graph we can see that the [`y`]-intercept is about [$yintercept].
+
+b. 
+Based on any two points in the table, we can compute the slope to be [`m = \frac{\Delta y}{\Delta x}= 0.12`]. Then we can use the point-slope formula to find the equation of a line.
+
+c. 
+From we can solve for the value of [`x`]: [`[$y[7]] = [$f] `] to find that [`x=[$x[7]]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

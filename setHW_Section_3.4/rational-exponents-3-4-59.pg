@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents--distributive law to write product as as sum of powers
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('2/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('59')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGchoicemacros.pl",
+"PGML.pl",
+"parserRoot.pl",
+"contextLimitedPolynomial.pl",
+"contextFraction.pl",
+);
+
+Context("Numeric");
+
+@variables = ("x","y", "a","b", "p","q", "m","n");
+
+$i = random(0,$#variables-1);
+$x = $variables[$i];
+
+$d = random(3,7);
+$n = $d - 1;
+#do {$k = random(2,5)} until (gcd($d,$k) == 1);
+$k=2;
+$m = $d * $k;
+$m_minus1 =  $m-1;
+$n_minus1 = $n - 1;
+$num = $m_minus1 + $k;
+
+$a = random(2,9);
+do {$b = random(2,9)} until ( ($b % $a) != 0);
+
+$f = "\dfrac{1}{$a} $x^{-1/$d} ($x^{ $n/$d } + $b $x^{- $m_minus1/$m }) ";
+
+Context("Fraction");
+$c = Compute("$b/$a");
+Context("Numeric");
+Context()->flags->set(reduceConstants=>0);
+Context()->flags->set(limits=>[1,2]);
+Context()->variables->add(y=>'Real', a=>'Real', b=>'Real', p=>'Real', q=>'Real', m=>'Real' , n=>'Real' );
+$answer = Formula("(1/$a) $x**($n_minus1/$d) + $c $x^(-$num/$m)  ") ;
+
+
+Context()->functions->disable("All");
+Context("LimitedPolynomial");
+
+##################
+BEGIN_PGML
+
+Use the distributive law to find the product.
+
+[`` [$f ] = ``][____________________]{ $answer }
+
+END_PGML 
+
+########################
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+
+Use the distributive law to get a sum of two terms, and in each term use the rule for multiplying powers of the same base.
+
+END_SOLUTION
+
+ENDDOCUMENT();     

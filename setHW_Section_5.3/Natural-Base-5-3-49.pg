@@ -1,0 +1,105 @@
+##DESCRIPTION
+##  Algebra problem: writing exponential function in terms of e
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('49')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->flags->set(useBaseTenLog=>1);
+Context()->variables->are(t=>"Real");
+
+$y0 = 500; #random(15000, 25000,5000); #was 20000
+$y1 = 385; #random($y0 + 10000, 7*$y0/4,5000); #was 35000;
+$delt = 2;
+$b =Compute(" ($y1/$y0)**(1/$delt) ");
+$k = Compute(" ln(  ($y1/$y0)**(1/$delt)   ) ");
+
+$f = Formula("$y0 * ($y1/$y0)**(t/$delt)");
+
+$t2 = random(5,12); #was 10
+$y2 = $f->eval(t=>$t2);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Cobalt-60 is a radioactive isotope used in the treatment of cancer. A [$y0]-milligram sample of cobalt-60 decays to [$y1] milligrams after [$delt] years.
+
+a. 
+Using [`N_0 =[$y0]`], find the decay factor [`e^k`] for cobalt-60.
+
+    [`e^k = `][____________]{$b}  [@AnswerFormatHelp("numbers") @]*
+
+b. 
+Write a decay law  [`N(t)=N_0 e^{kt}`] for Cobalt-60.
+
+    That is,  [`N_0=`][_____]{$y0}, and in the decay factor [`e^{k}`], 
+    [` k=`][________________]{$k}  [@AnswerFormatHelp("numbers") @]*
+
+c. 
+How much of the original sample will be left after [$t2] years?
+        Answer: [_______]{$y2->cmp(  tolType => 'relative',  tolerance => .0005,)}
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+An exponential decay function can be written in the form [`N(t)=N_0 e^{kt}`] or as [`N(t)=N_0 b^{t}`]. In either case, [`N_0`] is the amount present at [`t=0`].
+
+b. 
+[`N_0`] was already determined in part (a). 
+ [` [$y1] = [$y0]\cdot b^{[$delt]} `], so [`b = \left(\frac{[$y1]}{[$y0]}\right)^{1/[$delt]} \approx e^{[$k]}`], and [`k = \ln b \approx [$k]`].
+
+c. [`P([$t2])\approx [$y2]`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,164 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--properties of graphs
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Graphs of exponential functions)
+## Date('2/17/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('1')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+#"contextFraction.pl"
+ "PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+#Context("Fraction");
+Context()->flags->set(     reduceConstants => 0);
+
+$b[0] = random(11,59) / 10;
+$b[1] = random(11,99) / 100;
+
+foreach my $i (0..1) {
+  $a[$i] = random(11,99) / 10;
+  $f[$i] = " $a[$i]($b[$i])^x";
+}
+
+$mc[0]  = new_multiple_choice();
+$mc[0] ->qa(
+"This function is",  "increasing.");
+$mc[0] ->extra("decreasing.");
+$mc[0]  ->makeLast("decreasing.");
+
+$mc[1]  = new_multiple_choice();
+$mc[1] ->qa(
+"This function is",  "decreasing.");
+$mc[1] ->extra("increasing.");
+$mc[1]  ->makeLast("decreasing.");
+
+
+$i0 = random(0,1); # randomly swap first two functions
+$i1 = 1-$i0;
+
+$d = random(3,9);
+$n = $d  - 1;
+$k = random(2, 5) * $d**2;
+$a[2] = Compute("$k");
+
+$f[2] = "$a[2]\left(\dfrac{$n}{$d} \right)^x";
+
+$mc[2]  = new_multiple_choice();
+$mc[2] ->qa(
+"This function is",  "decreasing.");
+$mc[2] ->extra("increasing.");
+$mc[2]  ->makeLast("decreasing.");
+
+$d1 = random(3,9);
+$n1 = $d1  - 1;
+do {$d2 = random(2,9)} until ( gcd($d2 , $d1) == 1);
+$n2 = $d2 + 1;
+$a[3] = Compute(" $n1 / $d1");
+
+$f[3] = " \dfrac{$n1}{$d1}\left(\dfrac{$n2}{$d2} \right)^x ";
+
+$mc[3]  = new_multiple_choice();
+$mc[3] ->qa(
+"This function is",  "increasing.");
+$mc[3] ->extra("decreasing.");
+$mc[3]  ->makeLast("decreasing.");
+
+
+$itemp = random(0,1); # randomly swap last two functions
+$i2 = 2+$itemp;
+$i3 = 3- $itemp;
+
+
+
+##############################################################
+
+BEGIN_PGML
+
+
+Find the [`y`]-intercept of each exponential function and decide whether the graph is increasing or decreasing.  
+
+a. 
+[` f (x) =[$f[[$i0]]] `]:  The [`y`]-intercept is [___] (Enter only the [`y`]-coordinate.)  
+[@ $mc[[$i0]] -> print_q() @]***
+[@ $mc[[$i0]] -> print_a() @]***
+  
+b. 
+[`g(x) = [$f[[$i1]]] `]:  The [`y`]-intercept is [___](Enter only the [`y`]-coordinate.)  
+[@ $mc[[$i1]] -> print_q() @]***
+[@ $mc[[$i1]] -> print_a() @]***
+    
+c. 
+[` h(x)= [$f[[$i2]] ] `]:   The [`y`]-intercept is [___](Enter only the [`y`]-coordinate.)  
+[@ $mc[[$i2]] -> print_q() @]***
+[@ $mc[[$i2]] -> print_a() @]***  
+d. 
+[` k(x)= [$f[[$i3]]] `]:   The [`y`]-intercept is [___](Enter only the [`y`]-coordinate.)  
+[@ $mc[[$i3]] -> print_q() @]***
+[@ $mc[[$i3]] -> print_a() @]***  
+
+
+END_PGML
+Context()->normalStrings;
+ANS(  Compute("$a[$i0]")->cmp()  );
+ANS( checkbox_cmp( $mc[$i0]->correct_ans() ) );
+ANS( Compute("$a[$i1]")->cmp() );
+ANS( checkbox_cmp( $mc[$i1]->correct_ans() ) );
+ANS($a[$i2]->cmp() );
+ANS( checkbox_cmp( $mc[$i2]->correct_ans() ) );
+ANS( $a[$i3]->cmp());
+ANS( checkbox_cmp( $mc[$i3]->correct_ans() ) );
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+We can find the [`y`]-intercept by evaluating the function at  [`x=0`]. When we write the function in the form [` y= ab^x `], then the function is increasing if [`b \gt 1 `] and decreasing if [`b \lt 1 `].
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

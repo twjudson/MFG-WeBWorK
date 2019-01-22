@@ -1,0 +1,74 @@
+##DESCRIPTION
+##  Algebra problem: solve quadratic equation from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/21/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$a = non_zero_random(-9,9);
+
+$f0 = Formula("(x - $a)")->reduce;
+$f = Formula(" $f0 **2")->reduce;
+$ans =  $a;
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Use a graph to solve the equation [`y = 0`]. (Use [`\text{Xmin} =-9.4`], [`\text{Xmax} = 9.4`].) Check your answers with the zero-factor principle.
+
+[` y= [$f] `]    
+
+[`x = `][________]{$ans} [@AnswerFormatHelp("numbers") @]*
+
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+The only solution is [`x =[$a]`], which makes the factor [`x - [$a] = 0`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

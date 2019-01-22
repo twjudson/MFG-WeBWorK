@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Algebra problem: reading off parameters from point-slope form of line
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate', 'point-slope')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('1/28/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.5')
+## Problem1('59')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+Context()->variables->add(y=>"Real");
+
+$m = random(2,9) * random(-1,1,2);
+do {
+$x1 = non_zero_random(-9,9);
+$y1=  non_zero_random(-9,9);}
+until ($x1 != $y1);
+$f = Formula("y - $y1")->reduce;
+$g = Formula("$m*(x-$x1)")->reduce;
+
+Context("Point");
+$p = Compute("($x1,$y1)");
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Fnd the slope of each line and the coordinates of one point on the line. (No calculation is necessary!)
+
+>>[``[$f] = [$g] ``]<<
+
+
+Answer: The slope is [____]{$m} 
+
+The point is we can determine without calculation is  [____]{$p}  [@AnswerFormatHelp("points") @]*
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The line with equation  [`y = y_1 + m(x-x_1)`],  or equivalently, with equation [`y - y_1 = m(x-x_1)`],  has slope [`m`] and passes through the point [`(x_1, y_1) `]. 
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

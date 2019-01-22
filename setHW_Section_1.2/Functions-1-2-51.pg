@@ -1,0 +1,139 @@
+##DESCRIPTION
+##  Algebra problem: functions; tables defining functions; hear rate w/ age
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('51')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  "contextCurrency.pl",
+  );
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Currency");
+Context()->currency->removeSymbol('$');
+Context()->variables->add(p=>"Real");
+$num = 12000000;
+$f = Formula(" $num/p ");
+$fdisplay = "\frac{12,000,000}{p}";
+
+$t1 = 6000;
+$ans1 = $f->eval(p=>$t1);
+$mc = new_multiple_choice();
+$mc->qa(
+" Explain what it means.",  "$ans1 cars will be sold at a price of $t1 dollars.");
+
+$mc->extra(
+"$t1 cars will be sold at a price of $ans1 dollars.",
+"The profit is $ans1 dollars when the price is $t1 dollars.",
+);
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"As \(p\) increases, does \(N(p)\) increase or decrease? ",  "Decrease");
+$mc1->extra(
+"Increase"
+);
+
+
+$mc2 = new_multiple_choice();
+$mc2->qa(
+"Why is this reasonable?",  "Because fewer cars will be sold when the price increases.");
+
+$mc2->extra(
+"Because  better cars are more expensive."
+);
+
+
+$mc3 = new_multiple_choice();
+$mc3->qa(
+"If the current price for a compact car is \(D\), what does \(2N(D)\) mean?",  "twice the number of cars that can be sold at the current price.");
+
+$mc3->extra(
+"the number of cars that can be sold at twice the current price.."
+);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The number of compact cars that a large dealership can sell at price [`p`] is given by
+>>[``N(p) = [$fdisplay]``]<<
+
+a. 
+Evaluate: [`N([$t1])=`][________]{$ans1}
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]*** 
+
+b. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+[@ $mc2 -> print_q() @]***
+[@ $mc2 -> print_a() @]***
+
+c. 
+[@ $mc3 -> print_q() @]***
+[@ $mc3 -> print_a() @]***
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+ANS( radio_cmp( $mc2->correct_ans() ) );
+ANS( radio_cmp( $mc3->correct_ans() ) );
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+Evaluate [`[$f]`] for [`t=[$t1]`] to find how many compact cars can be sold at price of $[$t1].
+b. 
+The demand for the compact care decreases when the price increases.
+c. 
+The input to the function [`N`] is the current price [`D`], so we doubling the number of cars sold at that price [`D`].
+
+END_PGML_SOLUTION
+
+
+ENDDOCUMENT();        

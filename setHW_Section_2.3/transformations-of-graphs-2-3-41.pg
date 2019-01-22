@@ -1,0 +1,276 @@
+##DESCRIPTION
+##  Algebra problem: write formula for transformation of a function given by table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'translation', 'scale','reflection')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.3')
+## Problem1('41')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+$mca = new_multiple_choice();
+$an = 1;
+$mca->qa(
+"The function in Table (a) is" ,  
+"translated $an unit right.",
+);
+
+$mca->makeLast(
+"translated $an unit up.",
+"translated $an unit down.",
+"translated $an unit left.",
+"translated $an unit right.",
+);
+
+
+$mcaf = new_multiple_choice();
+$mcaf->qa(
+"A formula for table (d) is ",  "\( y=f(x - $an) \)");
+
+$mcaf->makeLast(
+ "\( y=f(x)+$an \)",
+ "\( y=f(x)-$an\)",
+ "\( y=f(x - $an) \)",
+ "\( y=f(x + $an) \)",
+ "\( y= f(x) + 2\)",
+);
+
+
+$mcb = new_multiple_choice();
+$bn = 30;
+$mcb->qa(
+"The function in Table (b) is" ,  
+"the function in part (a) translated $bn units up."
+);
+
+$mcb->makeLast(
+"the function in part (a) translated $bn units up.",
+"the function in part (a) translated $bn units down.",
+"the function in part (a) translated $bn units left.",
+"the function in part (a) translated $bn units right.",
+);
+
+
+$mcbf = new_multiple_choice();
+$mcbf->qa(
+"A formula for table (b) is ",  "\( y=f(x-$an)+$bn \)");
+
+$mcbf->makeLast(
+"\( y=f(x-$an)+$bn \)",
+ "\( y=f(x-$an)-$bn \)",
+ "\( y=f(x+$an)+$bn \)",
+ "\( y=f(x-$bn)+$an \)",
+);
+
+
+$mcc = new_multiple_choice();
+$cn = 2;
+$mcc->qa(
+"The function in Table (c) is" ,  
+"\(f\) reflected across the \(x\)-axis and stretched vertically by a factor of $cn."
+);
+
+$mcc->makeLast(
+"\(f\) translated vertically by 27 up.",
+"\(f\) translated vertically by 9 up.",
+"\(f\) reflected across the \(x\)-axis and stretched vertically by a factor of $cn.",
+"\(f\) reflected across the \(x\)-axis and compressed vertically by a factor of \(\dfrac{1}{$cn}\).",
+);
+
+
+$mccf = new_multiple_choice();
+$mccf->qa(
+"A formula for table (c) is ",  "\( y= -$cn f(x) \)");
+
+$mccf->makeLast(
+ "\( y=f(x)+27 \)",
+ "\( y=f(x) + 9\)",
+  "\( y= $cn f(x) \)",
+  "\( y= -$cn f(x) \)",
+  "\( y= -\frac{1}{$cn} f(x) \)",
+);
+
+
+$mcd = new_multiple_choice();
+$dn = 10;
+$mcd->qa(
+"The function in Table (d) is" ,  
+"the function in part (c) translated $dn units down."
+);
+
+$mcd->makeLast(
+"the function in part (c) translated $dn units up.",
+"the function in part (c) translated $dn units down.",
+"the function in part (c) translated $dn units left.",
+"the function in part (c) translated $dn units right.",
+);
+
+
+$mcdf = new_multiple_choice();
+$mcdf->qa(
+"A formula for table (d) is ",  "\( y= -$cn f(x)-$dn \)");
+
+$mcdf->makeLast(
+"\( y= -$cn f(x)+$dn \)",
+"\( y= -$cn f(x)-$dn \)",
+ "\( y= $cn f(x)-$dn \)",
+ "\( y= -$dn f(x)+$cn \)",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Each table in parts (a)-(d) describes a transformation of [`f(x)`]. Identify the transformation and write a formula for the new function in terms of [`f`].
+
+
+[@
+DataTable(
+  [
+    [   '\(x\)',  '\(-2\)', '\(-1\)', '\(0\)', '\(1\)' , '\(2\)', '\(3\)' ]  ,
+    [ '\(f(x)\)', '\(-9\)', '\(-8\)', '\(-7\)', '\(-6\)' , '\(1\)', '\(20\)'   ]
+  ], 
+  caption => 'Original function', 
+  align => '| l | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+a. 
+[@
+DataTable(
+  [
+    [   '\(x\)',  '\(-2\)', '\(-1\)', '\(0\)', '\(1\)' , '\(2\)', '\(3\)' ]  ,
+    [ '\(y\)', '\(-34\)', '\(-9\)', '\(-8\)', '\(-7\)' , '\(-6\)', '\(1\)'   ]
+  ], 
+  caption => 'transformed function (a)', 
+  align => '| l | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+    [@ $mca -> print_q() @]***
+[@ $mca -> print_a() @]***
+
+    [@ $mcaf -> print_q() @]***
+[@ $mcaf -> print_a() @]***
+
+b. 
+[@
+DataTable(
+  [
+    [   '\(x\)',  '\(-2\)', '\(-1\)', '\(0\)', '\(1\)' , '\(2\)', '\(3\)' ]  ,
+    [ '\(y\)', '\(-4\)', '\(21\)', '\(22\)', '\(23\)' , '\(24\)', '\(31\)'   ]
+  ], 
+  caption => 'transformed function (b)', 
+  align => '| l | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+    [@ $mcb -> print_q() @]***
+[@ $mcb -> print_a() @]***
+
+    [@ $mcbf -> print_q() @]***
+[@ $mcbf -> print_a() @]***
+
+c. 
+[@
+DataTable(
+  [
+    [   '\(x\)',  '\(-2\)', '\(-1\)', '\(0\)', '\(1\)' , '\(2\)', '\(3\)' ]  ,
+    [ '\(y\)', '\(18\)', '\(16\)', '\(14\)', '\(12\)' , '\(-2\)', '\(-40\)'   ]
+  ], 
+  caption => 'transformed function (c)', 
+  align => '| l | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+    [@ $mcc -> print_q() @]***
+[@ $mcc -> print_a() @]***
+
+    [@ $mccf -> print_q() @]***
+[@ $mccf -> print_a() @]***
+
+d. 
+[@
+DataTable(
+  [
+    [   '\(x\)',  '\(-2\)', '\(-1\)', '\(0\)', '\(1\)' , '\(2\)', '\(3\)' ]  ,
+    [ '\(y\)', '\(8\)', '\(6\)', '\(4\)', '\(2\)' , '\(-12\)', '\(-50\)'   ]
+  ], 
+  caption => 'transformed function (d)', 
+  align => '| l | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+    [@ $mcd -> print_q() @]***
+[@ $mcd -> print_a() @]***
+
+    [@ $mcdf -> print_q() @]***
+[@ $mcdf -> print_a() @]***
+
+
+   
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mca->correct_ans() ) );
+ANS( radio_cmp( $mcaf->correct_ans() ) );
+ANS( radio_cmp( $mcb->correct_ans() ) );
+ANS( radio_cmp( $mcbf->correct_ans() ) );
+ANS( radio_cmp( $mcc->correct_ans() ) );
+ANS( radio_cmp( $mccf->correct_ans() ) );
+ANS( radio_cmp( $mcd->correct_ans() ) );
+ANS( radio_cmp( $mcdf->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+
+ENDDOCUMENT();  

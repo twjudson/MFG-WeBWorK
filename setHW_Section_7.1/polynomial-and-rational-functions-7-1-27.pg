@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('11/2/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('27')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+$a1 = list_random(2, 3, 4);
+
+Context()->variables->add(t=>"Real");
+
+$poly = Compute("(1 - $a1*sqrt(t))^3");
+
+#
+#  Expanded form
+#
+
+$a = -$a1**3;
+$b = 3*$a1**2;
+$c = -3*$a1;
+$d = 1;
+
+$expandedform = Formula("$a t^(3/2) + $b t^2 + $c t^(1/2)  + $d");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+Use the formulas for the cube of a binomial to expand the product \( $poly \).
+$BR
+$BR
+\{ ans_rule(30) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $expandedform->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

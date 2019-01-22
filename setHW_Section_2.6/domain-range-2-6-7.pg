@@ -1,0 +1,151 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('7')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"unionTables.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+@c0= (-5, -4, -4, -2, -2, -1, -1,  1, 1, 2, 2, 4, 4, 5); #x-coordinates
+@d0= (3,   2,   0, -1,  0, 2, 3); #y-coordinates
+
+$horizontal = random(-2,2);
+$vertical = random(-2,2);
+$xflip = random(-1,1,2);
+$yflip = random(-1,1,2);
+
+for ( $i=0; $i<14; $i++ ) {
+    $A[$i] = $xflip*($c0[$i]+ $horizontal);
+}
+
+#
+#  Graph canvas
+#
+$gr = init_graph(-8,-6,8,6,axes=>[0,0],grid=>[16,12],size=>[300,250]);
+$gr -> lb('reset');
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label ( 7.5,0,'n','blue','left','bottom'));
+$gr -> lb(new Label ( 0.25,5.3,'P(n)','blue','left','bottom'));
+
+foreach my $i (1..2) {
+  $j = 10*$i -15;
+  $gr -> lb(new Label ( $j,-0.5, $j,'black','center','middle'));
+  $gr -> lb(new Label (-0.5,$j,$j,'black','center','middle'));
+}
+
+for ( $i=0; $i<7; $i++ ) {
+    $B[$i] = $yflip* $d0[$i]+ $vertical;
+    $f[$i] = $B[$i];
+if($i != 7){
+    add_functions( $gr, 
+               "$f[$i] for x in ($A[2*$i],$A[2*$i+1]] using color:red and weight:2");
+}}
+
+#for ( $i=0; $i<14; $i++ ) { $gr->stamps( closed_circle($A[$i],$B[ floor($i )],'red') );}
+
+Context("Inequalities")->variables->are(n=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+$xmin=min($A[0],$A[13]);
+$xmax=max($A[0],$A[13]);
+if ($xflip == -1) {
+$domain = Compute("[$xmin,$xmax)");}
+else {
+$domain = Compute("($xmin,$xmax]");}
+Context()->variables->add(y=>"Real");
+#$range = Compute("[$ymin,$ymax]");
+$range = Compute("{$B[0],$B[1],$B[2],$B[3]}"); 
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+\{
+ColumnTable(
+"Find the domain and range of the function graphed.
+$BR
+$BR
+(a) Domain:" . 
+ans_rule(8).$SPACE.
+AnswerFormatHelp("intervals").
+"$BR
+$BR
+(b) Range: ".ans_rule(8)
+
+,
+image(insertGraph($gr), width=>300, height=>250, tex_size=>700).
+$BR.$BCENTER.
+$BR.
+"Graph of \( y = G(s) \)".
+$ECENTER
+,
+indent => 0, separation => 30, valign => "TOP"
+)
+\}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the `t`-values from the left-most point on the curve to the right-most point on the curve.
+The range includes all the `y`-values from the bottom-most point on the curve to the top-most point on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

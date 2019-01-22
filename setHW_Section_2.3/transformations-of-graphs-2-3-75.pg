@@ -1,0 +1,147 @@
+##DESCRIPTION
+##  Algebra problem: write formula for transformation of a function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'translation', 'scale','reflection')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.3')
+## Problem1('73')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mca = new_multiple_choice();
+
+$temp = 5000;
+$mca->qa(
+"Graph (a) shows a state population that",  
+"has its maximum and minimum populations two months before the marmots."
+);
+
+$mca->extra(
+"has its maximum and minimum populations two months after the marmots.",
+"has its maximum and minimum populations two below the marmots.",
+"has its maximum and minimum populations two above the marmots.",
+);
+#$mca->makeLast("none of the above");
+
+
+$mcaf = new_multiple_choice();
+$mcaf->qa(
+"A formula for graph (a) is ",  "\( y=g(t+2)\)");
+
+$mcaf->extra(
+"\( y=g(t)+2\)",
+ "\( y=g(t-2)\)",
+ "\( y=g(t)-2\)",
+ "\( y=2g(t)\)",
+);
+
+
+
+$mcb = new_multiple_choice();
+
+
+$mcb->qa(
+"Graph (b) shows a state population that",  
+"remains 20 below that of the marmots."
+);
+
+$mcb->extra(
+"remains two months before the marmots.",
+"remains two months after the marmots.",
+"remains 20 above that of the marmots.",
+);
+#$mcb->makeLast("none of the above");
+
+$mcbf = new_multiple_choice();
+$mcbf->qa(
+"A formula for graph (b) is ",  "\( y= g(t) -20 \)");
+
+$mcbf->extra(
+"\( y=g(t+20)\)",
+ "\( y=g(t-20)\)",
+ "\( y=g(t)+20\)",
+);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>[@ image( "fig-2-3-75.png", width=>305, height=>144,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+The graph of [`g(t)`] shows the population of marmots in a national park [`t`] months after January 1. Write a formula for each transformation of [`g`] and explain how the population of that species compares to the population of marmots.
+
+
+>>[@ image( "fig-2-3-75a.png", width=>265, height=>130,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*
+[@ image( "fig-2-3-75b.png", width=>265, height=>130,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+a. [@ $mcaf -> print_q() @]***
+[@ $mcaf -> print_a() @]***
+
+    [@ $mca -> print_q() @]***
+[@ $mca -> print_a() @]***
+
+   
+b. [@ $mcbf -> print_q() @]***
+[@ $mcbf -> print_a() @]***
+ 
+    [@ $mcb -> print_q() @]***
+[@ $mcb -> print_a() @]***
+
+   
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mcaf->correct_ans() ) );
+ANS( radio_cmp( $mca->correct_ans() ) );
+ANS( radio_cmp( $mcbf->correct_ans() ) );
+ANS( radio_cmp( $mcb->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+
+ENDDOCUMENT();  

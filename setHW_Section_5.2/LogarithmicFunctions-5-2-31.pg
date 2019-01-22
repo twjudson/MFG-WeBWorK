@@ -1,0 +1,82 @@
+##DESCRIPTION
+##  Algebra problem: convert logarithmic equation to exponential form
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+ "PGML.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(v=>"Real",w=>"Real",t=>"Real",s=>"Real",n=>"Real",p=>"Real");
+Context()->flags->set(useBaseTenLog=>1); 
+
+@base=(2, 4, 8, 10, 16);
+$k = random(0,4);
+$b = $base[$k]; #was 16
+$x0 = random(2,4); #was 2
+
+$y0 = $b**($x0);
+@variables = ("v", "w", "t", "s", "n", "p");
+$n = random(0,$#variables);
+$var = $variables[$n];
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+Convert the logarithmic equation to exponential form.
+
+>>[``  \log_{[$b]} [$y0] = [$var]``]<<
+
+That is, the given equation is equivalent to [` y =b^{x} `], where
+
+[`y=`][___]{$y0},  
+[` b =`][___]{$b}, and  
+[` x = `][___]{$var}
+
+END_PGML
+
+Context()->normalStrings;
+
+
+
+###################################]###########################
+#
+BEGIN_PGML_SOLUTION
+
+The equation [` \log_b y = x`] is equivalent to [` y = b^x`]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

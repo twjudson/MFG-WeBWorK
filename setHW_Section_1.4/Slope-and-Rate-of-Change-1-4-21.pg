@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: compute delta x from slope and delta y 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+
+$ml = new_match_list();
+$ml->qa(
+"\(m=2\)", "IV",
+"\(m=-\frac{1}{2}\)", "III",
+"\(m=\frac{2}{3}\)", "II",
+"\(m=-\frac{5}{3}\)", "I"
+);
+# use pop-up-lists
+$ml->rf_print_q(~~&pop_up_list_print_q);
+
+$ml->ra_pop_up_list([No_answer=>"?",A=>"A",B=>"B",C=>"C",D=>"D"]);
+$ml->choose(4);
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+>>[@
+ image( "fig-ex-1-4-21.png", width=>305, height=>278,  
+tex_size=>700, extra_html_tags=>'alt="Three graphs"' )
+@]***<<
+
+
+Choose the line with the correct slope. The scales are the same on both axes.
+[@ $ml -> print_q() @]***
+[@ $ml -> print_a() @]*** 
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( str_cmp( $ml->ra_correct_ans ) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+The two graphs with the  positive slopes are II and IV, with IV being steeper and hence having the larger slope. Because [` 2 \gt \frac{2}{3}`], IV is matched with [`m=2`] and II is matched with  [`m=\frac{2}{3}`] 
+
+
+Of the two graphs I and III with the negative slopes, I is steeper and hence has the more negative slope. Because [` -\frac{5}{3} \lt -\frac{1}{2}`], I is matched with [`m=-\frac{5}{3}`] and III is matched with  [`m=-\frac{1}{2}`] 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

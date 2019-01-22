@@ -1,0 +1,128 @@
+##DESCRIPTION
+##  Algebra problem: functions; graphs defining function; minimum wage
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('39')
+
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "parserMultiAnswer.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$year1=Compute("1968");
+$w1= 8.70;
+$wage1 = sprintf("%0.2f", $w1 );
+
+$year2=Compute("1989");
+$w2=5.10;
+$wage2 = sprintf("%0.2f", $w2 );
+
+$year3 = Compute("1967");
+$year4 = Compute("1970");
+
+$multians = MultiAnswer($year3, $year4)->with(
+  singleResult => 0,
+  checker => sub {
+      my ( $correct, $student, $self ) = @_;
+      my ( $f1stu, $f2stu ) = @{$student};
+      my ( $f1, $f2 ) = @{$correct};
+      if ( ($f1 == $f1stu && $f2 == $f2stu) ||
+           ($f1 == $f2stu && $f2 == $f1stu) ) {
+          return [1,1];
+      } else {
+          if ($f1 == $f1stu || $f2 == $f1stu) {
+              return [1,0];
+          } elsif ($f1 == $f2stu || $f2 == $f2stu) {
+              return [0,1];
+          } else {
+              return [0,0];
+          }
+      }
+  }
+);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The graph shows the federal minimum wage, [`M`], as a function of time, [`t`], adjusted for inflation to reflect its buying power in 2004 dollars. (Source: www.infoplease.com)
+
+
+>>[@
+ image( "fig-ex-1-2-39.png", width=>532, height=>211,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' )
+@]***<<
+
+a. 
+When did the minimum wage reach its highest buying power, and what was it worth in 2004 dollars?
+    
+    Answer: The maximum buying power of minimum wage was in the year [____]{$year1->cmp(  tolType => 'absolute',  tolerance => .5,)} , when it was worth $[_____]{Compute("$wage1")->cmp(  tolType => 'absolute',  tolerance => .15,)}  
+    
+b. 
+When did the minimum wage fall to its lowest buying power after its peak, and what was its worth at that time?
+    
+    Answer: The minimum buying power was in the year [____]{$year2->cmp(  tolType => 'absolute',  tolerance => .5,)} , when it was worth $[_____]{Compute("$wage2")->cmp(  tolType => 'absolute',  tolerance => .15,)}  
+
+c. 
+Give two years in which the minimum wage was worth $8  in 2004 dollars.
+  
+    [___]{ $multians} or [___]{ $multians} 
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+
+a. 
+We locate the highest point on the curve: (1968, 8.70).
+b. 
+We locate the lowest point on the curve: (1989, 5.10).
+c. 
+We locate the two points with second coordinate 8.00: (1967, 8) and (1970, 8).
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

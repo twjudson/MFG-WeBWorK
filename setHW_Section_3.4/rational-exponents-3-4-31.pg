@@ -1,0 +1,114 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents-Tricosanthes and Lagenaria gourds
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('2/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('31')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+"PGML.pl",
+"parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context()->variables->add(a => 'Real', d=>'Real', L=>'Real');
+$f = Formula("a*d^(2.2)");
+$f_display = "ad^{2.2}";
+
+
+@QA = (
+"Tricosanthes is ", 
+"thinner.", 
+"Lagenaria is", 
+"fatter",
+);
+
+$ml = new_match_list();
+
+$ml->rf_print_q(~~&pop_up_list_print_q); # use pop-up-lists
+$ml -> ra_pop_up_list(
+[ No_answer=>"?", A=>"A", B=>"B" ] );
+
+$ml->qa(@QA);               #  set the questions and answers
+$ml->choose(2);             #  select both of them
+
+
+
+$ml2 = new_match_list();
+$ml2->qa(
+"Tricosanthes is ", 
+"the snake gourd.", 
+"Lagenaria is", 
+"the bottle gourd",
+);
+$ml2->rf_print_q(~~&pop_up_list_print_q); # use pop-up-lists
+$ml2 -> ra_pop_up_list(
+[ No_answer=>"?", A=>"A", B=>"B" ] );
+
+#$ml2->qa(@QA);               #  set the questions and answers
+$ml2->choose(2);             #  select 4 of them
+
+$mc = PopUp(
+    [ "?", "Yes", "No" ],
+    "Yes" );
+
+$f_inverse1 = Formula("L*d**(-2.2)");
+$f_inverse2 = Formula("L*d**(-0.81)");
+
+##############################################################
+BEGIN_PGML
+
+The gourd species *Tricosanthes* grows according to the formula [`L = [$f_display]`], where [`L`]  is its length and [`d`] is its width. The species *Lagenaria* has the growth law [`L = ad^{0.81}`]. (Source: Burton, 1998)
+
+  
+a. 
+By comparing the exponents, predict which gourd grows into a long, thin shape, and which is relatively fatter.  
+[@$ml->print_q@]*
+[@$ml->print_a@]*  
+Which species is called the snake gourd, and which is the bottle gourd?  
+[@$ml2->print_q@]*
+[@$ml2->print_a@]*
+b.  
+The snake gourd reaches a length of 2 meters (200 cm), with a diameter of only 4 cm. Find the value of [`a`] in its growth law.  [`a=`][____]
+c.  
+The bottle gourd is 10 cm long and 7 cm in diameter at maturity. Find the value of [`a`] in its growth law.    [`a=`][____]  
+d. 
+The giant bottle gourd grows to a length of 23 cm with a diameter of 20 cm. Does it grow according to the same law as standard bottle gourds? [@$mc->menu()@]*
+
+END_PGML
+
+
+##############################################################
+#
+ANS( str_cmp( $ml->ra_correct_ans() ) );
+ANS( str_cmp( $ml2->ra_correct_ans() ) );
+ANS($f_inverse1->eval(L=>200, d=>4)->cmp(tolType => 'relative', tolerance => .05,));
+ANS($f_inverse2->eval(L=>10, d=>7)->cmp(tolType => 'relative', tolerance => .05,));
+ANS( $mc->cmp() );
+
+ENDDOCUMENT();     

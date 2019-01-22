@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--compound interest
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/4/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('53')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context("Numeric");
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+
+@frequency = ("daily", "monthly", "quarterly", "weekly");
+@times = (365, 12, 4, 52);
+$i = random(0,$#frequency);
+$freq = $frequency[$i];
+$n = $times[$i];
+
+$p0 = 1000;
+$q = random(14, 19) / 10;
+$p1 = $q * $p0; #was 1900
+$t = random(5,15); #was 5;
+$m = $n*$t;
+
+$r = Compute("$n* ( $q^(1/$m)-1 )") ;
+$ans = Compute("100 *$n * ( $q^(1/$m) - 1 )") ;
+
+#Context()->{format}{number} = "%.1f#"; 
+
+BEGIN_PGML
+
+Use the formula for compound interest,
+>>[``A=P\left(1+\dfrac{r}{n} \right)^{nt} ``]<<
+
+
+What rate of interest is required so that $[$p0] will yield [$p1] after [$t] years if the interest rate is compounded [$freq]? Give your answer accurate to the nearest tenth of a percent.
+
+Expressed as a percent, the required interest is [____]{$ans->cmp(  tolType => 'absolute',  tolerance => .05,)}%
+
+END_PGML
+
+
+
+BEGIN_PGML_SOLUTION
+
+We have [` P = [$p0]`], [` A=[$p1] `], [` t=[$t]`], and [` n=[$n]`]. Substituting into the formula for compound interest, 
+>>[``
+\begin{align*}
+[$p1] &= [$p0]\left(1+\frac{r}{[$n]} \right)^{[$n]\cdot [$t]} &&\text{Divide by [$p0].}\\
+\frac{[$p1]}{[$p0]} &= \left(1+\frac{r}{[$n]} \right)^{[$m]}  &&\text{Raise to power 1/[$m] .}\\
+[$q]^{1/[$m]} &= 1+\frac{r}{[$n]}  &&\text{Subtract 1. }  \\
+\left([$q]\right)^{1/[$m]}-1 &= \frac{r}{[$n]}  &&\text{Multiply by [$n].}  \\
+[$n]\cdot \left([$q]^{1/[$m]}-1\right) &= r \approx [$r] \approx [$ans]%
+\end{align*}
+``]<<
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

@@ -1,0 +1,307 @@
+##DESCRIPTION
+##  Algebra problem: graphing parabolas
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+
+@vert = ("up", "down");
+@hor = ("right", "left");
+do {$a = non_zero_random(-5,5);} until (abs($a) != 1);
+$abs = abs($a);
+
+$f1 ="$a  x^2";
+$F1 = Formula("$f1");
+$mc1 = new_checkbox_multiple_choice();
+$i = 0; if ($a < 0) {$i =1};
+$v = $vert[$i]; $nv = $vert[1-$i]; 
+$h = $hor[$i]; $nh = $hor[1-$i]; 
+$mc1->qa(
+"\(y=$f1\)",  "The parabola opens $v.","The parabola is `$abs` times as steep as the standard parabola",);
+
+$mc1->extra(
+"The parabola opens $nv.",
+"The parabola is the standard parabola shifted $v by `$abs` units.",
+"The parabola is the standard parabola shifted $nv by `$abs` units.",
+"The parabola is the standard parabola shifted $h by `$abs` units.",
+"The parabola is the standard parabola shifted $nh by `$abs` units.",
+);
+#$mc1->makeLast("none of the above");
+
+#graph
+$xmin = min(-10, -10+$a);
+$ymin = min(-10, -10+$a);
+$xmax=max(10, 10+$a);
+$ymax=max(10, 10+$a);
+$xgrid = $xmax - $xmin;
+$ygrid = $ymax - $ymin;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 0.15,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..2) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "x**2 for x in [$xmin,$xmax] using color:blue and weight:1");
+($gr->fn)[0]->steps(200);
+add_functions( $gr,
+               "$F1 for x in [$xmin,$xmax] using color:red and weight:2");
+($gr->fn)[1]->steps(200);
+$gr->stamps( closed_circle(0,0,'red') );
+$gr -> lb(new Label (0,-.5,'(0,0)','red','center','middle'));
+$gr->stamps( closed_circle(1,$a,'red') );
+$gr -> lb(new Label (1.5,$a,"(1,$a)",'red','left','middle'));
+$gr->stamps( closed_circle(-1,$a,'red') );
+$gr -> lb(new Label (-1.5,$a,"(-1,$a)",'red','right','middle'));
+
+
+$f2 = "$a + x^2";
+$F2 = Formula("$f2");
+$mc2 = new_checkbox_multiple_choice();
+$i = 0; if ($a < 0) {$i =1};
+$v = $vert[$i]; $nv = $vert[1-$i]; 
+$h = $hor[$i]; $nh = $hor[1-$i]; 
+
+$mc2->qa(
+"\(y=$f2\)", "The parabola opens up.", "The parabola is the standard parabola shifted $v by `$abs` units.", );
+
+$mc2->extra(
+"The parabola is `$abs` times as steep as the standard parabola",
+"The parabola opens down.",
+"The parabola is the standard parabola shifted $nv by `$abs` units.",
+"The parabola is the standard parabola shifted $h by `$abs` units.",
+"The parabola is the standard parabola shifted $nh by `$abs` units.",
+);
+#$mc2->makeLast("none of the above");
+
+$gr2 = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr2 -> lb('reset'); #remove default label and tick marks
+
+$gr2 -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr2 -> lb(new Label ( 0.15,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..2) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr2 -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr2 -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr2 -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+  $gr2 -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr2,
+               "x**2 for x in [$xmin,$xmax] using color:blue and weight:1");
+($gr2->fn)[0]->steps(200);
+add_functions( $gr2,
+               "$F2 for x in [$xmin,$xmax] using color:red and weight:2");
+($gr2->fn)[1]->steps(200);
+
+$gr2->stamps( closed_circle(0,$a,'red') );
+$gr2 -> lb(new Label (0,$a-.5,"(0,$a)",'red','center','top'));
+$b = $a + 1;
+$gr2->stamps( closed_circle(1,$b,'red') );
+$gr2 -> lb(new Label (1.5,$b,"(1,$b)",'red','left','middle'));
+$gr2->stamps( closed_circle(-1,$b,'red') );
+$gr2 -> lb(new Label (-1.5,$b,"(-1,$b)",'red','right','middle'));
+
+$f3 = "( x - $a)^2";
+$F3 = Formula("$f3");
+$mc3 = new_checkbox_multiple_choice();
+$i = 0; if ($a < 0) {$i =1};
+$v = $vert[0]; $nv = $vert[1]; 
+$h = $hor[$i]; $nh = $hor[1-$i]; 
+$mc3->qa(
+"\(y=$f3\)", "The parabola opens up.", "The parabola is the standard parabola shifted $h by `$abs` units.",);
+
+$mc3->extra(
+"The parabola is `$abs` times as steep as the standard parabola",
+"The parabola opens down.",
+ "The parabola is the standard parabola shifted $nv by `$abs` units.",
+"The parabola is the standard parabola shifted $v by `$abs` units.",
+"The parabola is the standard parabola shifted $nh by `$abs` units.",
+);
+#$mc3->makeLast("none of the above");
+
+$gr3 = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr3 -> lb('reset'); #remove default label and tick marks
+
+$gr3 -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr3 -> lb(new Label ( 0.15,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..2) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr3 -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr3 -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr3 -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+  $gr3 -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr3,
+               "x**2 for x in [$xmin,$xmax] using color:blue and weight:1");
+($gr3->fn)[0]->steps(200);
+add_functions( $gr3,
+               "$F3 for x in [$xmin,$xmax] using color:red and weight:2");
+($gr3->fn)[1]->steps(200);
+
+$gr3->stamps( closed_circle($a,0,'red') );
+$gr3 -> lb(new Label ($a,-.5,"($a,0)",'red','center','top'));
+$gr3->stamps( closed_circle($b,1,'red') );
+$gr3 -> lb(new Label ($b+.5,1,"($b,1)",'red','left','middle'));
+$c = $a-1;
+$gr3->stamps( closed_circle($c,1,'red') );
+$gr3 -> lb(new Label ($c-.5,1,"($c, 1)",'red','right','middle'));
+
+
+
+$f4 = "x^2-$a";
+$F4 = Formula("$f4");
+$mc4 = new_checkbox_multiple_choice();
+$i = 0; if ($a < 0) {$i =1};
+$v = $vert[$i]; $nv = $vert[1-$i]; 
+$h = $hor[$i]; $nh = $hor[1-$i]; 
+$mc4->qa(
+"\(y=$f4\)", "The parabola opens up.",  "The parabola is the standard parabola shifted $nv by `$abs` units.",);
+
+$mc4->extra(
+"The parabola is `$abs` times as steep as the standard parabola",
+"The parabola opens down.",
+"The parabola is the standard parabola shifted $v by `$abs` units.",
+"The parabola is the standard parabola shifted $h by `$abs` units.",
+"The parabola is the standard parabola shifted $nh by `$abs` units.",
+);
+#$mc4->makeLast("none of the above");
+
+$gr4 = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr4 -> lb('reset'); #remove default label and tick marks
+
+$gr4 -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr4 -> lb(new Label ( 0.15,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..2) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr4 -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr4 -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr4 -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+  $gr4 -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr4,
+               "x**2 for x in [$xmin,$xmax] using color:blue and weight:1");
+($gr4->fn)[0]->steps(200);
+add_functions( $gr4,
+               "$F4 for x in [$xmin,$xmax] using color:red and weight:2");
+($gr4->fn)[1]->steps(200);
+
+$gr4->stamps( closed_circle(0,-$a,'red') );
+$gr4 -> lb(new Label (0,-0.5-$a,"(0,-$a)",'red','center','top'));
+$d = 1-$a;
+$gr4->stamps( closed_circle(1,$d,'red') );
+$gr4 -> lb(new Label (1.5,$d,"(1,$d)",'red','left','middle'));
+$gr4->stamps( closed_circle(-1,$d,'red') );
+$gr4 -> lb(new Label (-1.5,$d,"(-1,$d)",'red','right','middle'));
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+
+Describe what each graph will look like compared to the basic parabola. Then sketch a graph by hand and label the coordinates of three points on the graph.
+
+$BR$BR
+
+a. \{ ColumnMatchTable($mc1) \}
+
+$BR
+b. \{ ColumnMatchTable($mc2) \}
+
+$BR
+c. \{ ColumnMatchTable($mc3) \}
+
+$BR
+d. \{ ColumnMatchTable($mc4) \}
+
+END_TEXT
+  
+
+Context()->normalStrings;
+
+ANS( checkbox_cmp( $mc1->correct_ans() ) );
+ANS( checkbox_cmp( $mc2->correct_ans() ) );
+ANS( checkbox_cmp( $mc3->correct_ans() ) );
+ANS( checkbox_cmp( $mc4->correct_ans() ) );
+
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+a. 
+[@image(insertGraph($gr), width=>200, height=>200, tex_size=>700)@]*  
+  
+b. 
+[@image(insertGraph($gr2), width=>200, height=>200, tex_size=>700)@]*  
+  
+c. 
+[@image(insertGraph($gr3), width=>200, height=>200, tex_size=>700)@]*  
+  
+d. 
+[@image(insertGraph($gr4), width=>200, height=>200, tex_size=>700)@]*  
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

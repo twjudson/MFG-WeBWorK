@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--solving literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('25')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+Context("Numeric");
+#
+#
+parser::Root->Enable;
+@variables = ("V","A", "L");
+Context()->variables->add(N=>'Real', C=>'Real', r=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+Context()->flags->set(limits=>[1,2]);
+
+$fN = Formula(" Cr^(0.6)");
+$fdisplay = " Cr^{0.6}";
+$old = random(4000, 8000, 500);
+$ratio = random(13,19) /10;
+$N = $fN->eval(C=>$old, r=>$ratio);
+
+Context()->{format}{number} = "%.2f";    
+
+##############################################################
+BEGIN_PGML
+
+
+A brewery wants to replace its old vats with larger ones. To estimate the cost of the new equipment, the accountant uses the *0.6* rule for industrial costs, which states that the cost of a new container is approximately [`N = [$fdisplay]`], where [`C`] is the cost of the old container and [`r`] is the ratio of the capacity of the new container to the old one.
+a.  
+If an old vat cost $[$old], graph [`N`] as a function of [`r`].   
+b.  
+How much should the accountant budget for a new vat that holds [$ratio] times as much as the old one?  Answer: $[__________]{$N}
+
+
+END_PGML
+
+
+
+##############################################################
+#
+#  Answers
+
+BEGIN_PGML_SOLUTION
+ 
+a. Use the formulas for the volume and surface area of a rectangular box with all three dimensions being [`L`] .  
+b. Take your first equation from part (a) and solve for [`L`], then take the second equation and solve it for [`L`].  
+c. Start with your equation in part (a) for surface area, but replace [`L`] with what you found with your part (b) formula for length in terms of volume.  
+d. Divide your second expression from part (a) by the first expression from part (a).
+
+END_PGML_SOLUTION
+
+
+ENDDOCUMENT();     

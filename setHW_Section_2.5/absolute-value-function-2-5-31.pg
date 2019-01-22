@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: solve absolute value inequalities
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('31')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+"contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real");
+
+#$a = random(3,4);
+$h = random(1,12) + random(2,8)/10;
+$k = 0.1;
+
+$f = Formula("  t- $h")->reduce;
+$left = -$k + $h;
+$right = $k + $h;
+
+Context("Inequalities");
+Context()->variables->are(t=>"Real");
+Context()->constants->add(EmptySet => Set());
+Context()->constants->add(none => Set());
+
+#$ans = "none";
+#$ans = "R";
+$ans = Compute(" $left < t < $right ");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+    
+Solve.
+
+[``   \left| [$f ] \right| \lt  [$k]   ``] 
+
+[___________]{$ans} [@AnswerFormatHelp("inequalities") @]* (Separate different solutions with commas.)
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+There are two solution to the equation [`   \left| [$f ] \right| = [$k]   `], namely [`[$left]`] and [`[$right]`]. All values of [`t`] between these two are solutions to [`  \left| [$f ] \right| \lt  [$k] `], namely [`[$ans]`]. 
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

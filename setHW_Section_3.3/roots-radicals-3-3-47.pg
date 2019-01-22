@@ -1,0 +1,111 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--varying directly with a square root
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('47')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"contextScientificNotation.pl",
+"niceTables.pl",
+"unionTables.pl",
+"PGunion.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+Context()->variables->add(y=> 'Real', r=>'Real', k=>'Real', P=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+
+$k = Compute("12.1");
+$f = Formula("$k * sqrt(P)");
+$Psi = random(50,70,10);
+
+$r = $f->eval(k=>$k, P=>$Psi );  
+
+
+##################
+
+BEGIN_TEXT
+
+
+$BR
+In this problem, one quantity varies directly with the square root of the other, that is, \(y = k\sqrt{x}\).  
+$BR
+$BR
+
+The rate, \(r\), in feet per second, at which water flows from a fire hose is a function of the water pressure, \(P\), in psi (pounds per square inch).
+
+\{
+DataTable(
+  [
+    [' \(P\) (psi)',10,20, 30, 40 ]  ,
+    ['\(r\) (ft/sec)', 38.3, 54.1, 66.3, 76.5  ]
+  ], 
+  caption => 'Water flow in fire hose',
+  align => '| l | c | c | c | c | c|',
+  midrules=>1,
+);
+\}
+END_TEXT
+##################
+BEGIN_PGML
+
+a.
+Find the value of [`k`] and write a power function relating the variables.  
+[` k=`][___]{$k->with(tolType => 'relative', tolerance => .05, ); } , and so using the variables from the table, [`r =`][__________]{$f->with(tolType => 'relative', tolerance => .05, );}.  
+b.
+Use your function to answer the question: What is the rate of water flow at a typical water pressure of [$Psi] psi?  [______]{$r->with(tolType => 'relative', tolerance => .05, ); } ft/sec  
+c.
+Graph your function and verify your answer to part (b) on the graph.  
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+ 
+a. To find the value of [`k`], take the values of [`P`] and [`r`] from any of the columns of data in the given table,  substitute them into the equation [` r = k \sqrt{P}`], and solve for [`k`]. Then substitute that value of [`k`] into [` r = P \sqrt{d}`].    
+b. Use your formula from (a) and evaluate for [` P = [$Psi] `].   
+c. Make sure your graph continues at least up to where [` P = [$Psi] `], and verify that there is a point on the curve with coordinates [`([$Psi],[$r]) `].
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

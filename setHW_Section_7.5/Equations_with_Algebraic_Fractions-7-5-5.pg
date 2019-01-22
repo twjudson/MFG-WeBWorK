@@ -1,0 +1,101 @@
+##DESCRIPTION
+##  Algebra problem: equations with rational expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context("Fraction");
+Context()->variables->add(w=>"Real", r=>"Real", h=>"Real", v=>"Real", s=>"Real", m=>"Real", y=>"Real", z=>"Real");
+@variables = ("w", "r", "h", "v", "s", "m", "y", "z");
+
+$i = random(0, $#variables);
+$x = $variables[$i];
+
+do {
+$k = random(2,8);
+$a = random(11,15);
+} until ( $k !=4 && $a % $k !=0); 
+$ans = List("sqrt($a/$k), -sqrt($a/$k)");
+
+$f = Formula(" ($a) / ( $x**2 ) ")->reduce;
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+
+>>[``  [$f] = [$k] ``]<<
+
+Solve the equation algebraically.
+
+[`[$x]=`][____________]{$ans}  [@AnswerFormatHelp("numbers") @]*
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[``
+\begin{aligned}
+[$f] &= [$k] \\
+[$a] &= [$k][$x]^2 \\
+\frac{[$a]}{[$k]} &= [$x]^2 \\
+\pm \sqrt{[$a]/[$k]} &= [$x]
+\end{aligned}
+``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,109 @@
+##DESCRIPTION
+##  Algebra problem: vertical change on a non-linear graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/29/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('57')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "PGgraphmacros.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+$mc = new_multiple_choice();
+$mc->qa(
+"An algebraic expression for the length of the vertical line segment on the \(y\)-axis:",  "\( f(4)-f(1) \)");
+$mc->extra(
+"3",
+"\(f(3)\)",
+"\( f(1-4) \)",
+);
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"An algebraic expression for the length of the vertical line segment on the \(y\)-axis:",  "\( f(s)-f(r) \)");
+$mc1->extra(
+"\(r-s\)",
+"\(f(s-r)\)",
+"\( f(r-s) \)",
+);
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Find the coordinates of the indicated points, and then write an algebraic expression using function notation for the indicated quantity.
+
+
+a. 
+[@ image( "fig-ex-1-4-57a.png", width=>267, height=>176,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+b. 
+[@ image( "fig-ex-1-4-57b.png", width=>254, height=>169,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+    [@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The two points are [`(1, f(1))`] and [` (4,f(4))`]. The highlighted vertical line segment on the [`y`]-axis reaches from a height of [` f(1)`] to a height of [`f(4)`].
+
+b.
+The two points are [`(r, f(r))`] and [` (s,f(s))`]. The highlighted vertical line segment on the [`y`]-axis reaches from a height of [` f(r)`] to a height of [`f(s)`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

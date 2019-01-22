@@ -1,0 +1,93 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('10/30/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('11')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+$a1 = list_random(2,4,1);
+$b1= list_random(3,5,1);
+
+$poly = Compute("($a1 - 2*x^2 - x^4)*($b1 + x^2 - 2*x^4)");
+
+#
+#  Expanded form
+#
+Context("LimitedPolynomial-Strict");
+
+$a = -2*$a1 - $b1 -2;
+$b = -2*$b1 + $a1;
+$c = $a1*$b1;
+
+
+$expandedform = Formula("$a x^4 + $b x^2 + $c")->reduce();
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+Find the first three terms of the product  \( $poly \) in ascending powers. (Do not compute the entire product!)
+$BR
+$BR
+\{ ans_rule(30) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $expandedform->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

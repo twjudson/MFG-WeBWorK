@@ -1,0 +1,97 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--radioactive decay
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/9/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('21')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$percent = 0.8;
+$remain = 100-$percent;
+$base = $remain/100;
+
+$P0 = 50;
+
+$f = Formula(" $P0* $base**t ");
+
+$t1 =10;
+$P1 =  $f->eval(t=>$t1);
+
+$t2= 100;
+$P2 = $f->eval(t=>$t2);
+
+
+#Context()->{format}{number} = "%.1f";
+
+
+##################
+
+BEGIN_PGML
+
+
+Plutonium-238 is a radioactive element that decays over time into a less harmful element at a rate of [$percent]% per year. A power plant has [$P0] pounds of plutonium-238 to dispose of.  
+
+a. 
+Write a function that describes exponential decay.  
+[` P(t) =`][___________]{$f}  (Use [`t`] for the input variable.) 
+Use a graphing utility to graph the function.  
+b. 
+How much plutonium-238 will be left after [$t1] years?    [_____]{$P1->cmp(  tolType => 'absolute',  tolerance => .05,)} lb  
+After [$t2] years?
+ [_____]{$P2->cmp(  tolType => 'absolute',  tolerance => .05,)} lb
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+When [$percent]% of light is filtered out, [$remain]% remains, so the decay factor is [$base].  
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

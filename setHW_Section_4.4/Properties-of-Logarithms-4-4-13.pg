@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--rewriting in terms of simple logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('2/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('13')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"parserMultiAnswer.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", b=>"Real", r=>"Real", m=>"Real", P=>"Real", n=>"Real");
+Context()->flags->set(limits=>[1,5]);
+@variables = ("x", "t", "r", "m", "n");
+$i = random(0, $#variables -1);
+$x = $variables[$i];
+
+$a = random(3,5);
+
+do{$j = random(0, $#variables -1);} until ($j != $i);
+$t = $variables[$j];
+
+do{$k = random(0, $#variables -1);} until ( ($k != $i) and ($k != $j) );
+do{$k1 = random(0, $#variables -1);} until ( $k != $k1 );
+$r = $variables[$k];
+$y = $variables[$k1];
+
+Context()->functions->disable("log");
+
+
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Use the properties of logarithms to expand each expression in terms of simpler logarithms. Assume that all variable expressions denote positive numbers.
+$PAR
+a. 
+\( \log \left(P (1-$x)^{$t}\right)= \log \big( \) \{ans_rule(2)\}
+\( \big)  + \) \{ans_rule(2)\} \(\cdot \log\big( \) 
+\{ans_rule(3)\}
+\( \big) \)
+
+$PAR
+
+b. 
+\( \log_{$a} \left(1+$r/$a\right)^{$a $y}=  \) \{ans_rule(2)\}
+ \(\cdot \log_{$a}\big( \) 
+\{ans_rule(5)\}
+\( \big) \)
+
+END_TEXT
+
+ANS( Compute("P")->cmp() ); 
+ANS( Compute("$t")->cmp() ); 
+ANS( Compute("1-$x")->cmp() ); 
+ANS(Compute("$a $y")->cmp() ); 
+ANS(Compute("1+$r/$a")->cmp() ); 
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

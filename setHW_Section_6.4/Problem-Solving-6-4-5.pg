@@ -1,0 +1,119 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model: toy rocket
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(t=>"Real", y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$halfg = 16;
+$v0 = random(2,4) * 2 * $halfg; # was 96;
+$tend =  $v0/$halfg;
+$tmax = $tend/2;
+$f = Formula("$v0*t - $halfg*t^2");
+$hmax = $f->eval(t=>$tmax);
+
+$xmin = -1;
+$ymin = -10;
+$xmax=$tend;
+$ymax=ceil($hmax/100) * 100;
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/10;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'t','blue','left','bottom'));
+$gr -> lb(new Label ( 50,0.94*$ymax,'h','blue','left','bottom'));
+
+foreach my $i (1..8) {
+ $xscale =1*$i;
+ $yscale =50*$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for t in [0, $tend] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($tmax,$hmax,'red') );
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Delbert launches a toy water rocket from ground level. Its distance above the ground [`t`] seconds after launch is given, in feet, by 
+>>[``d = [$f]``]<<
+
+When will the rocket reach its greatest height, and what will that height be?
+
+
+a. 
+Find the maximum value algebraically.  
+Greatest height attained after [____]{$tmax} seconds, and that height is [_____]{$hmax} ft. 
+b. 
+Obtain a good graph on your calculator and verify your answer. (Use the coordinates of the vertex and the vertical intercept to help you choose an appropriate window for the graph.)
+
+ 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The maximum height corresponds to the vertex of the parabola [`h = [$f]`]. The horizontal coordinate is [`t_v = \dfrac{-[$v0]}{2(-[$halfg])} = [$tmax]`] seconds. Using that value of [`t`] in [`[$f]`], we find that the maximum height is [$hmax] feet.
+b. 
+[@ image( insertGraph($gr) ) @]***  
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

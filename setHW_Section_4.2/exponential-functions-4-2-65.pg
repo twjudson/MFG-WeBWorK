@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--table to identify linear, power, exponential
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('65')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+###########################
+
+@QA = (
+"\( y=ab^x \)", 
+"fig-4-2-65-1.png", 
+"\( y=ab^{-x} \)", 
+"fig-4-2-65-3.png",
+"\( y= ax^b \)", 
+"fig-4-2-65-2.png",
+);
+
+$ml = new_image_match_list(
+  link => 1,                #  do not link to separate image
+  size => [150,200],        #  image width, height in pixels
+  tex_size => 310,          #  tex size in precent times 10
+  columns => 3,             #  number of columns
+  separation => 20,         #  space between images
+);
+
+$ml->rf_print_q(~~&pop_up_list_print_q); # use pop-up-lists
+$ml -> ra_pop_up_list(
+[ No_answer=>"?", A=>"A", B=>"B", C=>"C" ] );
+
+$ml->qa(@QA);               #  set the questions and answers
+$ml->choose(3);             #  select 3 of them
+#$ml->choose_extra(1);      #  and show the other 1
+
+
+
+##############################################################
+BEGIN_TEXT
+
+Match the graph of each function to its formula. In each formula, \(a\gt 0\) and \(b \gt 1\).
+
+$BR$BR
+a. Match each equation to one of the graphs shown.
+$BR
+\{$ml->print_q\}
+$BR
+\{$ml->print_a\}
+
+
+END_TEXT
+
+
+##############################################################
+#
+install_problem_grader(~~&std_problem_grader);
+$showPartialCorrectAnswers = 0;
+
+ANS(str_cmp($ml->ra_correct_ans));
+
+
+ENDDOCUMENT();     

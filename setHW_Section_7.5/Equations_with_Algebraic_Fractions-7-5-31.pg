@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Algebra problem: proportion
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context("Fraction");
+$ans =45;
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Distances on a map vary directly with actual distances. The scale on a map of Michigan uses [`\frac{3}{8}`] inch to represent 10 miles. If Isle Royale is [` 1\frac{11}{16}`]  inches long on the map, what is the actual length of the island?
+
+    $[________]{$ans} miles
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We convert the mixed number [` 1\frac{11}{16}`] to the improper fraction [`\frac{27}{16}`] and solve a proportion.
+
+[`` \begin{aligned}
+\frac{10}{3/8} &= \frac{x}{27/16} \\
+\frac{10}{3/8} \cdot \frac{27}{16}&= x \\
+[$ans] = x
+\end{aligned}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

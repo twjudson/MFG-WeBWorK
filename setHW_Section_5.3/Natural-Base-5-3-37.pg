@@ -1,0 +1,128 @@
+##DESCRIPTION
+##  Algebra problem: tables of exponential function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"niceTables.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do{$k = random(21,59);} until ($k %10 !=0);
+
+$delx = ln(10);
+
+$f = Formula("ln(x)");
+
+foreach my $i (0..5) {
+$x[$i] = $k * 10**($i - 2);
+$y[$i] = $f->eval(x=>$x[$i]);
+};
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Multiplying \(x\)-values by a constant factor of 10 corresponds to",  
+"adding a constant value of ln 10 to the \(y\)-values of the natural logarithm function."
+);
+
+$mc->extra(
+"adding a constant value of \(e^{10}\) to the \(y\)-values of the natural logarithm function",
+"multiplying the \(y\)-values of the natural logarithm function by a constant factor of 10."
+);
+$mc->makeLast("none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+a. 
+Fill in the table, rounding your answers to three decimal places.
+
+    [@
+DataTable(
+  [
+    [ '\(x\)', [$x[0]],[$x[1]], [$x[2]], [$x[3]]  ]  ,
+    [ '\( \ln x\)', ans_rule(4) , ans_rule(4), ans_rule(4), ans_rule(4)  ]
+  ], 
+  caption => 'The natural log', 
+  align => '| r | c | c | c | c  |  ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+Subtract each natural logarithm in your table from the next one. (For example, compute 
+[` \ln [$x[1]] - \ln [$x[0]] `]). [____]
+
+    Explain the result.
+
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+
+foreach my $i ( 0..3) {
+  ANS( Compute("$y[$i]")->cmp(  tolType => 'absolute',  tolerance => .0005, ) );
+};
+ANS( Compute("$delx")->cmp(  tolType => 'absolute',  tolerance => .001,) ) ;
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+
+Evaluate [`[$f]`] for each [`x`] in the table.
+
+b. 
+Because the ratio of consecutive [`x`]-values of the table is 10, the difference inf corresponding [`y`]-values are [`` \ln 10 x_0  - \ln x_0 = \ln \left( \dfrac{10 x_0}{ x_0} \right) = \ln 10 \approx [$delx]``].
+
+    Multiplying \(x\)-values by a constant factor of 10 corresponds to   
+adding a constant value of ln 10 to the \(y\)-values of the natural logarithm function.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

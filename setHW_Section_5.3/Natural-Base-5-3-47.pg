@@ -1,0 +1,113 @@
+##DESCRIPTION
+##  Algebra problem: writing exponential function in terms of e
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->flags->set(useBaseTenLog=>1);
+Context()->variables->are(t=>"Real");
+
+$y0 = random(15000, 25000,5000); #was 20000
+$y1 = random($y0 + 10000, 7*$y0/4,5000); #was 35000;
+$b =Compute(" ($y1/$y0)**(1/10) ");
+$k = Compute(" ln(  ($y1/$y0)**(1/10)   ) ");
+
+$f = Formula("$y0 * ($y1/$y0)**(t/10)");
+
+$t2 = 30;
+$year2 = $year0 + $t2;
+$y2 = $f->eval(t=>$t2);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+ The population of Citrus Valley was [$y0] in 2000. In 2010, it was [$y1].
+
+a. 
+What is [`P_0`] if [`t=0`] in 2000?
+
+    [`P_0=`][_____]{$y0}
+
+b. 
+Use the population in 2010 to find the growth factor [`e^k`].
+
+    [`e^k = `][____________]{$b}  [@AnswerFormatHelp("numbers") @]*
+
+c. 
+Write a growth law of the form [`P(t)=P_0 e^{kt}`] for the population of Citrus Valley.
+
+    That is,  [`P_0=`][_____]{$y0}, and in the growth factor [`e^{k}`], 
+    [` k=`][________________]{$k}  [@AnswerFormatHelp("numbers") @]*
+
+d. 
+If it continues at the same rate of growth, what will the population be in 2030?
+
+        Answer: [_______]{$y2->cmp(  tolType => 'relative',  tolerance => .0005,)}
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+An exponential growth function can be written in the form [`P(t)=P_0 e^{kt}`] or as [`P(t)=P_0 b^{t}`]. In either case, [`P_0`] is the population in [`t=0`].
+
+b. 
+The year 2010 is [`t=0`], so [` [$y1] = [$y0]\cdot b^{10} `], and [`b = \left(\frac{[$y1]}{[$y0]}\right)^{1/10} \approx e^{[$k]}`].
+
+c. 
+[`P_0`] was already determined in part (a). [`k =\ln b \approx [$k]`].
+
+d. The year [$year2] is [`t=[$t2]`], and [`P([$t2])\approx [$y2]`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

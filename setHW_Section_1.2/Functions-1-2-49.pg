@@ -1,0 +1,131 @@
+##DESCRIPTION
+##  Algebra problem: functions; tables defining functions; hear rate w/ age
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('49')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  );
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(t=>"Real");
+$p = random(28000, 44000, 4000);
+$dep = 0.08;
+$f = Formula(" $p * (1 - $dep*t) ");
+
+$t1 = 12;
+$ans1 = $f->eval(t=>$t1);
+$mc = new_multiple_choice();
+$mc->qa(
+" Explain what it means.",  "After $t1 years, the SUV is worth $ans1 dollars.");
+
+$mc->extra(
+"After $t1 years, the SUV is has lost $ans1 dollars in value.",
+"With inflation at $t1%, the SUV is has lost $ans1 dollars in value.",
+);
+
+$ans2 = 1/$dep;
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Explain what it means.",  "The SUV has zero value after $ans2 years.");
+
+$mc1->extra(
+"The initial value of the SUV is $ans2.",
+"The initial interest rate of the SUV is $ans2%."
+);
+
+
+$mc2 = new_multiple_choice();
+$mc2->qa(
+"If the year is \(t=n\), what does \(V(n+2)\) mean?",  "The value two years later");
+
+$mc2->extra(
+"Two dollars more than the value"
+);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+ A sport utility vehicle costs $[$p] and depreciates according to the formula
+>>[`V(t) = [$f]`]<<
+where [`V`] is the value of the vehicle after [`t`] years.
+
+a. 
+Evaluate: [`V([$t1])=`][______]{$ans1}
+    [@ $mc -> print_q() @]***
+    [@ $mc -> print_a() @]***
+
+
+b. 
+Solve the equation [`V(t) = 0`].  [`t=`][____]{$ans2}
+    [@ $mc1 -> print_q() @]***
+    [@ $mc1 -> print_a() @]***
+
+
+c. 
+[@ $mc2 -> print_q() @]***
+[@ $mc2 -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+ANS( radio_cmp( $mc2->correct_ans() ) );
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+Evaluate [`[$f]`] for [`t=[$t1]`] to find the value of the SUV after [$t1] years.
+b. 
+You are solving for the time [`t`] at which the value [`V`] is zero.
+c. 
+The input to the function [`V`] is [`n+2`], so we are considering the value of the SUV at a time 2 years past the year (which is [`n`]).
+
+END_PGML_SOLUTION
+
+
+ENDDOCUMENT();        

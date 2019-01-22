@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model: fenced field along river
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/19/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(w=>"Real", A=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$p= random(200, 800, 100); # was 300;
+$sp = $p/2;
+$l = Formula("$p - 2*w");
+$f = Formula("$p*w - 2*w^2");
+$wv = $p/4;
+$Av = $f->eval(w=>$wv);
+
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+A farmer plans to fence a rectangular grazing area along a river with [$p] yards of fence as shown in the figure.
+
+>>[@ image( "fig-6-4-11.png", width=>169, height=>68,  tex_size=>700, extra_html_tags=>'alt="rectangle along river"' ) @]*** <<
+
+a. 
+Write an expression for the area [`A`] of the grazing land in terms of the width [`w`] of the rectangle.  
+[`A=`][_______]{$f}
+b. 
+What is the largest area the farmer can enclose?  
+The largest area is [______]{$Av} sq yd.
+ 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Because [`2w+l = [$p]`], [`l = [$p] - 2w`], and the area enclosed is [`lw=([$l])w=[$f]`].   
+b. 
+The max occurs at the vertex of the parabola [`A = [$f]`]. The horizontal coordinate is [`w=[$p]/(2\cdot2) = [$wv]`], and evaluating [`[$f]`] with  [`w=[$wv]`], we find that the maximum area is [$Av] square yards.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

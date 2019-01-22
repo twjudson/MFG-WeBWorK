@@ -1,0 +1,143 @@
+##DESCRIPTION
+##  Algebra problem: round trip average speed
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('59')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(r1 => ['Real',TeX=>"r_1"], r2 => ['Real',TeX=>"r_2"]);
+
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$d = random( 200, 400, 100); #was 300;
+$twod=2*$d;
+$v0 = random(70, 80, 10); #was 70;
+$v1 = random(40,50,10); #was 50;
+$v2 = ($v0 + $v1)/2;
+
+
+$f = Formula(" $d/ r1 ");
+$g = Formula("  $d/ r2 ")->reduce;
+$round = Formula("$f + $g")->with(limits=>[1, 200]);
+$A = Formula("$twod/$round")->with(limits=>[1, 200]);
+$num = Formula(" 2* r1 * r2");
+$den = Formula("r1 + r2")->with(limits=>[1, 200]);
+$mv = Formula("$num/$den");
+$n = $num->eval(r1=>$v0, r2=>$v1);
+$d1 = $den->eval(r1=>$v0, r2=>$v1);
+
+Context("Fraction");
+$avg = Fraction("$n/$d1");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Andy drives [$d] miles to Lake Tahoe at [$v0] miles per hour and returns home at [$v1] miles per hour. What is his average speed for the round trip? (It is not [$v2]miles per hour!)
+
+a. 
+Write expressions for the time it takes for each leg of the trip if Andy drives a distance, [`d`], at speed [`r_1`] and returns at speed [`r_2`]. Use "r1" for [`r_1`] and "r2" for [`r_2`].
+
+    Time for trip to Lake Tahoe: [__________]{$f} hours
+
+    Time for return trip: [__________]{$g} hours
+
+b. 
+Write expressions for the total distance and total time for the trip.
+
+    Total distance: [__________]{$twod} miles
+
+    Total time: [______________]{$round} hours
+
+c. 
+Write an expression for the average speed for the entire trip.
+
+    Average speed: [________________]{$A}  
+
+d. 
+Write your answer to part (c) as a simple fraction [``\frac{a}{b}``].
+
+    [`a=`][__________]{$num}
+
+    [`b=`][__________]{$den}
+
+e. 
+Use your formula to answer the question stated in the problem.
+
+    Andy's average speed was [____]{$avg} mph
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+For the trip to Lake Tahoe, the distance is [$d] and the speed is [`r_1`], so the time is [``\frac{[$d]}{r_1}``]. For the return trip, the distance is again [$d] and the speed is [`r_2`], so the time is [``\frac{[$d]}{r_2}``].
+
+b. 
+The total distance is [`[$d]+[$d] = [$twod]`]. The total time is  [``\frac{[$d]}{r_1} +\frac{[$d]}{r_2} ``]
+
+c. 
+The average speed is the total distance [$twod] divided by the total time, [``[$round]``].
+
+d. 
+We simplify the complex fraction.
+
+    [``\begin{aligned}
+[$A] &= \frac{[$twod] \cdot r_1 r_2}{[$d] r_2 + [$d] r_1} \\
+  &= \frac{[$twod]  r_1 r_2}{[$d] (r_2 +  r_1)}  \\
+ &= \frac{2  r_1 r_2}{r_1 +  r_2}
+\end{aligned}``]
+e. 
+We evaluate our expression for average speed with [`r_1 = [$v0]`] and [` r_2=[$v1]`] to get an average speed of [$avg] mph.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

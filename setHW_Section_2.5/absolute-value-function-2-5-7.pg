@@ -1,0 +1,135 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('7')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(b=>"Real");
+
+$k = 0.5;
+$f = Formula("abs(b+1)");
+foreach my $i (0..2) {
+$gr[$i] = init_graph(-3.8,-0.6,3.8,0.6, size=>[408,68]);
+# x-axis
+$gr[$i] -> moveTo(-4,0);
+$gr[$i] -> lineTo(4,0,'black','1');
+# x-axis ticks entered as y-value, color, list of x-values
+$gr[$i] -> h_ticks(0,"black",-3.5,-2.5,-1.5,-.5,-3,-2,-1,0,1,2,3,2.5,1.5,3.5,.5);
+# labels for tickmarks
+foreach my $j (0..3) {
+$scale = $j;
+$gr[$i]->lb( new Label($scale,-0.3,$scale, 'black','center','middle'));
+$gr[$i]->lb( new Label(-$scale,-0.3,-$scale, 'black','center','middle'));
+}
+}
+
+
+$gr[0]->lb( new Label(-3.5,0.4,"(A)", 'black','center','middle'));
+$gr[0] -> moveTo(-1.5,0);
+$gr[0] -> lineTo(-4,0,'red','3');
+$gr[0] -> moveTo(-0.5,0);
+$gr[0] -> lineTo(4,0,'red','3');
+$gr[0] -> stamps( closed_circle(-1.5,0,'red') );
+$gr[0] -> stamps( closed_circle(-0.5,0,'red') );
+
+$gr[1]->lb( new Label(-3.5,0.4,"(B)", 'black','center','middle'));
+$gr[1] -> moveTo(-1.5,0);
+$gr[1] -> lineTo(-4,0,'red','3');
+$gr[1] -> moveTo(-0.5,0);
+$gr[1] -> lineTo(4,0,'red','3');
+$gr[1] -> stamps( open_circle(-1.5,0,'red') );
+$gr[1] -> stamps( open_circle(-0.5,0,'red') );
+
+$gr[2]->lb( new Label(-3.5,0.4,"(C)", 'black','center','middle'));
+$gr[2] -> moveTo(-1.5,0);
+$gr[2] -> lineTo(-0.5,0,'red','3');
+$gr[2] -> stamps( closed_circle(-1.5,0,'red') );
+$gr[2] -> stamps( closed_circle(-0.5,0,'red') );
+
+$mc = new_multiple_choice();
+$mc->qa(
+"The number line that illustrates the expression is",  "(A)");
+
+$mc->makeLast(
+"(A)", "(B)", "(C)",
+"none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>
+    
+>>[`b`] is at least [`[$k]`] unit from [`-1`].<<
+  
+a. 
+Use absolute value notation to write the expression as an equation or an inequality. (It may be helpful to restate each sentence using the word distance.)
+
+    [______]{$f} [`\ge [$k] `]  [@AnswerFormatHelp("formulas") @]*
+
+b. 
+Illustrate the solutions on a number line.
+[@ image(insertGraph($gr[0]), width=>408, height=>68, tex_size=>700); @]*
+[@ image(insertGraph($gr[1]), width=>408, height=>68, tex_size=>700); @]*
+[@ image(insertGraph($gr[2]), width=>408, height=>68, tex_size=>700); @]*
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+The expression "is at least" corresponds to saying "is greater than or equal to..."
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

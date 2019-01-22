@@ -1,0 +1,114 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--translate from radical to exponential form
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('15')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGchoicemacros.pl",
+"PGML.pl",
+"parserRoot.pl",
+);
+
+Context("Numeric");
+Parser::Number::NoDecimals();
+#parser::Root->Enable;
+#Context()->operators->undefine("^","**");
+Context()->functions->disable("All");
+#Context()->functions->enable("sqrt");
+Context()->flags->set(reduceConstants=>0);
+Context()->flags->set(limits=>[1,2]);
+
+
+@denominators = (2, 3, 4, 5, 6);
+@ordinals          = ("square", "cubic", "fourth", "fifth", "sixth");
+#@big                  = (9, 6, 5, 4, 3);
+#@avoid              = (4, 8, 16, 32, 64);
+@fractions         = ("1/2", "1/3", "1/4", "1/5", "1/6");
+@slice = NchooseK($#denominators,3);
+@n = @denominators[@slice];
+@m = @fractions[@slice];
+#@R = @big[@slice];
+@word = @ordinals[@slice];
+@variables = ("x","y", "a","b", "p","q", "m","n");
+
+Context("Numeric");
+Parser::Number::NoDecimals();
+Context()->variables->add(y=>'Real', a=>'Real', b=>'Real', p=>'Real', q=>'Real', m=>'Real' , n=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+
+$top = $#variables -1;
+$i = random(0,$top/ 2 - 1);
+$x = $variables[2*$i];
+$y = $variables[2*$i + 1];
+do { $j = random(0,$#variables/2-1);} until ($j != 2**$i);
+$c = $variables[2*$j];
+$d = $variables[2*$j + 1];
+
+do { $a[0] = random(2,2**$n[0])+3;} until ($a[0] != 2**$n[0]);
+$b[0] = random(-9,-1);
+$answer[0] = "$b[0]*$a[0]**{-$m[0]} ";
+$given[0] = "\dfrac{$b[0]}{\sqrt[$n[0]]{$a[0]}}";
+if ($n[0]== 2) {$given[0] = "\dfrac{$b[0]}{\sqrt{$a[0]}}";};
+
+do { $a[1] = random(2,2**$n[1])+3;} until ($a[1] != 2**$n[1]);
+$b[1] = random(2,9);
+$answer[1] = "($x - $a[1] $y )**{$m[1]} ";
+$given[1] = "\sqrt[$n[1]]{$x - $a[1] $y}";
+if ($n[1]== 2) {$given[1] = "\sqrt{$x - $a[1] $y}";};
+
+
+$a[2] = random(2,12);
+$b[2] = random(-9,-1);
+$answer[2] = "$b[2]*($a[2] + $b[1] $d)**{-$m[2]} ";
+$given[2] = "\dfrac{$b[2]}{ \sqrt[$n[2]]{$a[2] + $b[1] $d}}";
+if ($n[2]== 2) {$given[2] = "\dfrac{$b[2]}{  \sqrt {$a[2] + $b[1] $d}}";};
+
+
+
+##################
+BEGIN_PGML
+Write each expression in exponential form but do not evaluate.  
+a. 
+[` [$given[0] ] = `][_______________]{ $answer[0] }  
+  
+b. 
+[` [$given[1] ] = `][_______________]{ $answer[1] }  
+  
+c. 
+[` [$given[2] ] = `][_______________]{ $answer[2] }
+
+END_PGML 
+
+########################
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+
+a. A $word[0] root corresponds to an exponent of $m[0], and a $word[0] root that occurs as (a factor of) the denominator corresponds to an exponent of \(-$m[0]\).
+$BR
+b. A $word[1] root corresponds to an exponent of $m[1].
+$BR
+c. A $word[2] root corresponds to an exponent of $m[2], and a $word[2] root that occurs as (a factor of) the denominator corresponds to an exponent of \(-$m[2]\).
+$BR
+
+END_SOLUTION
+
+ENDDOCUMENT();     

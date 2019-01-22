@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--determine exponential from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('45')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(b=>"Real", t=>"Real");
+
+$P[0] = 8 * random(1,5,2);
+$b = 1.5;
+$f = Formula("$P[0] * $b^t");
+
+foreach my $i ( 1..4 ) { 
+$P[$i] = $f->eval(t=>$i);
+}
+
+
+
+#Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+
+The table describes exponential growth or decay. Find the growth or decay factor.
+Complete the table. Round values to two decimal places if necessary.  
+The growth or decay factor is  [____]{$b}
+[@
+DataTable(
+  [
+    [ '\( t \)', '0',  '1', '2', '3', '4' ]  ,
+    [ "\\( P \\)","\\($P[0]\\)" , "\\($P[1]\\)" , "\\($P[2]\\)" , ans_rule(4), ans_rule(4)  ]
+  ], 
+  caption => 'Table of values for two functions', 
+  align => '| c | c | c | c |  c | c | ',
+  midrules=>1,
+ );
+@]***
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+ANS($P[3]->cmp(  tolType => 'absolute',  tolerance => .005,));
+ANS($P[4]->cmp(  tolType => 'absolute',  tolerance => .005,));
+
+BEGIN_PGML_SOLUTION
+
+We can determine the growth factor [`b`] by dividing the value of [`P`] at [`t=1`] by  the value of [`P`] at [`t=0`], namely [` b=[$P[1]]/[$P[0]] = [$b] `]. Then for each increment of [`\Delta t = 1`], the value of [`P`] is multiplied by [$b].
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

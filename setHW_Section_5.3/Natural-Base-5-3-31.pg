@@ -1,0 +1,74 @@
+##DESCRIPTION
+##  Algebra problem: solve literal exponential equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real", k=>"Real", y=>"Real");
+Context()->flags->set(useBaseTenLog=>1); 
+
+$f = Formula(" e**(k*t) ");
+$g = Formula(" ln(y) / k ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Solve for the specified variable.
+
+>>[`` y = [$f] ``], for [`t`]<<
+
+    [`t=`][____]{$g}   [@AnswerFormatHelp("formulas") @]*
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+We write the equivalent natural logarithmic equation, then divide by [`k`] to get [`t = \dfrac{\ln y}{k}`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

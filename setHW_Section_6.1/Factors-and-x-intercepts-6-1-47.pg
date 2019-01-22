@@ -1,0 +1,139 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model for box from square cardboard
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGgraphmacros.pl",
+"AnswerFormatHelp.pl",
+"niceTables.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$s = 2;
+$s1 = $s * 2;
+$s2 = $s1 + 1;
+$V1 = 50;
+
+$w = Formula("x - 2*$s")->reduce;
+$l = Formula("x - 2*$s")->reduce;
+$h = Formula("2");
+$b = $s * 4 * $s;
+$c = $s*(2*$s)**2;
+$f = Formula(" $s* x**2 - $b * x + $c")->reduce;
+
+$mc = new_multiple_choice();
+$mc->qa(
+"As \(x\) increases,",  "\(V\) increases.");
+
+$mc->extra(
+"\(V\) decreases.",
+"\(V\) remains constant.",
+);
+$mc->makeLast("none of the above");
+
+$s3 = 2*$s + sqrt( $V1/2 );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+  
+For this problem, you will need the formula for the volume of a box.
+
+    
+A box is made from a square piece of cardboard by cutting [$s]-inch squares from each corner and turning up the edges.
+
+>>[@image( "fig-6-1-47.png", width=>350, height=>159, tex_size=>700, extra_html_tags=>'alt="cardboard box"' ) @]*<<
+
+a. 
+If the piece of cardboard is [`x`] inches square, write expressions for the length, width, and height of the box. Then write an expression for the volume, [`V`], of the box in terms of [`x`].  
+Length [`l=`][____]{$l}; Width [`w=`][____]{$w}; Height [`h=`][___]{$h}; Volume [`V=`][__________]{$f}
+
+b. 
+Use your calculator to make a table of values showing the volumes of boxes made from cardboard squares of side [$s1] inches, [$s2] inches, and so on.
+[@
+DataTable(
+  [
+    [ '\(x\)', '4',  '5', '6', '7',  '8', '9', '10'  ]  ,
+    [  '\(V\)',  ans_rule(2) , ans_rule(2), ans_rule(2),  ans_rule(2) , ans_rule(2), ans_rule(2),  ans_rule(2)  ]
+  ], 
+  caption => 'Table of values for two functions', 
+  align => '| c | c | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***  
+c. 
+Graph your expression for the volume on your calculator. What happens to [`V`] as [`x`] increases?  
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***  
+d. 
+Use your table or your graph to find what size cardboard you need to make a box with volume [$V1] cubic inches: The cardboard should be [__] inches on a side.  
+e. 
+Write and solve a quadratic equation to answer part (d).  
+[`[$V1]=`][__________]
+ 
+
+
+
+END_PGML
+Context()->normalStrings;
+
+foreach my $i (4..10) {
+  $v = $f->eval(x=>$i);
+  ANS(Compute($v)->cmp() );
+};
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS(Compute($s3)->cmp() );
+ANS( $f->cmp() );
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. From the figure we can see that both the length and width of the box will be what remains after removing two squares of side [$s], namely [:x- 2*2:]. The height of the box will be the side of one of the removed squares, namely [:h=[$s]:]. And the volume is the produce of length, width, and height.  
+b. 
+Evaluate [`[$f]`] for [`x = [$s1], [$s2], \ldots `].  
+c. 
+The graph increases for [`x \ge 4`].  
+d. 
+From the table we can see that when [`x=[$s3]`], [`V = [$V1]`].  
+e. 
+We solve the equation [` [$f] = [$V1] `].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

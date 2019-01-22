@@ -1,0 +1,145 @@
+##DESCRIPTION
+##  Algebra problem: behavior of cubic polynomial
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'cubic polynomial', 'turning point', 'inflection point', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Polynomial Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.2')
+## Problem1('7')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do{
+$r0 = random(-6,-3);  # was $r0 = -5;
+$r1 = $r0 + random(2,3); #was -2;
+$r2 = $r1 + random(3,4); #was 2;
+} until ($r1 !=0 and $r2 !=0);
+
+$a = random(-1,1,2);
+$b = -($r0 + $r1 + $r2)*$a;
+$c = ($r0*$r1 + $r0 * $r2 + $r1*$r2)*$a;
+$d = -$r0*$r1*$r2*$a;
+
+Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+$f = Formula("$a *x^3 + $b*x**2 + $c*x + $d")->reduce;
+ if ($a>0){
+$ans = "The end behavior is the same as for the basic cubic because the lead coefficient is positive.";}
+else {
+$ans = "The end behavior is the opposite as for the basic cubic because the lead coefficient is negative."
+};
+ $pop = PopUp(["select",
+"The end behavior is the same as for the basic cubic because the lead coefficient is positive.", 
+"The end behavior is the opposite as for the basic cubic because the lead coefficient is negative.",
+"The end behavior is the same as for a quartic because there is no lead coefficient."], 
+"$ans");
+$xint = 3;
+$turn = 2;
+$inflect = 1;
+
+$xmin = -10;
+$ymin = min(-25, 5*floor($d/5));
+$xmax=10;
+$ymax=max(25, 5*ceil($d/5));;
+$xgrid = ($xmax - $xmin);
+$ygrid = ($ymax - $ymin)/5;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[450,450]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .2,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (-2,-1,1,2,-6,-5,-4,-3,3,4,5) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr -> lb(new Label ( $xscale,-.9, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-0.5,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use your calculator to graph the cubic polynomial.
+
+>>[``y = [$f]``]<<
+
+a. 
+Describe the long-term behavior of the graph graph. How does this behavior compare to that of the basic cubic? How does the sign of the lead coefficient affect the graph?
+
+    [_______]{$pop}
+
+b. 
+How many [`x`]-intercepts does the graph have? [__]{$xint}
+
+    How many turning points? [__]{$turn}
+
+    How many inflection points? [__]{$inflect}
+
+ 
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[@ image( insertGraph($gr) ) @]***  
+
+a. 
+[$ans]
+
+b. 
+There are three  [`x`] -intercepts, two turning points, one inflection point.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

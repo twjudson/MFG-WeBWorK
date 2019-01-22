@@ -1,0 +1,112 @@
+##DESCRIPTION
+##  Algebra problem: average rate of change from non-linear graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/29/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('65')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "PGgraphmacros.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"An algebraic expression for the slope of the line segment joining points \(P\) and \(Q\):",  
+"\( \frac{f(b) - f(a)}{b-a} \)".$BR,
+"\( \frac{f(a) - f(b)}{a-b} \)".$BR,
+);
+$mc->extra(
+"\( \frac{Q-P}{b-a} \)".$BR,
+"\( \frac{f(b-a)}{b-a} \)".$BR,
+);
+
+$mc1 = new_checkbox_multiple_choice();
+$mc1->qa(
+"An algebraic expression for the slope of the line segment joining points \(P\) and \(Q\):",  
+"\( \frac{f(a+\Delta x) - f(a)}{\Delta x} \)".$BR,
+"\( \frac{f(a) - f(a+\Delta x)}{-\Delta x} \)".$BR,
+);
+$mc1->extra(
+"\( \frac{Q-P}{\Delta x} \)".$BR,
+"\( \frac{f(\Delta x)}{\Delta x} \)".$BR,
+);
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Fnd the coordinates of the indicated points on the graph of [`y=f(x)`]and write an algebraic expression using function notation for the slope of the line segment joining points [`P`] and [`Q`].
+
+a. 
+[@ image( "fig-ex-1-4-65a.png", width=>270, height=>206,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+b. 
+[@ image( "fig-ex-1-4-65b.png", width=>258, height=>193,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+    [@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+ANS( checkbox_cmp( $mc1->correct_ans() ) );
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The coordinate of the point [`P`] are [`(a,f(a))`], and the coordinates of [` Q`] are  [`(b,f(b))`]. The slope is [`\frac{\Delta y}{\Delta x}`].
+
+b. 
+The coordinate of the point [`P`] are [`(a,f(a))`], and the coordinates of [` Q`] are  [`(a+\Delta x,f(a+\Delta x))`]. The slope is [`\frac{\Delta y}{\Delta x}`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

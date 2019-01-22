@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--range
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Graphs of exponential functions)
+## Date('2/19/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('9')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"AnswerFormatHelp.pl",
+"PGchoicemacros.pl",
+ "PGML.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->are(t=>"Real", y=>"Real");
+
+$xmin = random(-5,-1); # was -5;
+$xmax = random(2, 5); # was 5;
+$a = random(2,9);
+$b = random(11,19) / 10;
+
+$f = Formula("$a  ($b**t)");
+$ymin = $f->eval(t=>$xmin);
+$ymax = $f->eval(t=>$xmax);
+
+Context("Interval");
+$range = Compute("[$ymin,$ymax]");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Use a graphing utility to graph the function 
+>>[``g(t) = [$f] ``]<<
+on the given domain [`[[$xmin], [$xmax]]`].  
+Give the range of the function on that domain, accurate to hundredths.
+
+
+Range: [__________]{$range->cmp(  tolType => 'absolute',  tolerance => .005)}
+[@AnswerFormatHelp("intervals")@]*
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+With an increasing function, the minimum value of the function (and hence of the range) will occur at left endpoint of the given interval, and the maximum value will occur at the right endpoint.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

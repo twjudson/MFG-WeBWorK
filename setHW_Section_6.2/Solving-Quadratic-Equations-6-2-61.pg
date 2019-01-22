@@ -1,0 +1,90 @@
+##DESCRIPTION
+##  Algebra problem: quadratic (with square already completed); literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('4/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.2')
+## Problem1('61')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(V=>"Real", r=>"Real", h=>"Real");
+#Context()->variables->set(x=>{limits=>[100,200]} ); #don't want negative radicand
+
+$a= non_zero_random(-12,12); #was 3;
+
+
+$k = "V";
+$linear = Formula(" r - $a ")->reduce;
+$f = Formula(" pi * ($linear)**2 * h ")->reduce;
+
+$w0 = Formula(" sqrt(V/(pi*h) ) + $a ")->reduce;
+$w1 = Formula(" -sqrt(V/(pi*h) ) + $a ")->reduce;
+
+$g = Compute(" $w0, $w1");
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Solve each formula for the indicated variable.   
+  
+[`  [$k] = [$f] `], for [`r`]
+
+[`r=`][_______________________________________]{$g}   Enter a comma between solutions. [@AnswerFormatHelp("formulas") @]*
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We can first solve for [`([$linear])^2`], then take square roots of both sides,
+
+[` \begin{aligned}
+    \dfrac{V}{\pi h}  &= ([$linear])^2  &&\text{Take square roots. }  \\
+    \pm \sqrt{   \frac{V}{\pi h} } &= [$linear] &&\text{Add [$a].}\\
+    \pm \sqrt{   \frac{V}{\pi h} } + [$a] &= r 
+    \end{aligned}
+`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

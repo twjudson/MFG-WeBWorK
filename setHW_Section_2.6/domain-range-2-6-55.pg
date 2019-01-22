@@ -1,0 +1,144 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/21/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('55')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+#"unionTables.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$a = random(2,12);
+do { $b = non_zero_random(-9,9);} until (abs($b) != abs($a));
+do { $c = non_zero_random(-9, 9); } until ((abs($c) != abs($a)) and ( abs($c) != abs($b)));
+
+$f = Compute( "x^2" );
+
+Context("Inequalities")->variables->are(x=>"Real");
+Context()->variables->add(y=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+  $dom[0]= Compute( "(-inf,inf)" );
+  $ran[0] = Compute( "(-inf,0]" );
+  $dom[1]= Compute( "(-inf,inf)" );
+  $ran[1] = Compute( "(-inf, $b]" );
+
+  $dom[2]=Compute( "(-inf,inf)" );
+  $ran[2] = Compute( "(-inf, $b]" );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+
+Find the domain and range of each transformation of the given function.
+$BR
+
+\[ f(x)=$f \]  
+$BR
+(a) \( y = -$a  f(x) \)
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+(b) \( y = $b - $a  f(x) \) 
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+
+$BR
+$BR
+(b) \( y =$b -  $a  f(x  + $c) \) 
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $dom[0]->cmp() );
+ANS( $ran[0]->cmp() );
+ANS( $dom[1]->cmp() );
+ANS( $ran[1]->cmp() );
+ANS( $dom[2]->cmp() );
+ANS( $ran[2]->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the `x`-values corresponding to points on the curve.
+The range includes all the `y`-values corresponding to points on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

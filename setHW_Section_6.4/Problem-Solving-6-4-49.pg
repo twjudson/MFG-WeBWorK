@@ -1,0 +1,140 @@
+##DESCRIPTION
+##  Algebra problem: break-even point for quadratic costs and linear revenue
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', "system", "break-even point")
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('10/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('4p')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$f = Formula("0.0075 * x**2 + x + 2100");
+$g = Formula("13*x");
+
+$x1 = 200;
+$y1 = 2600;
+$x2 = 1400;
+$y2 = 18200;
+Context("Point");
+$ans = List( Point("($x1,$y1)"), Point("($x2,$y2)") );
+$xp = ($x1+$x2)/2;
+
+$xmin =-100;
+$ymin = -1000;
+$xmax=1600;
+$ymax= 20000;
+$xgrid = ($xmax - $xmin)/100;
+$ygrid = ($ymax - $ymin)/1000;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .5,0.96*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..6) {
+$xscale =500*$i;
+$yscale =5000*$i;
+$gr -> lb(new Label ( -$xscale,-0.5, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.5,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,-0.5, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.5,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2",
+"$g for x in [$xmin, $xmax] using color:blue and weight:2",
+);
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($x1,$y1,'black') );
+$h1 = $x1+0.8;
+$k1= $y1-1.;
+$gr -> lb(new Label ( $h1,$k1, "($x1,$y1)",'black','center','middle'));
+$gr->stamps( closed_circle($x2,$y2,'black') );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Writewell, Inc. makes fountain pens. It costs Writewell 
+
+>>[``C = [$f]``]<<
+
+dollars to manufacture [`x`] pens, and the company receives [`R = [$g]`] dollars in revenue from the sale of the pens.
+
+a. 
+Find the break-even points by solving a system of equations.[__________________]{$ans}   [@AnswerFormatHelp("points") @]*
+
+b. 
+Graph the equations for Revenue and Cost in the same window and verify your solutions on the graph.
+
+c. 
+Use the fact that
+
+>>[``\text{Profit} = \text{Revenue} - \text{Cost}``]<<
+
+to find the value of [`x`] for which profit is maximum.
+
+    [`x=`][_____]{$xp}
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The system consisting of [`y=[$f]`] and [`y=[$g]`] could be solved by solving the quadratic equation [`[$f]=[$g]`] for two values of [`x`] and finding the corresponding values of [`y`] from [`y=[$g]`].
+
+b. 
+[@ image(insertGraph($gr), width=>300, height=>300, tex_size=>700) @]***
+
+c. 
+The maximum profit occurs at the value of [`x`] at the vertex of the parabola, [`y = [$g] - ([$f])`]. Because the zeros of the parabola were already found in part (a) to be [`x=[$x1]`] and [`x=[$x2]`], the vertex of the parabola is half-way between them at [`\dfrac{[$x1]+[$x2]}{2} = [$xp]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

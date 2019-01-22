@@ -1,0 +1,136 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Functions as Mathematical Models')
+## Date('9/12/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.4')
+## Problem1('43')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"parserPopUp.pl",
+"niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context()->texStrings;
+
+# the arguments of PopUp are [list of answers], 
+#    correct answer
+$popup_a = PopUp(["?", "I", "II", "III", "IV"], "III");
+
+$popup_b = PopUp(["?", "i", "ii", "iii", "iv"], "iii");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_TEXT
+The table shows the radii, \(r\), of several gold coins, in centimeters, and their value, \(v\), in dollars.
+
+$BR
+$BR
+
+\{
+DataTable(
+  [
+    ['Radius','\(0\)', '\(1\)', '\(1.5\)', '\(2\)', '\(2.5\)' ],
+    ['Value', '\(200\)', '\(800\)', '\(1800\)', '\(3200\)', '\( 5000\)']
+  ],
+  align => '| c | c | c | c | c |c|',
+  midrules=>1,
+);
+\}
+
+$BR
+$BR
+
+a. Which graph best represents the data?
+
+$BR
+$BR
+
+$BCENTER
+\{ image( "fig-ex-2-4-43.png",  width=>400, height=>400  ) \}
+$ECENTER
+
+$BR
+$BR
+
+\{ $popup_a->menu() \}
+
+$BR
+$BR
+
+b. Which equation describes the function?
+$BR
+(i) \(v = k \sqrt{r}\)
+$BR
+(ii) \(v = kr \)
+$BR
+(iii) \(v = kr^2\)
+$BR
+(iv) \(v = k/r\)
+
+$BR
+
+\{ $popup_b->menu() \}
+
+END_TEXT
+
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ANS( $popup_a->cmp() );
+
+ANS( $popup_b->cmp() );
+
+Context()->texStrings;
+SOLUTION(EV3(<<'END_SOLUTION'));
+$PAR SOLUTION $PAR
+a.  The correct answer is \{ $popup_a->correct_ans() \}
+words.
+$BR
+b.  The correct answer is \{ $popup_b->correct_ans() \}
+words.
+END_SOLUTION
+Context()->normalStrings;
+
+ENDDOCUMENT();        

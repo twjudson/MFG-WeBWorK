@@ -1,0 +1,132 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--absolute magnitude and luminosity of stars
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('51')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"contextFraction.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( M=>"Real", L=>"Real" );
+Context()->{format}{number} = "%.2f#"; 
+
+$Me = 4.83;
+$a = 0.4;
+$L0 = Formula("10**($a * $Me)");
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Is luminosity an increasing or decreasing function of magnitude?",  "Decreasing");
+
+$mc->extra(
+"Increasing",
+);
+$mc->makeLast("Decreasing");
+
+$f = Formula("$L0 * 10**(-$a * M)");
+$xmin = -3;
+$xmax = 3;
+$ymax = $f->eval(M=>$xmin); 
+$ymin = $f->eval(M=>$xmax); 
+Context("Inequalities")->variables->are(M=>"Real", L=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+$range = Compute("[$ymin, $ymax]");
+
+#for part (f)
+$xmin2 = -10;
+$xmax2 = 19;
+$ymax2 = $f->eval(M=>$xmin2); 
+$ymin2 = $f->eval(M=>$xmax2);  #having problems with precisions
+$ymin2 =2.14783 * 10**(-6); 
+$range2 = Compute("[2.14766 * 10**(-6), $ymax2]");
+
+
+$g = Formula(" log10($L0/L)/$a");
+
+$L1 = 22.5;
+$M1 = $g->eval(L=>$L1);
+
+Context("Fraction");
+$diff = 5;
+$realratio = Compute("10**(-$a*$diff)");
+$fractionanswer = Fraction($realratio);
+#Context("Numeric");
+$del = 1;
+$exponent = $a*$del;
+$factor = Compute("10**($exponent)");
+$fac_rounded = round(10000*$factor)/10000;
+
+
+
+BEGIN_PGML
+
+The absolute magnitude, [`M`], of a star is a measurement of its brightness. For example, our Sun, not a particularly bright star, has magnitude [`M = [$Me]`]. The magnitude in turn is a measure of the luminosity, [`L`], or amount of light energy emitted by the star, where
+>>[``L = L_0 10^{-[$a]M}``]<<  
+
+a. 
+The luminosity of a star is measured in solar units, so that our Sun has luminosity [`L = 1`]. Use the values of [`L`] and [`M`] for the Sun to calculate a value of [`L_0`] in the equation above.  
+[` L_0 \approx `][___]
+b. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***  
+Graph the function on the domain [`[[$xmin], [$xmax] ]`]. What is its range on that domain?  
+The range is approximately [___________] [@AnswerFormatHelp("intervals") @]*  
+c. 
+The luminosity of Sirius is [$L1] times that of the Sun, or [`L = [$L1]`]. Calculate the magnitude of Sirius.  
+The magnitude is [____]  
+d. 
+If two stars differ in magnitude by [$diff], what is the ratio of their luminosities?  
+The ratio of smaller luminosity to larger luminosity is [_____]  
+e. 
+A decrease in magnitude by [$del] corresponds to an increase in luminosity by what factor? Give an exact value as a power [______] and an approximation to four decimal places. [_____]  
+f. 
+Normal stars have magnitudes between [` [$xmin2] `] and [`[$xmax2]`]. What range of luminosities do stars exhibit?  
+The range is approximately [______________] [@AnswerFormatHelp("intervals") @]*    
+
+END_PGML
+
+ANS( $L0->cmp(  tolType => 'absolute',  tolerance => .05,) );
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( $range->cmp() );
+ANS( $M1->cmp(  tolType => 'absolute',  tolerance => .005,) );
+ANS($realratio->cmp(correct_ans_latex_string=>($fractionanswer->TeX)));
+ANS($factor->cmp() );
+ANS(Compute("$fac_rounded") ->cmp( tolType => 'absolute',  tolerance => .00005,) );
+ANS( $range2->cmp(tolType => 'relative',  tolerance =>.005,) );
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We solve the equation [` 1 = L_0 10^{-[$a]\( [$Me])} `] for [`L_0`]. Multiply both sides by [` 10^{[$a] ( [$Me])} `] to get [` 10^{[$a]([$Me])} = L_0 `].  
+b. 
+Luminosity is an exponential decay function.  
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

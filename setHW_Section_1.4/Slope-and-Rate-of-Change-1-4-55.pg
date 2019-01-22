@@ -1,0 +1,163 @@
+##DESCRIPTION
+##  Algebra problem: average rate of change from non-linear graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/29/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('53')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "PGgraphmacros.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#should introduce randomness in value of $a below and in answers; Context Fraction?
+$a = 4;
+$h = random(-4,-2); #was -2;
+
+$a0 = 2+$h;
+$b0 = 8+$h;
+$a1 = 1+$h;
+$b1 = 4+$h;
+
+$f = Formula("$a / (x - $h)")->reduce;
+$ya0 = $f->eval(x=>$a0);
+$yb0 = $f->eval(x=>$b0);
+$ya1 = $f->eval(x=>$a1);
+$yb1 = $f->eval(x=>$b1);
+
+$m0 = ($yb0 - $ya0) / ($b0 - $a0);
+$m1 = ($yb1 - $ya1) / ($b1 - $a1);
+
+$xmin = $h ;
+$xmax = $h + 9;
+$xgrid = 9;
+$ymin =  - 1;
+$ymax = 2*$a ;
+$ygrid = 2*$a + 1;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.3*$xpix);
+$yp = round(.3*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label (.2, 0.94*$ymax,'y','blue','left','bottom'));
+foreach my $i (1..2) {
+$xscale =5*$i;
+$yscale =5*$i;
+$gr -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.1*$xmin,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (0.1*$xmin,-$yscale,-$yscale,'black','center','middle'));
+};
+
+$xm = $xmin +.1;
+add_functions( $gr,
+"$f for x in [$xm, $xmax] using color:red and weight:2");
+$gr->stamps( closed_circle($a0,$ya0,'black') );
+$gr->stamps( closed_circle($b0,$yb0,'black') );
+
+# a line
+$gr->moveTo($a0,$ya0);
+$gr->lineTo($b0,$yb0,'blue',3);
+
+## another graph
+$gr1 = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr1 -> lb('reset'); #remove default label and tick marks
+$gr1 -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr1 -> lb(new Label (.2, 0.94*$ymax,'y','blue','left','bottom'));
+foreach my $i (1..2) {
+$xscale =5*$i;
+$yscale =5*$i;
+$gr1 -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+$gr1 -> lb(new Label (0.1*$xmin,$yscale,$yscale,'black','center','middle'));
+$gr1 -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+$gr1 -> lb(new Label (0.1*$xmin,-$yscale,-$yscale,'black','center','middle'));
+};
+
+add_functions( $gr1,
+"$f for x in [$xm, $xmax] using color:red and weight:2");
+$gr1->stamps( closed_circle($a1,$ya1,'black') );
+$gr1->stamps( closed_circle($b1,$yb1,'black') );
+
+# a line
+$gr1->moveTo($a1,$ya1);
+$gr1->lineTo($b1,$yb1,'blue',3);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Evaluate the function at [`x=a`] and [`x=b`], and then find the slope of the line segment joining the two corresponding points on the graph. Illustrate the line segment on a graph of the function.
+
+>>[``f(x) = [$f] ``]<<
+a. 
+[`a=[$a0]`], [`b=[$b0]`].
+
+    Slope: [____]{$m0}
+
+b. 
+[`a=[$a1]`], [`b=[$b1]`].
+
+    Slope: [____]{$m1}
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[`f([$a0]) = [$ya0]`] and [`f([$b0]) = [$yb0]`], so we compute the slope between the points [`([$a0],[$ya0])`] and  [`([$b0],[$yb0])`]: [`m = \frac{[$yb0]-([$ya0])}{[$b0]-[$a0]} = [$m0]`] 
+
+    [@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*
+b. 
+[`f([$a1]) = [$ya1]`] and [`f([$b1]) = [$yb1]`], so we compute the slope between the points [`([$a1],[$ya1])`] and  [`([$b1],[$yb1])`]: [`m = \frac{[$yb1]-([$ya1])}{[$b1]-[$a1]} = [$m1]`] 
+
+    [@ image(insertGraph($gr1), width=>$xp, height=>$yp, tex_size=>700) @]*
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

@@ -1,0 +1,152 @@
+##DESCRIPTION
+##  Algebra problem: two linear equations in two variables: graphs
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Two Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.1')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(w=>'Real', z=>'Real');
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$xmin = -10 ; 
+$xmax= 10;
+$ymin = -10;
+$ymax= 10;
+
+do {$a1 = random(1,6); #was 1; 
+$b1 = random( (-$a1 -4),  (-$a1 -1)); #was -3;
+} until ( gcd($a1, $b1) ==1);
+$c1 = $b1*(-2); #was 6;
+$f1 = Formula(" $a1*w + $b1*z ")->reduce;
+$g1 = Compute("$c1 ")->reduce;
+$f = Formula(" ($c1 - $a1*w)/$b1");
+
+$a2 = random(2,4); #was 2; 
+$b2 = 1; 
+$c2 = random(5,8); #was 8;
+$f2 = Formula("  $a2*w + $b2*z")->reduce;
+$g2 = Compute("$c2");
+$gi = Formula(" (-$b2*z+$c2)/$a2");
+
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/1;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, .3,'w','blue','left','bottom'));
+$gr -> lb(new Label (.5,0.94*$ymax,'z','blue','left','bottom'));
+
+foreach my $i (1..2) {
+$xscale =5*$i;
+$yscale =5*$i;
+$gr -> lb(new Label ( $xscale,-.3, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-.3,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,-.3, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-.3,-$yscale,-$yscale,'black','center','middle'));
+}
+
+$begin=$xmin-1;
+$bm = $b-.001;
+$bp = $b+.001;
+$end = $xmax+1;
+
+# axes
+$gr->moveTo($begin,0);
+$gr->arrowTo($xmax,0,'black');
+$gr->moveTo(0, ($ymin-1));
+$gr->arrowTo(0,$ymax,'black');
+
+#first line
+$yl = $f->eval(w=>$xmin);
+$gr->moveTo($xmin,$yl);
+$yr = $f->eval(w=>$xmax);
+$gr->arrowTo($xmax,$yr,'red',2);
+$gr->arrowTo($xmin,$yl,'red',2);
+
+#second line
+$gr->moveTo(0,$c2);
+$xl = $gi->eval(z=>$ymax);
+$gr->arrowTo($xl,$ymax,'blue',2);
+$xr = $gi->eval(z=>$ymin);
+$gr->arrowTo($xr,$ymin,'blue',2);
+
+$popup = PopUp(["select", 
+"dependent", 
+"inconsistent", 
+"consistent and independent"], 
+"consistent and independent");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Graph the system by hand, using either the intercept method or the slope-intercept method. Identify the system as dependent, inconsistent, or consistent and independent.
+
+>>[``[$f1] = [$g1]``]<<
+
+>>[``[$f2] = [$g2]``]<<
+
+This system is  [_______]{$popup}
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+>>[@image(insertGraph($gr), width=>300, height=>300, tex_size=>700)@]***<<
+
+The two lines intersect in exactly one point, so the system is consistent and independent.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

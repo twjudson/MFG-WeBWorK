@@ -1,0 +1,125 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value functions as piercewise function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'absolute value', 'piecewise')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('55')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+do {$a = non_zero_random(-3,3);
+$b = random(2,4); } until (abs($a) != $b );
+$c = -$a*$b;
+$g = Formula("$a + x/$b");
+$f = Formula(" abs($g)");
+$f1 = Formula(" -$g ")->reduce;
+$f2 = $g;
+
+
+$xmin = min(-1,$c-4);
+$xmax = max($c+4,1);
+$xgrid = ($xmax - $xmin);
+$ymin = -1;
+$ymax = abs($a)*4;
+$ygrid = $ymax-$ymin;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label ( .98*$xmax,0.05*$ymax, "x",'blue','center','middle'));
+$gr -> lb(new Label (.05*$xmax, 0.98*$ymax, "y" ,'blue','center','middle'));
+foreach my $i (1..abs($c)*3) {
+$xscale =1*$i;
+$yscale =1*$i;
+$gr -> lb(new Label ($xscale,.09*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-$xscale,.09*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-.15,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label (-.15,-$yscale,-$yscale,'black','center','middle'));
+};
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+Write a piecewise definition for the function and sketch its graph.
+
+>>[``f(x) = [$f] ``]<<
+
+[`\hphantom{000000}`]  [__________]{$f1}  if [`x \lt`][__]{ $c}
+
+[`f(x) =`]
+
+[`\hphantom{000000}`]  [__________]{$f2}   if [`x \ge `][__]{ $c}
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+[`  [$g]  = 0 `] when [` x = [$c]`].
+
+
+[`  | [$g] | = [$g] `] when [` [$g] \ge 0`], namely when [` x \ge [$c]`].
+
+Otherwise [`  | [$g] | = -([$g]) `]
+    >>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*<<
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

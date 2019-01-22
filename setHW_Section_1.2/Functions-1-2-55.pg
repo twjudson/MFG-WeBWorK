@@ -1,0 +1,141 @@
+##DESCRIPTION
+##  Algebra problem: functions; graphs defining functions; temperature vs depth
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('57')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  "contextCurrency.pl",
+  );
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"During June and July, avalanches occurred over three separate time intervals. What were they?",  
+"June 21 - 24",
+"June 29 - July 3",
+"July 8 - 14",
+);
+$mc->extra(
+"June 17 - 19",
+"July 3 - 5"
+);
+
+
+$mc1 = new_checkbox_multiple_choice();
+$mc1->qa(
+"Over what three time intervals did snow fall?",  
+"June 17 - 21",
+"June 25 - 29",
+"July 4 - 7"
+);
+$mc1->extra(
+"June 22 - 24",
+"July 10 - 14"
+);
+
+
+$mc2 = new_checkbox_multiple_choice();
+$mc2->qa(
+"When was the temperature above freezing (\(0^\circ\)C)?",  
+"June 22 - 24",
+"June 27",
+"June 29 - July 4",
+"July 8 - 14"
+);
+
+$mc2->extra(
+"June 21",
+"July  5 -7"
+);
+
+$mc3 = new_checkbox_multiple_choice();
+$mc3->qa(
+"Using your answers to parts (a) - (c), make a conjecture about the conditions that encourage avalanches.",  
+"Avalanches occur when temperatures rise above freezing immediately after snowfall."
+);
+
+$mc3->extra(
+"Avalanches occur during coldest temperatures.",
+"Avalanches occur at the beginning of precipitation."
+);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The figure gives data about snowfall, air temperature, and number of avalanches on the Mikka glacier in Sarek, Lapland, in 1957. (Source: Leopold, Wolman, Miller, 1992)
+
+>>[@
+ image( "fig-ex-1-2-55.png", width=>588, height=>504,  
+tex_size=>700, extra_html_tags=>'alt="Three graphs"' )
+@]***<<
+
+a. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]*** 
+
+b. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]*** 
+
+c. 
+[@ $mc2 -> print_q() @]***
+[@ $mc2 -> print_a() @]***
+
+d. 
+[@ $mc3 -> print_q() @]***
+[@ $mc3 -> print_a() @]***
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+ANS( checkbox_cmp( $mc1->correct_ans() ) );
+ANS( checkbox_cmp( $mc2->correct_ans() ) );
+ANS( checkbox_cmp( $mc3->correct_ans() ) );
+
+##############################################################
+#
+
+
+ENDDOCUMENT();        

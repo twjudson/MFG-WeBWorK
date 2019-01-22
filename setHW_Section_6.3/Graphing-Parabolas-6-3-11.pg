@@ -1,0 +1,165 @@
+##DESCRIPTION
+##  Algebra problem: graph parabolas--quadratic marmot population
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"PGgraphmacros.pl",
+"AnswerFormatHelp.pl",
+"contextInequalities.pl",
+"niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# No variation
+$lin = 0.4;
+$c = 2;
+$f = Formula("$c - $lin x ");
+$A = Formula("x*$f");
+
+foreach my $i (1..5) {
+  $y[$i]= $f-> eval(x=>$i);
+  $An[$i]= $A-> eval(x=>$i);
+}
+$xint = $c/$lin;
+$xv = $xint / 2;
+$yv = $A->eval(x=>$xv);
+
+$xmin = -1;
+$ymin =-1;
+$xmax= 5;
+$ymax= 3;
+
+
+#graph
+$xgrid = ($xmax - $xmin);
+$ygrid = ($ymax - $ymin);
+
+$gr[0] = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr[0] -> lb('reset'); #remove default label and tick marks
+
+$gr[0] -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr[0] -> lb(new Label ( 50,0.94*$ymax,'g(x)','blue','left','bottom'));
+
+foreach my $i (1..5) {
+ $xscale =1*$i;
+ $yscale =1*$i;
+  $gr[0] -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr[0] -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr[0] -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr[0],
+              "$A for x in [0,$xmax] using color:red and weight:2");
+($gr[0]->fn)[0]->steps(200);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+ 
+BEGIN_PGML
+
+Many animals live in groups. A species of marmot found in Colorado lives in harems composed of a single adult male and several females with their young. The number of offspring each female can raise depends on the number of females in the harem. On average, if there are [`x`] females in the harem, each female can raise [`y = [$f]`] young marmots each year.
+
+
+a. 
+Complete the table of values for the average number of offspring per female, and the total number of young marmots, [`A`], produced by the entire harem in one year.  
+[@
+DataTable(
+  [
+    [ '\(x\)', '1', '2' , '3', '4', '5']  ,
+    [ '\(y\)' , ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2)  ],
+    [ '\(A\)' ,  ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2)  ]
+  ], 
+  caption => 'Number of female marmots, offspring per female, and total offspring', 
+  align => '| c | c | c | c | c |  c | ',
+  midrules=>1,
+ );
+@]***  
+    
+b. 
+Write a formula for [`A`] in terms of [`x`]: [`A=`][______].  
+c. 
+Graph  [`A`] as a function of [`x`].  
+d. 
+What is the maximum number of young marmots a harem can produce (on average)? [___]  
+What is the optimal number of female marmots per harem? [___]
+
+END_PGML
+Context()->normalStrings;
+
+foreach my $i (1..5) {
+ANS( $y[$i]->cmp() );
+}
+foreach my $i (1..5) {
+ANS( $An[$i]->cmp() );
+}
+
+ANS( $A->cmp() );
+ANS(Compute(" $yv")->cmp() );
+ANS( Compute("$xv")->cmp() );
+
+BEGIN_PGML_SOLUTION
+a. 
+[@
+DataTable(
+  [
+    [ '\(x\)', '1', '2' , '3', '4', '5']  ,
+    [ '\(y\)' , "\\($y[1]\\)" , "\\($y[2]\\)" ,"\\($y[3]\\)" ,"\\($y[4]\\)" ,"\\($y[5]\\)"   ],
+    [ '\(A\)' ,   "\\($An[1]\\)" , "\\($An[2]\\)" ,"\\($An[3]\\)" ,"\\($An[4]\\)" ,"\\($An[5]\\)"   ]
+  ], 
+  caption => 'Number of female marmots, offspring per female, and total offspring', 
+  align => '| c | c | c | c | c | c |',
+  midrules=>1,
+ );
+@]***  
+b. 
+The total number of young marmots is the product of the number of adult females and the number of offspring per female: [`A = [$A]`].  
+
+c. 
+[@image(insertGraph($gr[0]), width=>200, height=>200, tex_size=>700)@]*  
+  
+d. 
+The maximum number of young marmots (on average) corresponds to the [`y`]-coordinate of the vertex:  [$yv]. The optimal number of female marmots is the [`x`]-coordinate of the vertex: [$xv].
+
+END_PGML_SOLUTION
+##############################################################
+#
+
+$showPartialCorrectAnswers = 0;
+
+
+ENDDOCUMENT();        

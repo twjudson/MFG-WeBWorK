@@ -1,0 +1,72 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--approximate logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('31')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->{format}{number} = "%.4f"; 
+
+$b = 10 ;
+
+do{$temp = random(101, 999);} until ( ($temp % 10) != 0);
+foreach my $i (0..3) {
+  $power[$i] = $temp * 10**($i-2);  
+  $y[$i] = Formula("log10($power[$i])")->reduce;
+}
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Conjecture:",  "When the input to the common logarithm is multiplied by 10, the output is increased by 1.");
+
+$mc->extra(
+"When the input to the common logarithm is multiplied by 1, the output is increased by 10.",
+
+);
+$mc->makeLast("When the input to the common logarithm is doubled, the output is doubled.");
+
+BEGIN_PGML
+
+Use a calculator to approximate each logarithm to four decimal places. Make a conjecture about logarithms based on the results of each problem.
+
+a. 
+[`  \log_{10} [$power[0]] \approx `][_____]{$y[0]->cmp(  tolType => 'absolute',  tolerance => .00005,)}  
+b. 
+[`  \log_{10} [$power[1]] \approx `][_____]{$y[1]->cmp(  tolType => 'absolute',  tolerance => .00005,)}  
+c. 
+[`  \log_{10} [$power[2]] \approx `][_____]{$y[2]->cmp(  tolType => 'absolute',  tolerance => .00005,)}  
+d. 
+[`  \log_{10} [$power[3]] \approx `][_____]{$y[3]->cmp(  tolType => 'absolute',  tolerance => .00005,)}  
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

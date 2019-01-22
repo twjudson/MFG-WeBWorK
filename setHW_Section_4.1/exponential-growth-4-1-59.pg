@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--exponential decay via percent loss
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/13/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('59')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+#"contextFraction.pl"
+ "PGML.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+#Context("Fraction");
+Context()->variables->add(t=>"Real");
+
+$loss = random(4,9); # textbook had 8;
+$left = 100-$loss;
+$b = $left/100;
+$f = Formula(" 100 * $b^t");
+$t0 = random(2,5); #textbook had 2;
+
+$answer0 = $f->eval(t=>$t0);
+
+$t1 = 7;
+$answer1 = $f->eval(t=>$t1);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+If [$loss]% of the air leaks out of Brian's bicycle tire every day, what percent of the air will be left after [$t0] days?[_____]{$answer0->cmp(  tolType => 'absolute',  tolerance => .05,)}%  
+After a week? [_____]{$answer1->cmp(  tolType => 'absolute',  tolerance => .05,)}% 
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+A loss of [$loss]% corresponds to having [$left]% remaining, so the decay factor is [$b]. Then the amount remaining after [`t`] days is [` 100\cdot [$b]^t `] percent. Evaluate at [`t=[$t0]`] and at [`t=[$t1]`].
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

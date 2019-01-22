@@ -1,0 +1,57 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--approximate logarithms, solving exponential equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('35')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+#"PGchoicemacros.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", s=>"Real", u=>"Real", v=>"Real" );
+Context()->{format}{number} = "%.2f#"; 
+@variables = ("x", "t", "s", "u", "v");
+$i = random(0, $#variables - 1);
+$x = $variables[$i];
+$a = random(-6, -2);
+$log = Formula("$a $x");
+$power = random(2, 9);
+$b = 10 ; #Note that this textbook uses "log" for common log, not for "ln"
+
+$y = Formula("log10($power) / $a")->reduce;
+
+BEGIN_PGML
+
+Solve for [` [$x] `]. Round your answers to hundredths.  
+>>[`` [$b]^{[$log]} = [$power] ``]<<
+
+[` [$x] =`][_____]{$y->cmp(  tolType => 'absolute',  tolerance => .005,)}  
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+The logarithmic form of the equation is [` [$log] = \log_{10} [$power] `]. Dividing both sides by [$a], we have that [` [$x] = \dfrac{\log_{10} [$power]}{ [$a]} `].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

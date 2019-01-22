@@ -1,0 +1,148 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value expressions for error tolerance
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/16/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('45')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context("Inequalities");
+Context()->variables->are(g=>"Real");
+#Context()->constants->add(EmptySet => Set());
+#Context()->constants->add(none => Set());
+
+#$a = random(3,4);
+$h = random(15,45,10)/100;
+$k = 0.001;
+
+$f = Formula("  abs(g - $h)")->reduce;
+$left = -$k + $h;
+$right = $k + $h;
+
+
+#$ans = "none";
+#$ans = "R";
+$ans = Compute("  $left  <= g <= $right ");
+
+$xmin = $h - 2.5*$k;
+$xmax = $h + 2.5*$k;
+
+foreach my $i (0..2) {
+$gr[$i] = init_graph($xmin,-0.6,$xmax,0.6, size=>[408,68]);
+# x-axis
+$gr[$i] -> moveTo($xmin,0);
+$gr[$i] -> lineTo($xmax,0,'black','1');
+# x-axis ticks entered as y-value, color, list of x-values
+$gr[$i] -> h_ticks(0,"black",$h - 2*$k,$h - $k, $h, $h+$k,$h + 2*$k);
+# labels for tickmarks
+foreach my $j (0..5) {
+$scale = $h + ($j-2)*$k;
+$gr[$i]->lb( new Label($scale,-0.3,$scale, 'black','center','middle'));
+$gr[$i]->lb( new Label(-$scale,-0.3,-$scale, 'black','center','middle'));
+}
+}
+
+
+$gr[0]->lb( new Label($h,0.4,"(A)", 'black','center','middle'));
+$gr[0] -> moveTo($left,0);
+$gr[0] -> lineTo($right,0,'red','3');
+$gr[0] -> stamps( closed_circle($left,0,'red') );
+$gr[0] -> stamps( closed_circle($right,0,'red') );
+
+$gr[1]->lb( new Label($h,0.4,"(B)", 'black','center','middle'));
+$gr[1] -> moveTo($left,0);
+$gr[1] -> lineTo($right,0,'red','3');
+$gr[1] -> stamps( open_circle($left,0,'red') );
+$gr[1] -> stamps( open_circle($right,0,'red') );
+
+$gr[2]->lb( new Label($h,0.4,"(C)", 'black','center','middle'));
+$gr[2] -> moveTo($left,0);
+$gr[2] -> lineTo($xmin,0,'red','3');
+$gr[2] -> moveTo($right,0);
+$gr[2] -> lineTo($xmax,0,'red','3');
+$gr[2] -> stamps( closed_circle($left,0,'red') );
+$gr[2] -> stamps( closed_circle($right,0,'red') );
+
+$mc = new_multiple_choice();
+$mc->qa(
+"The number line that illustrates the expression is",  "(A)");
+
+$mc->makeLast(
+"(A)", "(B)", "(C)",
+"none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>
+<<
+An electrical component of a high-tech sensor requires [$h] ounce of gold. Assume that the actual amount of gold used, [`g`], is not in error by more than [$k] ounce. Write an absolute value inequality for the possible error.
+      
+[________]{$f} [`\le  `] [____]{$k}  [@AnswerFormatHelp("formulas") @]*
+
+>>Show the possible values of  [`g`] on a number line.<<
+
+[@ image(insertGraph($gr[0]), width=>408, height=>68, tex_size=>700); @]*
+[@ image(insertGraph($gr[1]), width=>408, height=>68, tex_size=>700); @]*
+[@ image(insertGraph($gr[2]), width=>408, height=>68, tex_size=>700); @]*
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+END_PGML
+
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+The inequality [`[$ans]`] is equivalent to [` [$f] \le [$k] `].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

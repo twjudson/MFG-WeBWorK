@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: simplifying expression with common logs and powers of 10
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+    "contextFraction.pl"
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->flags->set(useBaseTenLog=>1); 
+Context()->variables->add(k=>"Real",m=>"Real");
+Context()->flags->set(limits=>[1,5]);
+
+do {
+$a = random(2,9); # was 2;
+$b = random(2,9); #was 3;
+} until ($a != $b );
+
+$k = random(2,3);
+$b2 = 10**$k;
+$f0 = Formula("$a*k");
+$f1 = Formula("x**$b");
+$f2 = Formula("sqrt(x)");
+$f3 = Formula("$k * m");
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+Simplify.
+
+a. 
+[`` 10^{\log [$a] k}= ``] [______]{$f0} [@AnswerFormatHelp("formulas") @]*
+
+b. 
+[`` 10^{[$b] \log x}= ``] [______]{$f1} [@AnswerFormatHelp("formulas") @]*
+
+c. 
+[`` \left( \sqrt{10}\right)^{\log x} ``] [______]{$f2} [@AnswerFormatHelp("formulas") @]*
+
+d. 
+[``\log [$b2]^{m} ``] [______]{$f3} [@AnswerFormatHelp("formulas") @]*
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+[`` 10^{\log [$a] k}= [$f0]``], by the definition of logarithm.
+
+b. 
+[`` 10^{[$b] \log x}= 10^{ \log x^{[$b]}}= [$f1]``] 
+
+    
+
+    
+c. 
+[``   \begin{aligned}
+\left( \sqrt{10}\right)^{\log x} &=  \left( 10^{1/2}\right)^{\log x}\\
+&=  10^{1/2 \cdot \log x}\\
+&= 10^{  \log x^{1/2}}\\
+&= 10^{  \log \sqrt{x}}\\
+&= [$f2]\\
+\end{aligned}
+``]
+
+d. 
+[`` 10^{[$b] \log x}= 10^{ \log x^{[$b]}}= [$f1]``] 
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

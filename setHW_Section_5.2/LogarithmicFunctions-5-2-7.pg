@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: translate common log inequality to inequality
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra','logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('7')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  "contextInequalities.pl",
+ "AnswerFormatHelp.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Inequalities");
+$y0 = random(-4,-1);
+$x0 = Compute("10**($y0)");
+$interval = Compute(" 0 < x <  $x0 ");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+
+For what value of [`x`] is [` y=\log_{10} x < [$y0]`]?
+
+    Answer: [_________]{$interval} [@AnswerFormatHelp("intervals") @]*
+
+
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+[`\log_{10}(x) = [$y0]`] means that [` x = 10^{[$y0]} = [$x0]`]. For any positive [`x`] which is less than  [$x0], [`\log_{10}(x) < [$y0]`].
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

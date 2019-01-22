@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Algebra problem: solve literal logarithmic equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('10/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('59')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+ "PGML.pl",
+ "contextFraction.pl",
+ "AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->flags->set(useBaseTenLog=>1); 
+Context()->variables->are(M=>"Real",H=>"Real",G=>"Real",k=>"Real",M=>"Real");
+#   problem in textbook has H_0 rather than G, but I don't want to bother teaching students to
+#   enter subscripts
+
+$f = Formula(" G**(k*M**2)  ")->reduce;
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+Solve for the indicated variable.
+
+[``M = \sqrt{ \dfrac{ \log_{10} H }{k \log_{10} G }  } ``], for [`H`]
+
+    [` H =`][__________]{$f} [@AnswerFormatHelp("formulas") @]* 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+We first isolate the logarithm involving [`H`], and then write the equivalent exponential equation.
+>>[`
+\begin{aligned}
+M &= \sqrt{ \dfrac{ \log_{10} H }{k \log_{10} G }  }    \\
+M^2 &=  \dfrac{ \log_{10} H }{k \log_{10} G }   \\
+M^2 \cdot k \log_{10} G &=  \log_{10} H    \\
+10^{(\log_{10} G)\cdot kM^2  } &=   H    \\
+\left(10^{(\log_{10} G)}\right)^{ kM^2  } &=   H    \\
+G^{kM^2  }  &=  H
+\end{aligned}
+`]<<
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

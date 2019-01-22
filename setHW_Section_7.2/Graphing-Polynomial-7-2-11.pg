@@ -1,0 +1,138 @@
+##DESCRIPTION
+##  Algebra problem: behavior of quartic polynomial
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quartic polynomial', 'turning point', 'inflection point', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Polynomial Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.2')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+$a = non_zero_random(-0.7,0.7,0.1);
+$b = non_zero_random(-7,7); #was 4
+$f = Formula("$a*x^4 + $b")->reduce;
+ if ($a>0){
+$ans = "The end behavior is the same as for the basic quartic because the lead coefficient is positive.";}
+else {
+$ans = "The end behavior is the opposite as for the basic quartic because the lead coefficient is negative."
+};
+ $pop = PopUp(["select",
+"The end behavior is the same as for the basic quartic because the lead coefficient is positive.", 
+"The end behavior is the opposite as for the basic quartic because the lead coefficient is negative.",
+"The end behavior is the same as for a cubic because there is no lead coefficient."], 
+"$ans");
+if (sgn($a) == sgn($b) ) {
+$xint = 0;}
+else {
+$xint = 2;}
+$turn = 1;
+$inflect = 0;
+
+$xmin = -10;
+$ymin = -10;
+$xmax=10;
+$ymax=10;
+$xgrid = ($xmax - $xmin);
+$ygrid = ($ymax - $ymin);
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[450,450]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .8,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (-2,-1,1,2) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr -> lb(new Label ( $xscale,-.6, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-0.6,$yscale,$yscale,'black','left','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use your calculator to graph the quartic polynomial.
+
+>>[``y = [$f]``]<<
+
+a. 
+Describe the long-term behavior of the graph graph. How does this behavior compare to that of the basic quartic? How does the sign of the lead coefficient affect the graph?
+
+    [_______]{$pop}
+
+b. 
+How many [`x`]-intercepts does the graph have? [__]{$xint}
+
+    How many turning points? [__]{$turn}
+
+    How many inflection points? [__]{$inflect}
+
+ 
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[@ image( insertGraph($gr) ) @]***  
+
+a. 
+The end behavior is the same as for the basic quartic because the lead coefficient is positive.
+
+b. 
+There are [$xint]  [`x`] -intercepts, one turning point, no inflection point.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

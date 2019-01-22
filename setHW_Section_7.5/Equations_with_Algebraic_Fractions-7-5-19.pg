@@ -1,0 +1,138 @@
+##DESCRIPTION
+##  Algebra problem: reciprocal supply function, linear demand function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$a = 160; 
+$b = 6;
+$c = 49; 
+$f = Formula(" $a/x");
+$g = Formula("$b*x + $c")->reduce;
+
+$r = 2.5; 
+$yans=$g->eval(x=>$r);
+
+$ans = sprintf("%0.2f", $r );
+
+$xmin = -2;
+$xmax= 10;
+$ymin = -20;
+$ymax=160;
+$xgrid = ($xmax - $xmin)/2;
+$ygrid = ($ymax - $ymin)/20;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.5,'x','blue','left','bottom'));
+$gr -> lb(new Label (1.2,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..8) {
+$xscale =2*$i;
+$yscale =20*$i;
+$gr -> lb(new Label ( $xscale,-4.2, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-.6,$yscale,$yscale,'black','center','middle'));
+}
+
+$begin=$xmin-1;
+$bm = $b-.001;
+$bp = $b+.001;
+$end = $xmax+1;
+add_functions( $gr,
+"$f for x in [0.1, $end] using color:red and weight:2",
+"$g for x in [0, $end] using color:blue and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($r,$yans,'green') );
+$x1 = $r+1; $y1 = $yans;
+$gr -> lb(new Label ($x1, $y1,"($r, $yans)",'green','left','middle'));
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+The manager of Joe's Burgers discovers that he will sell [``[$f]``] burgers per day if the price of a burger is [`x`] dollars. On the other hand, he can afford to make [`[$g]`] burgers if he charges 
+[`x`] dollars apiece for them.
+
+a. 
+Graph the **demand function**, [``D(x)=[$f]``], and the supply function, [``S(x)=[$g]``], in the same window. At what price [`x`] does the demand for burgers equal the number that Joe can afford to supply?     [____]{$ans} 
+
+    This value for [`x`] is called the **equilibrium price**.
+
+b. 
+Write and solve an equation to verify your equilibrium price.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@image(insertGraph($gr), width=>240, height=>180, tex_size=>700)@]***
+
+    The equilibrium price is $[$ans].
+
+b. 
+ [` \begin{aligned}
+[$f] &= [$g] \\
+[$a] &= [$b] x^2 + [$c] x\\
+0  &=  [$b] x^2 + [$c] x - [$a]  \\
+0  &=  [$b] x^2 + [$c] x - [$a]  \\
+[$ans] &= x \\
+\end{aligned}`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

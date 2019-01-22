@@ -1,0 +1,163 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/21/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('57')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+#"unionTables.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+#$a0 = random(1,12);
+$domain0 = Compute( "(0,inf)" );
+$b0 = random(1,12);
+$range0 = Compute( "(0,$b0)" );
+
+$a = random(-9,9);
+do { $b = non_zero_random(-9,9);} until (abs($b) != abs($a));
+do { $c = non_zero_random(-9, 9); } until ((abs($c) != abs($a)) and ( abs($c) != abs($b)));
+$d = non_zero_random(-9,9);
+
+Context("Inequalities")->variables->are(x=>"Real");
+Context()->variables->add(y=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+$dom[0]= $domain0 ;
+$R0 = $a*$b0;
+
+  if ($a < 0) {$ran[0] = Compute( " ($R0,0) " );}
+  else {$ran[0] = Compute( " (0,$R0) " ) };
+
+$dom[1]= Compute( " ($c, inf) " );
+$R1 = $b*$b0;
+
+  if ($b< 0) {$ran[1] = Compute( " ($R1,0) " );}
+  else {$ran[1] = Compute( " (0,$R1) " ) };
+
+$dom[2]=Compute( " ($b, inf) " );
+$R2 = $c*$b0 + $d;
+
+  if ($c< 0) {$ran[2] = Compute( " ($R2,$d) " );}
+  else {$ran[2] = Compute( " ($d,$R2) " ) };
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+
+Find the domain and range of each transformation of the given function.
+$BR
+$BR
+
+The domain of \(f\) is \($domain0\) and the range is \($range0\).
+$BR
+$BR
+(a) \( y = $a  f(x ) \)
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+(b) \( y = $b  f(x - $c) \) 
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+
+$BR
+$BR
+(b) \( y =$c   f(x  - $b) +$d \) 
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $dom[0]->cmp() );
+ANS( $ran[0]->cmp() );
+ANS( $dom[1]->cmp() );
+ANS( $ran[1]->cmp() );
+ANS( $dom[2]->cmp() );
+ANS( $ran[2]->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+Because \(f(x)\) is defined for `x` in \($domain0\),  \($af(x)\) is also defined in \($domain0\). But all the range values of  \(f(x)\)  are multiplied by \($a\), so the finite endpoint of the range of \($af(x)\) is \($R0\).
+$BR
+
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

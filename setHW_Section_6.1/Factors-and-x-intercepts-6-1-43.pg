@@ -1,0 +1,149 @@
+##DESCRIPTION
+##  Algebra problem: projectile motion
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('43')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real");
+
+$v0 = 16;
+$h0=8;
+$g = 32;
+$h1 = 11;
+
+$a = -$g/2;
+$f = Formula("$a* t**2 + $v0* t + $h0");
+
+$t1 = "1/2";
+$t1c = Compute("$t1");
+$t2 = 1;
+
+$h1 = $f->eval(t=>$t1);
+$h2 = $f->eval(t=>$t2);
+$t3 = "1/4";
+$t4 = "3/4";
+$h3 = $f->eval(t=>$t3);
+$t3c = Compute("$t3");
+$t4c = Compute("$t4");
+$ans = Compute("$t3, $t4");
+$t5 = (-$v0 - sqrt($v0**2 - 4*$a*$h0))/(2*$a);
+
+#  Graph canvas
+#
+$xmin = -.25;
+$ymin = -1;
+$xmax=2;
+$ymax=15;
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[9,16],size=>[400,300]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+#
+#  Graph labels and functions
+#
+
+foreach my $i (1..4) {
+ $xscale =.5*$i;
+ $yscale =5*$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for t in [0, $t5] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($t1c,$h1,'red') );
+$gr->stamps( closed_circle($t2,$h2,'red') );
+$gr->stamps( closed_circle($t3c,$h3,'red') );
+$gr->stamps( closed_circle($t4c,$h3,'red') );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Use the following formula to answer this problem. If an object is thrown into the air from a height [`s_0`] above the ground with an initial velocity [`v_0`], its height [`t`] seconds later is given by the formula
+>>[``h=-\frac{1}{2}gt^2+v_0 t + s_0``]<<
+where [`g`] is a constant that measures the force of gravity.
+
+    
+A tennis ball is thrown into the air with an initial velocity of [$v0] feet per second from a height of [$h0] feet. The value of [`g`] is [$g].
+
+a. 
+Write a quadratic equation that gives the height of the tennis ball at time [`t`].  
+[`h=`][____________]{$f}  
+b. 
+Find the height of the tennis ball at [:t = [$t1]:] second and at [`t = [$t2]`] second.  
+At [:t = [$t1]:], [`h=`][___]{$h1} feet; at [:t = [$t2]:], [`h=`][___]{$h2} feet;  
+c. 
+Write and solve an equation to answer the question: At what time is the tennis ball [$h3] feet high?  
+Answer: When [`t= `][______]{$ans} sec. [@AnswerFormatHelp("numbers") @]*  
+d. 
+Use the *Table* feature on your calculator to verify your answers to parts (b) and (c). (What value of [`\Delta \text{Tbl}`] is useful for this problem?)  
+e. 
+Graph your equation from part (a) on your calculator. Use your table to help you choose an appropriate window. 
+f. 
+If nobody hits the tennis ball, approximately how long will it be in the air? Give an answer accurate to the nearest hundredth. [`t \approx`][___]{Compute("$t5")->cmp(  tolType => 'absolute',  tolerance => .005,) } sec.
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+According to the given formula with [` v_0 = [$v0]`], [` h_0 = [$h0]`], and [`\dfrac{1}{2}g=\dfrac{1}{2}(32) = [$a]`]. the height is given by [` h = [$f]`].  
+b. 
+Evaluate [`[$f]`] at [:t = [$t1]:]  and at [`t = [$t2]`].  
+c. 
+We solve [` [$f] = [$h3]`]. There are two solutions, [: t= [$t3]:] and [: t= [$t4]:].  
+d. 
+It is convenient if the consecutive values of the input variable [`t`] differ by [: 1/4:].  
+e. 
+[@image(insertGraph($gr), width=>200, height=>150, tex_size=>700)@]*  
+f. 
+We estimate the value of [`t`] at which [`[$f]=0`].  [`t\approx [$t5]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

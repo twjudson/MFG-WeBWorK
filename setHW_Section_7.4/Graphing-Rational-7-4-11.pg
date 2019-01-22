@@ -1,0 +1,210 @@
+##DESCRIPTION
+##  Algebra problem: Doppler effect on pitch
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context()->variables->are(n=>"Real", C=>"Real");
+ #Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+
+$v0 = 332;
+$A = 440;
+$f = Formula(" ($A*$v0)/($v0 - x)");
+
+foreach my $i (0..8) {
+$x[$i] = 25*($i-4);
+$t[$i] = $f->eval(x=>$x[$i]);
+};
+
+$v1 = -20;
+$P1 = $f->eval(x=>$v1);
+$v2 = 68;
+$P2 = $f->eval(x=>$v2);
+$v3 = 12;
+$P3 = $f->eval(x=>$v3);
+
+
+$xmin = -94;
+$ymin =300;
+$xmax= 94;
+$ymax= 650;
+$xgrid = ($xmax - $xmin)/47;
+$ygrid = ($ymax - $ymin)/50;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[250,250]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.05,'v','blue','left','bottom'));
+$gr -> lb(new Label ( 2,0.995*$ymax,'P','blue','left','top'));
+
+foreach my $i (1..7) {
+ $xscale =47*$i;
+ $yscale =50*$i+300;
+  $gr -> lb(new Label ( $xscale,-1, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-.2,$yscale,$yscale,'black','right','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+$xmx = 4;
+$xm = $xmx-.5;
+$ymx = 64;
+$ym = $ymx +1;
+$gr->stamps( closed_circle($xmx,$ymx,'blue') );
+  $gr -> lb(new Label ($xm,$ym, "($xmx,$ymx)",'blue','right','middle'));
+
+Context("Inequalities");
+Context()->variables->add(v=>"Real");
+$domain = Compute(" v>$v3 ");
+
+
+
+
+$pop2 = PopUp(["select", 
+"As  v  approaches  $v0  m per sec, the pitch increases without bound.", 
+"As  v  approaches  $A  m per sec, the pitch increases without bound.", 
+], 
+"As  v  approaches  $v0  m per sec, the pitch increases without bound.");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+ A train whistle sounds higher when the train is approaching you than when it is moving away from you. This phenomenon is known as the Doppler effect. If the actual pitch of the whistle is 
+[$A]  hertz (this is the A note below middle C), then the note you hear will have the pitch
+
+>>[``P(v) = \frac{[$A]([$v0])}{[$v0]-v}``]<<
+
+where the velocity, [`v`], in meters per second is positive as the train approaches and is negative when the train is moving away. (The number [$v0] that appears in this expression is the speed of sound in meters per second.)
+
+a. 
+Complete the table showing the pitch of the whistle at various train velocities.
+
+    [@
+DataTable(
+  [
+    [ '\(v\)', [$x[0]], [$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]], [$x[7]], [$x[8]] ],
+    [ '\( P \)', ans_rule(4), ans_rule(4), ans_rule(4), ans_rule(4), ans_rule(4), ans_rule(4), ans_rule(4), ans_rule(4), ans_rule(4)  ]
+ ], 
+  caption => 'Pitch heard for different speeds', 
+  align => '| r | c | c | c | c  |c | c | c |  c | c |  ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+Graph the function [`P`]. (Use the window [`\text{Xmin}=-94`], [`\text{Xmax}=94`] , and appropriate values of [`\text{Ymin}`] and  [`\text{Ymax}`].
+
+c. 
+What is the velocity of the train if the note you hear has a pitch of [$P1] hertz (corresponding to the note A-flat)? [___] m/sec
+
+    A pitch of [`553.\overline{3}`] hertz (C-sharp)? [___] m/sec
+
+d. 
+For what velocities will the pitch you hear be greater than 456.5 hertz?
+
+    Answer:[_______] m/sec [@AnswerFormatHelp("inequalities") @]*
+
+e. 
+The graph has a vertical asymptote (although it is not visible in the suggested window). Where is it and what is its significance in this context?
+
+    The vertical asymptote has equation [`v=`][___].
+
+     [@ $pop2->menu() @]*
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+foreach my $i ( 0..8) {
+  ANS( $t[$i]->cmp(  tolType => 'absolute',  tolerance => .005, ) );
+};
+ANS(Compute("$v1")->cmp(  tolType => 'absolute',  tolerance => .051,));
+ANS(Compute("$v2")->cmp(  tolType => 'absolute',  tolerance => .051,));
+ANS($domain->cmp());
+ANS(Compute("$v0")->cmp(  tolType => 'absolute',  tolerance => .051,));
+ANS($pop2->cmp());
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@
+DataTable(
+  [
+    [ '\(v\)', [$x[0]], [$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]], [$x[7]], [$x[8]] ],
+    [ '\( P \)', [$t[0]], [$t[1]], [$t[2]], [$t[3]] ,[$t[4]], [$t[5]], [$t[6]] , [$t[7]], [$t[8]]  ]
+  ], 
+  caption => 'Pitch heard for different speeds', 
+  align => '| r | c | c | c | c  |c | c | c |  c | c |  ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+[@ image( insertGraph($gr), width=>250, height=>250, ) @]***  
+
+c. 
+We solve [`[$P1] = \frac{[$A]([$v0])}{[$v0]-v}`] for [`v`] to find [`v=[$v1]`], then we solve  [`553.\overline{3} = \frac{[$A]([$v0])}{[$v0]-v}`] for [`v`] to find [`v=[$v2]`]
+
+d. 
+We first solve [`[$P3] = \frac{[$A]([$v0])}{[$v0]-v}`] for [`v`] to find [`v=[$v3]`]. With any greater velocity you will hear a higher pitch.
+e. 
+From the given formula for [`P(v)`] we can see that the function is undefined at [`v=[$v0]`]. The pitch you hear increases without bound as the velocity of the train approaches the speed of sound.
+f. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

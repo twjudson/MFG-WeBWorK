@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--decay of visible light below lake surface
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/9/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('19')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(d=>"Real");
+
+$percent = random(12, 18); # originally 15;
+$remain = 100-$percent;
+$base = $remain/100;
+$D = 2;
+
+$f = Formula(" $base**(d/2) ");
+
+$d1 = random(15,25,5); #originally 20;
+$P1 = 100* $f->eval(d=>$d1);
+
+$d2= random(35,45,5); #originally 45;
+$P2 = 100*$f->eval(d=>$d2);
+
+
+#Context()->{format}{number} = "%.1f";
+
+
+##################
+
+BEGIN_PGML
+
+
+Scuba divers find that the water in Emerald Lake filters out [$percent]% of the sunlight for each [$D] feet that they descend.
+
+
+a. 
+Write a function that describes exponential decay.  
+[` L(d) =`][___________]{$f}  (Use [`d=0`] to represent the depth at the surface of the lake.) 
+Use a graphing utility to graph the function.  
+b. 
+How much sunlight penetrates to a depth of [$d1] feet?    [_____]{$P1->cmp(  tolType => 'absolute',  tolerance => .5,)}% (This answer is in percents.)  
+To a depth of [$d2] feet? [_____]{$P2->cmp(  tolType => 'absolute',  tolerance => .5,)}% (This answer is in percents.)
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+When [$percent]% of light is filtered out, [$remain]% remains, so the decay factor is [$base].  
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

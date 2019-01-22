@@ -1,0 +1,84 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--exponential population growth
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('49')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+#"PGchoicemacros.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real" );
+Context()->{format}{number} = "%.2f#"; 
+
+$t0 = 1990;
+$t1 = 2000;
+$t2 = 2010;
+$t3 = 2015;
+$t4 = 2020;
+
+$p[0] = 29760021;
+$a = 0.0056;
+$f = Formula(" 29760021 (10)^{$a t}");
+
+$t[1] = 10;
+$p[1] = round($f->eval(t=>$t[1]));
+foreach my $i (2..4) {
+  $t[$i] = 5*$i + 10;
+  $p[$i] = round($f->eval(t=>$t[$i]));
+};
+
+$t5 = floor(log10(35000000/$p[0])/$a + 1990);
+$t6 = floor(log10(40000000/$p[0])/$a + 1990);
+
+
+BEGIN_PGML
+
+The population of the state of California increased during the years [$t0] to [$t1] according to the formula [` P(t) = 29,760,021 (10)^{0.0056t}`], where [`t`] is measured in years since [$t0].
+
+a. 
+What was the population in [$t1]?[__________]{$p[1]} (Enter a whole number, without commas.)  
+b. 
+Assuming the same rate of growth, estimate the population of California in the years [$t2], [$t3], and [$t4].  
+For [$t2], [` P = `][__________]{$p[2]} (Enter a whole number, without commas.)  
+For [$t3], [` P = `][__________]{$p[3]} (Enter a whole number, without commas.)  
+For [$t4], [` P = `][__________]{$p[4]} (Enter a whole number, without commas.)  
+c. 
+When did the population of California reach 35,000,000?  
+Answer: In the year [____]{$t5}  
+d. 
+When should the population reach 40,000,000?  
+Answer: In the year [____]{$t6} 
+e. 
+Graph the function [`P`] with a suitable domain and range, then verify your answers to parts (a) through (d).
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+For (a) and (b), we evaluate [` P(10), P(20), P(25)`], and [`P(30)`].  
+For (c), we solve [` 35,000,000 =  29,760,021 (10)^{0.0056t} `]: Divide both sides by 29,760,021, take common logarithms, then divide by [$a].  
+For (d), we solve [` 40,000,000 =  29,760,021 (10)^{0.0056t} `]: Divide both sides by 29,760,021, take common logarithms, then divide by [$a].  
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

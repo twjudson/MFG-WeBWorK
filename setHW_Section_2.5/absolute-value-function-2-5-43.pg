@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value expressions for error tolerance
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/16/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('43')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context("Inequalities");
+Context()->variables->are(D=>"Real");
+#Context()->constants->add(EmptySet => Set());
+#Context()->constants->add(none => Set());
+
+#$a = random(3,4);
+$h = random(40,90,10);
+$k = 5;
+
+$f = Formula("  abs(D - $h)")->reduce;
+$left = -$k + $h;
+$right = $k + $h;
+
+
+#$ans = "none";
+#$ans = "R";
+$ans = Compute("  $left  <= D <= $right ");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>
+<<
+Write the error tolerance using absolute values.
+    
+>>The subject will receive a dosage [`D`], from [$left] to [$right] milligrams of the drug.<<
+  
+[________]{$f} [`\le  `] [____]{$k}  [@AnswerFormatHelp("formulas") @]*
+
+
+
+END_PGML
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+The inequality [`[$ans]`] is equivalent to [` [$f] \le [$k] `].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

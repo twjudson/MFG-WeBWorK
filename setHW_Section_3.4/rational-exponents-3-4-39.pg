@@ -1,0 +1,102 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents--laws of exponents
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('2/4/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('39')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+###########################
+
+@denominators = (2, 3, 4, 5, 6);
+@variables = ("x","y", "a","b", "p","q", "m","n", "w","z", "h", "k");
+Context()->variables->add(y=>'Real', a=>'Real', b=>'Real', p=>'Real', q=>'Real', m=>'Real', n=>'Real', w=>'Real', z=>'Real', h=>'Real', k=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+Context()->flags->set(limits=>[1,2]);
+
+$i = random(0, $#variables -1);
+$x[0] = $variables[$i];
+
+$a[0] = random(2,12);
+$b[0] = random(2,5);
+$c[0] = $a[0]*$b[0];
+$j = random(1,2); #want even denominator
+$n[0] = $denominators[2*$j];
+$nzero = $n[0]/2;
+$numb[0] = $n[0] - 1;
+do{$temp = random(3, 7, 2);
+} until (gcd( ($temp - 1)/2, $nzero) != $nzero );
+  $num[0] = $temp*$numb[0];
+$m[0] = ($num[0] - $numb[0])/2;
+
+$f[0] = Formula(" ($c[0] $x[0]^($num[0] / $n[0]))/ ( $b[0] $x[0]^($numb[0] / $n[0]) ) ");
+$f_display[0] = " \dfrac{$c[0] $x[0]^{$num[0]/$n[0] }}{ $b[0] $x[0]^{$numb[0] / $n[0]} }";
+$g[0] = Formula(" $a[0]* ($x[0]^($m[0]/$nzero)) " );
+
+
+$i = random(0, $#variables -1);
+$x[1] = $variables[$i];
+$a[1] = random(2,12);
+$b[1] = random(2,5);
+$c[1] = $a[1]*$b[1];
+$j = random(1,$denominators -1);
+$n[1] = $denominators[$j];
+$m[1] = random(2,5);
+do{$numb[1] = random(1, $m[1]*$n[1] );
+} until  (gcd($numb[1], $n[1]) == 1 );
+  $num[1] = $m[1]*$n[1] + $numb[1] ;
+
+#$f[0] = Formula(" ($c[0] $x[0]^($num[0] / $n[0])) /( $b[0] $x[0]^($numb[0] / $n[0]) ) ");
+#$f_display[0] = " \dfrac{$c[0] $x[0]^{$num[0]/$n[0] }}{ $b[0] $x[0]^{$numb[0] / $n[0]} }";
+$f[1] = Formula(" ($c[1] $x[1]^($num[1] / $n[1])) / ($b[1] $x[1]^($numb[1] / $n[1]) )");
+$f_display[1] = " \dfrac{$c[1] $x[1]^{$num[1] / $n[1]}}{ $b[1] $x[1]^{$numb[1] / $n[1]} }";
+$g[1] = Formula(" $a[1] $x[1]^($m[1])" );
+
+
+
+##############################################################
+BEGIN_PGML
+
+Simplify by applying the laws of exponents. Write your answers with positive exponents only. Assume that all variables represent positive numbers.
+  
+
+a. 
+[` [$f_display[0]] =`][__________]{$g[0]}
+b. 
+[` [$f_display[1]] =`][__________]{$g[1]}
+
+END_PGML
+
+
+##############################################################
+#
+install_problem_grader(~~&std_problem_grader);
+
+
+
+ENDDOCUMENT();     

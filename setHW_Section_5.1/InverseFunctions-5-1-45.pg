@@ -1,0 +1,106 @@
+##DESCRIPTION
+##  Algebra problem: identify graphs of -f, 1/f, and f-inverse
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('45')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+"PGchoicemacros.pl",
+ "imageChoice.pl",
+"unionTables.pl",
+  "niceTables.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$fa = Formula("4+2x");
+$aPop = PopUp(["select", "I", "II", "III"], "III");
+$bPop = PopUp(["select", "I", "II", "III"], "II");
+$cPop = PopUp(["select", "I", "II", "III"], "I");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>>[@ image( "fig-5-1-45.svg", width=>171, height=>135,  
+tex_size=>700, extra_html_tags=>'alt="Graphs of 8 functions."' ) @]***<<
+
+I.[@ image( "fig-5-1-45-I.svg", width=>171, height=>135,  
+tex_size=>700, extra_html_tags=>'alt="Graphs of 8 functions."' ) @]*** 
+II.[@ image( "fig-5-1-45-II.svg", width=>171, height=>135,  
+tex_size=>700, extra_html_tags=>'alt="Graphs of 8 functions."' ) @]*** 
+III.[@ image( "fig-5-1-45-III.svg", width=>171, height=>135,  
+tex_size=>700, extra_html_tags=>'alt="Graphs of 8 functions."' ) @]*** 
+
+
+Use the graph of [`f`]  to match the other graphs with the appropriate function. (Hint: Look at the coordinates of some specific points.)
+a. 
+The graph of [`-f`] is [@ $aPop->menu() @]*
+
+b. 
+The graph of [` \dfrac{1}{f}`] is [@ $bPop->menu() @]*
+
+c. 
+The graph of [` f^{-1}`] is [@ $cPop->menu() @]*
+
+
+END_PGML
+
+Context()->normalStrings;
+
+ANS($aPop->cmp());
+ANS($bPop->cmp());
+ANS($cPop->cmp());
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+Each point in the graph of [`-f`] has the opposite value of [`y`] compared the graph of [`f`], which means the graph of [`f`] will be reflected across the [`x`]-axis. And checking a specific point, because [`(1,2)`] is on the graph of [`f`], the point [`(1,-2)`] is on the graph of [`-f`], as is the case for graph (III).
+
+b. 
+Each point in the graph of [`\dfrac{1}{f}`] has the reciprocal value of [`y`] compared the graph of [`f`]. Checking a specific point, because [`(1,2)`] is on the graph of [`f`], the point [`(1, \frac{1}{2})`] is on the graph of [`\dfrac{1}{f}`], as is the case for graph (II).
+
+c. 
+Each point [`(a,b)`] in the graph of [` f^{-1} `] has the corresponding point point [`(b,a)`] on the graph of [`f`], which means the graph of [`f`] will be reflected across the line [`y=x`]. Checking a specific point, because [`(1,2)`] is on the graph of [`f`], the point [`(2,1)`] is on the graph of [` f^{-1} `], as is the case for graph (I).
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

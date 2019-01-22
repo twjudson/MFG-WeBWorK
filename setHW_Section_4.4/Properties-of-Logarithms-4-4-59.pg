@@ -1,0 +1,47 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--solving literal equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('59')
+
+
+DOCUMENT();       
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context("Numeric");
+Context()->variables->add( N => "Real" , M=>"Real", a=>"Real", k=>"Real", t=>"Real");
+Context()->flags->set(limits=>[1,365]);
+
+$f = Formula(" log(N/M)/(t * log(a)) ");
+
+BEGIN_PGML
+
+Solve the formula for the specified variable.  
+
+[``  N=M a^{kt}  ``] for [`k`]  
+  
+[`k=`][_________________]{$f}
+
+END_PGML
+
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+  "contextFraction.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do {
+$d1 = random(5,25,5); #was 20;
+$d2 = random(5,25, 5);  #was 5;
+$y0 = random( 50, 80, 5  ); #was 60;
+} until ($d1 != $d2 && $d1+$d2 < $y0);
+$x0 = $y0 - $d1;
+$z0 = $y0 - $d2;
+
+$P = Point($x0, $y0, $z0);
+
+#$d1 = $y0  - $x0;
+#$d2 = $y0 - $z0;
+
+$p = $x0 + $y0 + $z0;
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+
+Solve by using a system of equations.
+
+The perimeter of a triangle is [$p] inches. Side [`x`] is [$d1] inches shorter than side 
+[`y`], and side [`y`] is [$d2] inches longer than side [`z`]. Find the lengths of the sides of the triangle.
+
+a. 
+Identify three unknown quantities and choose variables to represent them.
+
+b. 
+If appropriate, make a table organizing the information in the problem.
+
+c. 
+Write three equations about the variables in the problem.
+
+d. 
+Solve the system and answer the question in the problem.
+
+    Side [`x`] is [__]{$x0} inches, side [`y`] is, [__]{$y0} inches, and side [`z`] is [__]{$z0} inches.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+From the perimeter of [$p] we get the equation
+
+>>[`` x +  y +  z = [$p] ``]<<
+
+Because [`x`] is [$d1] inches shorter than [`y`]:
+
+>>[`` x = y - [$d1] ``]<<
+
+And because side [`y`] is [$d2] inches longer than side [`z`]
+
+>>[`` y = z + [$d2] ``]<<
+
+The solution to the system is [`[$P]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

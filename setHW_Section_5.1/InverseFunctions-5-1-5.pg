@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: values of function and inverse from graph without formulas
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"niceTables.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# No variation coded in this problem.
+#The curve was based on a particular model, but the input could vary.
+
+$d0 = 60;
+$v = 38;
+
+$v0 = 60;
+$d = 150;
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+An insurance investigator measures the length, [`d`], of the skid marks at an accident scene, in feet. The graph shows the function [`v = f (d)`], which gives the velocity, [`v`] (mph), at which a car was traveling when it hit the brakes.
+
+[@image( "fig-5-1-5.png", width=>350, height=>240,  
+tex_size=>700, extra_html_tags=>'alt="Graph of velocity vs skid mark length"' ) @]*
+
+a. 
+Use the graph to estimate [`f (60) \approx`][_____]{Compute($v)->cmp(  tolType => 'absolute',  tolerance => 1.5,)}, and explain its meaning in this context.  
+b. 
+Use the graph to estimate [`f^{-1}(60)\approx`][_____]{Compute($d)->cmp(  tolType => 'absolute',  tolerance => 3,)}, and explain its meaning in this context.
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+The input of [`[$d0]`] into [`f`] indicates that we are considering a skid mark of length [$d0] feet. The output value of [` f([$d0])`] is how fast the vehicle was moving to produce a skid mark of length [$d0] feet.
+
+b. 
+The input of [`[$v0]`] into [`f^{-1}`] indicates that we are considering a vehicle velocity of [$v0] mph. The output value of [` f^{-1}([$v0])`] is how long a skid mark was produced by a vehicle traveling at  [$v0] mph.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

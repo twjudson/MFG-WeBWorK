@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--identical graphs
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Graphs of exponential functions)
+## Date('2/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('13')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGchoicemacros.pl",
+ "PGML.pl",
+);
+
+TEXT(beginproblem());
+Context()->flags->set(     reduceConstants => 0  );
+
+$a = random(2, 9);
+
+@names=("h", "k","m","n");
+@slice = NchooseK(4,4);
+@f = @names[@slice];
+
+$h = "$a^x";
+$k = " \left(\dfrac{1}{$a}\right)^x";
+$m = " $a^{-x}";
+$n = " \dfrac{1}{$a}^x";
+
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"In the group of functions, which have identical graphs? Explain why.", 
+"\($f[1]=$k\)","\($f[2]=$m\)", "\($f[3]=$n\)",
+);
+$mc->extra(
+"\($f[0]=$h\)",
+);
+#$mc->makeLast("none of the above");
+
+
+##############################################################
+#
+BEGIN_TEXT
+\{ $mc->print_q() \}
+$BR
+\{ $mc->print_a() \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:$PAR
+Because they are defined by equivalent expressions,  \{ $mc->correct_ans() \} have identical graphs.
+END_SOLUTION
+Context()->normalStrings;
+
+
+$showPartialCorrectAnswers = 0;
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+ENDDOCUMENT();     

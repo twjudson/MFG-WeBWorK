@@ -1,0 +1,77 @@
+##DESCRIPTION
+##  Algebra problem: order of operations with absolute value
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'absolute value', 'order of operations')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('1')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+$a = random(2,15);
+$na = -$a;
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Simplify each expression according to the order of operations.
+
+a. 
+[` - |-[$a] |=`][___]{$na}
+
+b. 
+[` - (-[$a])=`][___]{$a}
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[` | -[$a] | = [$a] `], so [`-| -[$a] | = [$na]`].
+
+b. 
+The opposite of a negative number is a positive number. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

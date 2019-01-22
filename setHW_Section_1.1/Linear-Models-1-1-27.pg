@@ -1,0 +1,203 @@
+##DESCRIPTION
+##  Algebra problem: linear model; Delbert's potassium from two foods
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear model', 'line', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('27')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+  "AnswerFormatHelp.pl",
+  "parserImplicitEquation.pl",
+"parserImplicitPlane.pl",
+  "PGauxiliaryFunctions.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+Context("ImplicitEquation");
+#Context()->variables->set(x=>{limits=>[0,1000]},y=>{limits=>[0,1000]});
+
+#intercepts to be in ratio 4 to 9
+
+$k = random(40, 90,10); 
+$xi = 4*$k;
+$yi = 9*$k;
+
+
+#$total = 1800;
+$fig = 9;
+$banana=4;
+$total = $xi * $fig;
+
+#$xi = $total/$fig;
+#$yi = $total/$banana;
+$pf = Formula("$fig *x");
+$pb = Formula("$banana *y");
+
+
+
+################ Give up on using ImplicitEquation
+$eqn = ImplicitEquation(
+  " $total = $fig*x + $banana*y ",
+  solutions=>[ 
+     [$xi,0],
+     [0,$yi],
+  ]
+);
+############### Use ImplicitPlane instead
+Context("ImplicitPlane");
+
+$P = ImplicitPlane([$fig,$banana,0],$total);                   #  $fig*x+$banana*y = $total
+
+
+$f = Formula(" ($total - $fig*x)/$banana ");
+
+
+$xmin = -100;
+$ymin = -100;
+$xmax= 450;
+$ymax= 950;
+$xgrid = 11;
+$ygrid = 21;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[300,600]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.95*$xmax, .5,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 1,0.95*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..9) {
+$yscale =100*$i;
+$gr -> lb(new Label (-50,$yscale,$yscale,'black','center','middle'));
+}
+foreach my $i (1..4) {
+$xscale =100*$i;
+$gr -> lb(new Label ( $xscale,-50, $xscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [0, $xi] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$ml = new_match_list();
+$ml->rf_print_q(~~&pop_up_list_print_q);
+$ml->ra_pop_up_list([
+"No answer" => "?",
+"A" => "A", "B" => "B"
+]);
+$ml->qa(
+"The x-intercept ", "Gives the number of grams of fig Delbert should consume if he eats no banana.",
+"The y-intercept", "Gives the number of grams of banana Delbert should consume if he eats no fig."
+);
+
+# use pop-up-lists
+$ml->rf_print_q(~~&pop_up_list_print_q);
+# you may need to add more letters D=>"D", etc. 
+$ml->ra_pop_up_list([No_answer=>"?",A=>"A",B=>"B",C=>"C",D=>"D"]);
+
+$ml->choose(2);
+
+# to add extra answers that show up in the
+#    matching list, we would uncomment
+#    (remove the leading "# " from) the two
+#    lines below:
+$ml->extra("Gives the initial price of figs.", "Gives the initial price of banana.");
+ $ml->choose_extra(2);
+  
+
+Context("Point");
+$xint = Point($xi,0);
+$yint = Point(0,$yi);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+Delbert must increase his daily potassium intake by [$total]  mg. He decides to eat a combination of figs and bananas, which are both low in sodium. There are [$fig] mg potassium per gram of fig, and [$banana] mg potassium per gram of banana.
+
+a. 
+How much potassium is in  [`x`] grams of fig? [____]{$pf} mg
+    
+    How much potassium is in [`y`] grams of banana? [____]{$pb} mg
+
+b. 
+Write an equation in general form that relates the number of grams, [`x`], of fig and the number of grams, [`y`], of bananas that Delbert needs to get [$total] mg of potassium: 
+    [_______________]{$P}
+
+c. 
+Find the intercepts and sketch the graph. 
+
+    The [`x`]-intercept is [_______]{$xint}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yint}.  [@AnswerFormatHelp("points") @]*
+
+d. 
+What do the intercepts tell us about the profit?:
+[@ $ml -> print_q() @]***
+[@ $ml -> print_a() @]***
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( str_cmp( $ml->ra_correct_ans ) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We multiply the mg potassium per gram fruit times the number of grams of fruit. For fig we get [` [$pf] `] mg potassium, and for banana we get [` [$pb] `] mg potassium.
+b. 
+The sum of the mg potassium from [`x`] grams of fig and the mg potassium from [`y`] grams of banana must be the total increase of [$total] mg potassium: [` [$eqn] `].
+c. 
+[`x`]-intercept occurs when [`y=0`]:[`[$xint]`]; The [`y`]-intercept occurs when [`x=0`]: [`[$yint]`]
+    
+    [@ image(insertGraph($gr), width=>150, height=>300, tex_size=>700) @]*
+
+d. 
+The [`x`]-intercept, [`[$xint]`], gives the grams of fig that Delbert should consume if he has no banana. The [`y`]-intercept, [`[$yint]`], gives the grams of banana that Delbert should consume if he has no figs.
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

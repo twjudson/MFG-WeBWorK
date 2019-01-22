@@ -1,0 +1,142 @@
+##DESCRIPTION
+##  Algebra problem: write formula for transformation of basic function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'translation', 'scale','reflection')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.3')
+## Problem1('71')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mca = new_multiple_choice();
+
+$mca->qa(
+"Graph (a) shows a class where",  
+"students scored 20 points higher than Prof Hilbert's class",
+);
+
+$mca->extra(
+"students scored 20 points lower than Prof Hilbert's class",
+"students scored 20 times higher than Prof Hilbert's class",
+);
+#$mca->makeLast("none of the above");
+
+$mcaf = new_multiple_choice();
+$mcaf->qa(
+"A formula for graph (a) is ",  "\( y=f(x-20)\)");
+
+$mcaf->extra(
+" \( y=f(x+20)\)",
+ "\( y=f(x)-20\)",
+ "\( y=f(x)+20\)",
+);
+
+
+$mcb = new_multiple_choice();
+
+$mcb->qa(
+"Graph (b) shows a class where",  
+"there are about 50% more students than in Hilbert's, but on average the classes did the same.",
+);
+
+$mcb->extra(
+"students score 50% better than in Hilbert's class",                
+"students score 50% worse than in Hilbert's class",                
+);
+#$mcb->makeLast("none of the above");
+
+$mcbf = new_multiple_choice();
+$mcbf->qa(
+"A formula for graph (b) is ",  "\( y= 1.5f(x)\)");
+
+$mcbf->extra(
+" \( y=f(x)+2.5\)",
+ "\( y=f(x)-2.5\)",
+ "\( y=0.5f(x)\)",
+ "\( y=f(x+2.5)\)",
+);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>[@ image( "fig-2-3-71.png", width=>285, height=>170,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+The graph of [`f(x)`] shows the number of students in Professor Hilbert's class who scored [`x`]  points on a quiz. Write a formula for each transformation of [`f`]  below; then explain how the quiz results in that class compare to the results in Professor Hilbert's class.
+
+
+>>[@ image( "fig-2-3-71a.png", width=>238, height=>141,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*
+[@ image( "fig-2-3-71b.png", width=>238, height=>141,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+
+a. [@ $mcaf -> print_q() @]***
+[@ $mcaf -> print_a() @]***
+
+    [@ $mca -> print_q() @]***
+[@ $mca -> print_a() @]***
+
+   
+b. [@ $mcbf -> print_q() @]***
+[@ $mcbf -> print_a() @]***
+ 
+    [@ $mcb -> print_q() @]***
+[@ $mcb -> print_a() @]***
+
+   
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mcaf->correct_ans() ) );
+ANS( radio_cmp( $mca->correct_ans() ) );
+ANS( radio_cmp( $mcbf->correct_ans() ) );
+ANS( radio_cmp( $mcb->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+
+ENDDOCUMENT();  

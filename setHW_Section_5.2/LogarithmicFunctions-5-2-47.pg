@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Algebra problem: solve logarithmic equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('10/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+ "PGML.pl",
+ "contextFraction.pl",
+ "AnswerFormatHelp.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+@factors = (1, 2, 4, 5, 20, 25, 50, 100);
+$i = random(0, $#factors);
+$a = $factors[$i];
+$b = 2; #was 2
+$a2 = 100/$a;
+$c = $a2 - $a;
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+Solve the logarithmic equation.
+
+>>[`` \log_{10} x + \log_{10} ( x+ [$c]) = [$b] ``]<<
+
+    [` x =`][_______]{$a} [@AnswerFormatHelp("numbers") @]* 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+We first combine the two logs on the left side of the equation into a single log, write the equivalent exponential form, and solve the resulting quadratic equation.
+>>[`
+\begin{aligned}
+\log_{10} x + \log_{10} ( x+ [$c]) &= [$b]\\
+\log_{10}  ( x^2+ [$c]x) &= [$b]\\
+ x^2+ [$c]x &= 10^{[$b]}\\
+ x^2+ [$c]x -100 &= 0\\
+ (x - [$a])(x +[$a2]) &= 0\\
+ x = [$a] &\text{ or  } x = -[$a2]
+\end{aligned}
+`]<<
+But because we have defined logarithms only on positive numbers, [` x= -[$a2]`] does not satisfy the original equation (even though it does satisfy our quadratic equation). So the only solution is [`x=[$a]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

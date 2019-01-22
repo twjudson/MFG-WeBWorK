@@ -1,0 +1,125 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('3')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(p=>"Real");
+
+$k = 5;
+$f = Formula("abs(p+3)");
+foreach my $i (0..2) {
+$gr[$i] = init_graph(-10.4,-0.6,10.4,0.6, size=>[408,68]);
+# x-axis
+$gr[$i] -> moveTo(-11,0);
+$gr[$i] -> lineTo(11,0,'black','1');
+# x-axis ticks entered as y-value, color, list of x-values
+$gr[$i] -> h_ticks(0,"black",-10,-9,-8-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10);
+# labels for tickmarks
+foreach my $j (0..5) {
+$scale = 2*$j;
+$gr[$i]->lb( new Label($scale,-0.3,$scale, 'black','center','middle'));
+$gr[$i]->lb( new Label(-$scale,-0.3,-$scale, 'black','center','middle'));
+}
+}
+
+
+$gr[0]->lb( new Label(-7,0.4,"(B)", 'black','center','middle'));
+$gr[0] -> stamps( closed_circle(-3,0,'red') );
+$gr[0] -> stamps( closed_circle(5,0,'red') );
+
+$gr[1]->lb( new Label(-7,0.4,"(B)", 'black','center','middle'));
+$gr[1] -> stamps( closed_circle(-8,0,'red') );
+$gr[1] -> stamps( closed_circle(2,0,'red') );
+
+$gr[2]->lb( new Label(-7,0.4,"(C)", 'black','center','middle'));
+$gr[2] ->stamps( closed_circle(-2,0,'red') );
+$gr[2] -> stamps( closed_circle(8,0,'red') );
+
+$mc = new_multiple_choice();
+$mc->qa(
+"The number line that illustrates the expression is",  "(B)");
+
+$mc->makeLast(
+"(A)", "(B)", "(C)",
+"none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>
+    
+>>The distance from [`p`] to [`-3`] is five units.<<
+  
+a. 
+Use absolute value notation to write the expression as an equation or an inequality. (It may be helpful to restate each sentence using the word distance.)
+
+    [______]{$f} [`= [$k]`]  [@AnswerFormatHelp("formulas") @]*
+
+b. 
+Illustrate the solutions on a number line.
+[@ image(insertGraph($gr[0]), width=>408, height=>68, tex_size=>700); @]*
+[@ image(insertGraph($gr[1]), width=>408, height=>68, tex_size=>700); @]*
+[@ image(insertGraph($gr[2]), width=>408, height=>68, tex_size=>700); @]*
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+The distance from [`a`] to [`b`] could be written as [` | b-a|`], so the distance from [`p`] to [`-3`] can be written as [` |p - (-3)|`] or as [`|p+3|`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

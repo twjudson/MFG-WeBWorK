@@ -1,0 +1,69 @@
+##DESCRIPTION
+##  Algebra problem:match graph of transformation of log with formula
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+ "PGML.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->flags->set(useBaseTenLog=>1); 
+
+do { $k = random(111,169)} until ($k % 10 !=0);
+$x0 = $k/100; #was 1.41
+$y0 = Compute("10**($x0)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+[`f(x) = \log_{10} x`].  Solve for [`x`].
+
+>>[``  f(x) = [$x0] ``]<<
+
+    [`x=`][________]{$y0->cmp(  tolType => 'absolute',  tolerance => .0005,)} 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+
+###################################]###########################
+#
+BEGIN_PGML_SOLUTION
+
+Because [`\log_{10} x = [$x0]`], [`x = 10^{[$x0]}\approx [$y0]`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

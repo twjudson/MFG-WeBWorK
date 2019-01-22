@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Linear Functions')
+## Date('8/3/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.5')
+## Problem1('19')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(y=>"Real",A=>"Real",B=>"Real",C=>"Real");
+
+$ans_slope=Formula("A/C");
+
+$ans_x_intercept=Formula("C/A");
+
+$ans_y_intercept=Formula("C/B");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the straight-line \(Ax + By = C\).
+
+$BR
+$BR
+
+a. Find the slope of the line. \{ ans_rule(30) \}
+
+$BR
+$BR
+
+b. Find the \(x\)-intercept of the line. \{ ans_rule(30) \}
+
+
+$BR
+$BR
+
+b. Find the \(y\)-intercept of the line. \{ ans_rule(30) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans_slope->cmp());
+
+ANS($ans_x_intercept->cmp());
+
+ANS($ans_y_intercept->cmp());
+
+ENDDOCUMENT();        

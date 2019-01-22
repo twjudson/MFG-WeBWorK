@@ -1,0 +1,112 @@
+##DESCRIPTION
+##  Algebra problem: rational functions: focal length
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote', 'polynomial division')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('43')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(q=>"Real");
+#Context()->noreduce('(-x)-y','(-x)+y', '(-x)/y'); #so that -x-y does not become -(x+y)
+
+$d = random(20,60,10); #was 60;
+
+$g = Formula(" 2*q + [$d] ")->reduce;
+$h = Formula(" q**2 + [$d]*q ")->reduce;
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The focal length of a lens is given by the formula
+
+>>[`` \frac{1}{f} = \frac{1}{p} + \frac{1}{q}``]<<
+
+
+where [`f`] stands for the focal length, [`p`] is the distance from the object viewed to the lens, and 
+[`q`] is the distance from the image to the lens. Suppose you estimate that the distance from your cat (the object viewed) to your camera lens is [$d] inches greater than the distance from the lens to the film inside the camera, where the image forms.
+
+a. 
+Express  [`1/f `] as a single fraction in terms of [`q`].
+
+    [``1/f =\frac{g(x)}{h(x)}``], where
+
+    [`g(x)=`][_________]{$g} and
+
+    [`h(x)=`][_________]{$h} 
+
+b. 
+Write an expression for [`f`] as a function of [`q`].
+
+    [``f =\frac{m(x)}{n(x)}``], where
+
+    [`m(x)=`][_________]{$h} and
+
+    [`n(x)=`][_________]{$g} 
+
+END_PGML
+  
+Context()->normalStrings;
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We have that [`p`], te distance from the object viewed to the lens, is [`q+[$d]`]. So
+
+[` \begin{aligned}
+1/f &=  \frac{1}{p} + \frac{1}{q} \\
+ &=  \frac{1}{q+[$d]}\cdot \frac{q}{q} + \frac{1}{q}\cdot \frac{q+[$d]}{q+[$d]} \\
+ &=  \frac{q }{q(q+[$d])} +  \frac{q+[$d]}{q(q+[$d])} \\
+&= \frac{[$g]}{[$h]}
+\end{aligned}`]
+
+b. 
+Taking reciprocals from the answer to (a), [`` f = \frac{[$h]}{[$g]}``]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,90 @@
+##DESCRIPTION
+##  Algebra problem: identify graphs of invertible functions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('35')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+"PGchoicemacros.pl",
+ "imageChoice.pl",
+"unionTables.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mc = new_checkbox_multiple_choice();
+$mc -> qa ("Which of the functions shown have inverses that are also functions?", 
+"(a)$BR",
+"(d)$BR",                
+);
+
+$mc -> makeLast("(a)$BR",
+"(b)$BR",
+"(c)$BR",
+"(d)$BR",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>>[@image( "fig-5-1-35.svg", width=>316, height=>388,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+<<
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+
+END_PGML
+
+Context()->normalStrings;
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+Only graphs (a) and (d) are graphs functions with the property that no horizontal line intersects the graph more than once.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

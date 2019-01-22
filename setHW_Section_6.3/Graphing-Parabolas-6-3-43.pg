@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: graphing parabolas: matching
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/17/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('43')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+"PGML.pl"
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+@QA = (
+"\( y = 1 - x^2  \)", 
+"fig-6-3-43-4.png", 
+"\( y = (x+2)^2 \)", 
+"fig-6-3-43-5.png",
+"\( y = 2x^2  \)", 
+"fig-6-3-43-1.png",
+"\( y = (x-4)(x+2) \)", 
+"fig-6-3-43-7.png",
+);
+
+$ml = new_image_match_list(
+  link => 1,                #  do not link to separate image
+  size => [150,150],        #  image width, height in pixels
+  tex_size => 310,          #  tex size in precent times 10
+  columns => 4,             #  number of columns
+  separation => 20,         #  space between images
+);
+
+$ml->rf_print_q(~~&pop_up_list_print_q); # use pop-up-lists
+$ml -> ra_pop_up_list(
+[ No_answer=>"?", A=>"A", B=>"B", C=>"C", D=>"D", E=>"E", F=>"F", G=>"G", H=>"H"] );
+
+$ml->qa(@QA);               #  set the questions and answers
+$ml->choose(4);             #  select 6 of them
+$ml->extra("fig-6-3-43-2.png", "fig-6-3-43-3.png","fig-6-3-43-6.png",
+"fig-6-3-43-8.png");
+$ml->choose_extra(4);
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+ 
+BEGIN_TEXT
+Match each equation with one of the eight graphs shown.
+$BR
+\{$ml->print_q\}
+$BR
+\{$ml->print_a\}
+$BR
+END_TEXT
+  
+
+Context()->normalStrings;
+
+
+
+
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 0;
+
+ANS(str_cmp($ml->ra_correct_ans));
+ENDDOCUMENT();        

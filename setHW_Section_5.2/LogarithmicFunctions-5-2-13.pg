@@ -1,0 +1,100 @@
+##DESCRIPTION
+##  Algebra problem: function notation with log functions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('13')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->flags->set(useBaseTenLog=>1); 
+
+do {
+$a = random(2,9); # was 3;
+$b = random(2,9); #was 5;
+} until ($a != $b);
+$c = random(11,29); # was 18;
+
+do{
+$d = random(2,8); #was 2
+$m = random(2,9); #was 5; #
+} until ($d != $m);
+$n = random(0.2,0.8, 0.2); #was 0.6; 
+
+
+$y0 = Compute("$c - $b * log10($a)" );
+$y1 = Compute("$d / ( $m + log10($n) ) ");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+[` f(x) = \log_{10} x`]. Evaluate, accurate to at least three decimal places. (Enter "DNE" if the expression is undefined.)
+
+a. 
+[` [$c] - [$b] f([$a] )  = `] [______]{$y0}  
+
+b. 
+[`` \frac{[$d] }{[$m]+f([$n])} = ``] [______]{$y1->cmp(  tolType => 'absolute',  tolerance => 0.0005,)}   
+
+
+
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+
+a. 
+[` [$c] - [$b] \log_{10}([$a] )    \approx [$y0]`] 
+
+b. 
+[`` \frac{[$d] }{[$m]+f([$n])} \approx [$y1] ``]  
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

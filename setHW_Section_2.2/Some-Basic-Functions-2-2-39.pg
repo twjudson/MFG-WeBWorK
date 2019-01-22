@@ -1,0 +1,171 @@
+##DESCRIPTION
+##  Algebra problem: make table from formula for x-values and check if function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'table')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('39')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$m =random(8,14);
+
+$f = Formula(" 1/y ");
+$x[0] = -2; 
+$x[1] = -1; 
+$x[2] = Compute("-1/2"); 
+$x[3] = 0;
+$x[4] = Compute("1/2"); 
+$x[5] = 1; 
+$x[6] = 2;
+
+foreach my $i ( 0..6 ) { 
+if ($x[$i] != 0) {
+  $y[$i] = $f->eval(y=>$x[$i]); }
+else {$y[$i] = "DNE";};
+};
+
+
+$xmin = -3;
+$xmax = 3;
+$xgrid = ($xmax - $xmin);
+$ymin = -3;
+$ymax = 3;
+$ygrid = $ymax-$ymin;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label ( .98*$xmax,0.05*$ymax, "x",'blue','center','middle'));
+$gr -> lb(new Label (.05*$xmax, 0.98*$ymax, "y" ,'blue','center','middle'));
+foreach my $i (1..4) {
+$xscale =1*$i;
+$yscale =1*$i;
+$gr -> lb(new Label ( .96*$xscale,.05*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label ( -.96*$xscale,.05*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-.1,.95*$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label (-.1,-.95*$yscale,-$yscale,'black','center','middle'));
+};
+
+  $xfunc = sub { my $t = shift();
+    return (1/$t ); };
+  $yfunc = sub { my $t = shift();
+    return $t; };
+  $fn = new Fun( $xfunc, $yfunc, $gr );
+  $fn->domain(0.01,$ymax);
+  $fnn = new Fun( $xfunc, $yfunc, $gr );
+  $fnn->domain($ymin,-0.01);
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Does the equation define \(y\) as a function of \(x\) Why or why not?", 
+"Yes. Each value of \(x\) has only one associated value of \(y\).");
+$mc1->extra(
+ "No. For at least one value of \(x\) there are more than one value of \(y\)."
+);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+a. 
+Graph the equation
+    >>[``x=[$f]``]<<
+by completing the table and plotting points. (Enter DNE in the table if no [`x`]-value exists.)    
+    [@
+DataTable(
+  [
+    ['\(x\)',   ans_rule(3),  ans_rule(3),  ans_rule(3),  ans_rule(3), ans_rule(3), ans_rule(3),  ans_rule(3)   ],
+    [ '\(y\)' ,"\\( $x[0] \\) ",  "\\( $x[1] \\) ",  "\\( $x[2] \\) ",  "\\( $x[3] \\)",  "\\( $x[4] \\) ",  "\\( $x[5] \\)",  "\\( $x[6] \\) "]
+  ], 
+  caption => 'Table of two variables', 
+  align => '| c | c |c | c | c | c |c | c | ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+foreach my $i (0..6) {
+  ANS(Compute("$y[$i]")->cmp());
+};
+
+
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+BEGIN_PGML_SOLUTION
+
+a. 
+For each value of [`y`] in the table, we compute [`[$f]`] and enter the result in the row for [`x`].
+        [@
+DataTable(
+  [
+    ['\(x\)',  "\\( $y[0] \\) ",  "\\( $y[1] \\) ",  "\\( $y[2] \\) ",  "\\( $y[3] \\)",  "\\( $y[4] \\) ",  "\\( $y[5] \\)",  "\\( $y[6] \\) "],
+    [ '\(y\)' ,"\\( $x[0] \\) ",  "\\( $x[1] \\) ",  "\\( $x[2] \\) ",  "\\( $x[3] \\)",  "\\( $x[4] \\) ",  "\\( $x[5] \\)",  "\\( $x[6] \\) "]
+  ], 
+  caption => 'Table of two variables', 
+  align => '| c | c |c | c | c | c |c | c | ',
+  midrules=>1,
+ );
+@]***
+    We plot points and connect with a smooth curve.
+    >>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*<<
+
+b. 
+For [`y`] to be a function of [`x`], each value of [`x`] must have associated exactly one value of [`y`]. The graph of a function has the property that no vertical line can meet the curve in more than one point.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

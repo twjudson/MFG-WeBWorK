@@ -1,0 +1,198 @@
+##DESCRIPTION
+##  Algebra problem: 72p/(100-p)
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(p=>"Real", C=>"Real");
+#Context()->variables->add(v => "Real");
+#Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+
+$k =72;
+ 
+$f = Formula("  ($k*p) / (100 - p) ");
+@x =(0, 15, 25, 40, 50, 75, 80, 90, 100);
+foreach my $i (0..7) {
+$t[$i] = $f->eval(p=>$x[$i]);
+};
+$p1 = 60;
+$C1 = $f->eval(p=>$p1); 
+$pa = Compute("100");
+
+$xmin = -10;
+$ymin = -100;
+$xmax=100;
+$ymax= 2000;
+$xgrid = ($xmax - $xmin)/10;
+$ygrid = ($ymax - $ymin)/100;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[250,250]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.05,'p','blue','left','bottom'));
+$gr -> lb(new Label ( 1,0.97*$ymax,'C','blue','left','top'));
+
+foreach my $i (1..10) {
+ $xscale =10*$i;
+ $yscale =500*$i;
+  $gr -> lb(new Label ( $xscale,-9, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-9,$yscale,$yscale,'black','right','middle'));
+}
+
+add_functions( $gr,
+               "$f for p in [-6, 99] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+Context("Inequalities");
+Context()->variables->add(p=>"Real");
+$domain = Compute(" 0<=p < 100 ");
+$more = Compute(" 96<p<100 ");
+
+
+$pop2 = PopUp(["select", 
+"As the percentage immunized approaches 100, the cost grows without bound.", 
+"As the cost approaches 100 thousand dollars, the percentage immunized grows without bound.", 
+"As the cost approaches 72 thousand dollars, the percentage immunized grows without bound.", 
+], 
+"As the percentage immunized approaches 100, the cost grows without bound.");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The cost, in thousands of dollars, for immunizing [`p`] percent of the residents of Emporia against a dangerous new disease is given by the function
+
+>>[``C(p) = \frac{[$k]p}{100-p}``]<<
+
+
+a. 
+What is the domain of [`C`]? [__________]{$domain}  [@AnswerFormatHelp("inequalities") @]*
+
+b. 
+Complete the table showing the cost of immunizing various percentages of the population.
+
+    [@
+DataTable(
+  [
+    [ '\(p\)', [$x[0]], [$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]], [$x[7]] ,[$x[8]] ],
+    [ '\( C \)', ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3) ]
+  ], 
+  caption => 'Cost of immunization', 
+  align => '| r | c | c | c | c  |c | c | c  |c  |c  |',
+  midrules=>1,
+ );
+@]***
+
+c. 
+Graph the function [`C`]`. (Use [`\text{Xmin}=6`], [`\text{Xmax}=100`], and appropriate values of [`\text{Ymin}`] and [`\text{Ymax}`].) 
+
+    What percentage of the population can be immunized if the city is able to spend $[`[$C1],000`]? 
+
+    [__] %
+
+d. 
+For what values of [`p`] is the total cost more than $1,728,000?  [__________] [@AnswerFormatHelp("inequalities") @]*
+
+
+e. 
+The graph has a vertical asymptote. What is its equation? 
+
+    Answer: [`p=`][____]
+
+    What is its significance in the context of this problem? 
+
+     [@ $pop2->menu() @]*
+
+END_PGML
+  
+Context()->normalStrings;
+
+foreach my $i ( 0..7) {
+  ANS( $t[$i]->cmp(  tolType => 'absolute',  tolerance => .01, ) );
+};
+ANS(OneOf(@choices[1..3])->cmp());
+ANS(Compute("$p1")->cmp());
+ANS($more->cmp());
+ANS($pa->cmp());
+ANS($pop2->cmp());
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Because the duck is flying into the wind, its speed is reduced by the speed of the wind. For a duck moving at constant speed, the distance traveled is the product of speed and time, so the time required is [` \displaystyle{\frac{\text{distance}}{\text{speed}} =[$f]}`].
+
+b. 
+[@
+DataTable(
+  [
+    [ '\(p\)', [$x[0]], [$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]], [$x[7]] ,[$x[8]], [$x[9]], [$x[10]] ],
+    [ '\( C \)', [$t[0]], [$t[1]], [$t[2]], [$t[3]] ,[$t[4]], [$t[5]], [$t[6]], [$t[7]] ,[$t[8]], [$t[9]],'DNE' ]
+  ], 
+  caption => 'Cost of immunization', 
+  align => '| r | c | c | c | c  |c | c | c  |c  |c | c | c  |',
+  midrules=>1,
+ );
+@]***
+
+c. 
+[@ image( insertGraph($gr), width=>250, height=>250, ) @]***  
+
+d. 
+The horizontal axis is an asymptote, with equation [`t=0`]. There is a vertical asymptote at [`v=50`], corresponding to the fact that the duck would never reach its destination if the headwind speed matched the airspeed.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

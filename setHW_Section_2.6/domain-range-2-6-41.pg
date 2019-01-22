@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Algebra problem: identify range from graph, use interval notation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('41')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"AnswerFormatHelp.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", v=>"Real", n=>"Real", z=>"Real", r=>"Real",y=>"Real" , w=>"Real",u=>"Real" );
+
+@variables = ("x", "t", "v", "n", "z", "r","w", "u");
+@functions = ("f", "g", "h", "F", "G", "H", "h", "T", "Q", "P", "S");
+$i = random(0,$#variables-1);
+$x=@variables[$i];
+
+@slice = NchooseK($#functions,2);
+@f_name=@functions[@slice];
+
+$a = non_zero_random(-9,9);
+do { $b = random(5,9);} until (abs($b) != abs($a));
+$b = $a + $b;
+$c = non_zero_random($a,$b);
+
+$f = Formula("-$x^2 + 2*$c $x");
+$y0 = $f->eval($x=>$a);
+$y1 = $f->eval($x=>$b);
+$y2 = $f->eval($x=>$c);
+$ymin = min($y0, $y1, $y2);
+$ymax = max($y0, $y1, $y2);
+
+Context("Interval");
+$domain = Compute("[$a,$b]");
+$range = Compute("[$ymin,$ymax]");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+Use a graphing utility to graph the function on the given domain. Using the <em>TRACE</em> key, and adjust <em>Ymin</em> and <em>Ymax</em> until you can estimate the range of the function. Verify your answer algebraically by evaluating the function. State the domain and range in interval notation.
+$BR
+
+\[ $f_name[0]($x)=$f\text{;}   \quad $a \le $x \le $b \]
+
+$BR
+Domain: $SPACE \{ans_rule(7) \} $SPACE
+\{AnswerFormatHelp("intervals")\}
+"$BR
+
+
+
+Range: $SPACE \{ans_rule(7) \} $SPACE
+\{AnswerFormatHelp("intervals")\}
+$BR
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The value \($y[0]\) is in the range when  there is a point (or points) on the graph with that `y`-value. We can try to read off approximate values of `$x` for the desired \(y=$y[0]\), or we can solve the equation \($f = $y[0]\).
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

@@ -1,0 +1,150 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('9')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context()->variables->are(x=>"Real");
+
+do {
+$ka = random(1,5); #was 2
+$kb = random(1,5); #was 4
+$kc = random(1,5); # was 5
+$h = non_zero_random(-4,4); #was -3
+}
+until ($ka != $kb && $ka != $kc && $kb != $kc);
+
+$f = Formula("abs(x-$h)")->reduce;
+$al = $h-$ka;
+$ar = $h+$ka;
+$ansa = $xl = List("$al, $ar");
+
+$bl = $h - $kb;
+$br = $h + $kb;
+
+$cl = $h - $kc;
+$cr = $h + $kc;
+ 
+
+$xmin = -10 + $h;
+$ymin = -1;
+$xmax= $xmin + 20;
+$ymax= 10;
+$xgrid = $xmax-$xmin;
+$ygrid = $ymax - $ymin;
+$xpix = 500;
+$ypix = 260;
+
+$xp = round(.8*$xpix);
+$yp = round(.9*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix, $ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label ( .95*$xmax,0.05*$ymax, "x",'blue','center','middle'));
+$gr -> lb(new Label (.05*$xmax, 0.95*$ymax, "y" ,'blue','center','middle'));
+
+foreach my $i (1..9) {
+$xscale =2*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( $xscale,-0.2, $xscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,-0.2, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.2,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin,$xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+
+Context("Inequalities");
+#Context()->variables->are(x=>"Real",);
+$ansb = Compute(" $bl <= x <= $br ");
+$ansc = Compute(" x < $cl or x > $cr ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>
+    
+Graph [` y = [$f]`].  Use your graph to solve the following equations and inequalities.
+  
+a. 
+[`[$f] = [$ka]`]:  [_____]{$ansa} (Separate different solutions with commas.)
+
+b. 
+[`[$f] \le [$kb]`]:  [________]{$ansb}  [@AnswerFormatHelp("inequalities") @]*
+
+c. 
+[`[$f] \gt [$kc]`]:  [________]{$ansc} [@AnswerFormatHelp("inequalities") @]*
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+>>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700); @]*<<
+
+a. 
+The graph has a [`y`]-coordinate of [$ka] at two points, whose [`x`] coordinates are [`[$al]`] and [`[$ar]`].
+
+b. 
+The two points on the graph with [`y`]-coordinate of [$kb] occur at [`x`] coordinates  [`[$bl]`] and [`[$br]`], and between those [`x`]'s, the values of [`y`] are smaller.
+
+c. 
+The two points on the graph with [`y`]-coordinate of [$kc] occur at [`x`] coordinates  [`[$cl]`] and [`[$cr]`], and outide those [`x`]'s, the values of [`y`] are greater.
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

@@ -1,0 +1,146 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('35')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+  "contextFraction.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>'Real', z=>'Real');
+
+$carrot = 9; 
+$carCa = 48;
+$bean = 15;
+$beanCa = 63;
+$cau = 69;
+$cauCa = 26;
+
+$x0 = random(0.2, 0.4, 0.1); #was 0.3;
+$y0 = random(0.2, 0.4, 0.1); #was 0.4;
+$z0 = 1 - $x0 - $y0;
+
+$P = Point($x0, $y0, $z0);
+
+
+$a11 = 1;
+$a12 = 1;
+$a13 = 1;
+
+$a21 = $carrot;
+$a22 = $bean;
+$a23 = $cau;
+
+$a31 = $carCa;
+$a32 = $beanCa;
+$a33 = $cauCa;
+
+
+$f1 = Formula(" $a11*x + $a12 *y + $a13*z")->reduce;
+$f2 = Formula(" $a21*x + $a22*y + $a23*z")->reduce;
+$f3 = Formula(" $a31*x + $a32*y + $a33*z")->reduce;
+
+$k1 = $f1->eval(x=>$x0, y=>$y0, z=>$z0);
+$k2 = $f2->eval(x=>$x0, y=>$y0, z=>$z0);
+$k3 = $f3->eval(x=>$x0, y=>$y0, z=>$z0);
+
+#$C = 29.4; 
+#$Ca = 47.4;
+$C = $k2; 
+$Ca = $k3;
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+
+Solve by using a system of equations.
+
+Vegetable Medley is made of carrots, green beans, and cauliflower. The package says that 
+1  cup of Vegetable Medley provides [$C] milligrams of vitamin C and [$Ca] milligrams of calcium. One cup of carrots contains [$carrot] milligrams of vitamin C and [$carCa] milligrams of calcium. One cup of green beans contains [$bean] milligrams of vitamin C and [$beanCa]
+ milligrams of calcium. One cup of cauliflower contains [$cau]  milligrams of vitamin C and 
+[$cauCa] milligrams of calcium. How much of each vegetable is in 1 cup of Vegetable Medley?
+
+a. 
+Identify three unknown quantities and choose variables to represent them.
+
+b. 
+If appropriate, make a table organizing the information in the problem.
+
+c. 
+Write three equations about the variables in the problem.
+
+d. 
+Solve the system and answer the question in the problem.
+
+    One cup of Vegetable Medley contains [__]{$x0} cup carrots,  [__]{$y0} cup beans, and side [__]{$z0} cup cauliflower.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+If we choose [`x`], [`y`], and [`z`] to represent respectively the fraction of a cup of carrots, green beans, and cauliflower, then we can set up the following system.
+
+From the fact that we have one cup of Vegetable Medley:
+
+
+>>[`` [$f1] = [$k1] ``]<<
+
+Considering the vitamin C in the vegetables:
+
+>>[`` [$f2] = [$k2] ``]<<
+
+And because side [`y`] is [$d2] inches longer than side [`z`]
+
+>>[`` [$f3] = [$k3] ``]<<
+
+
+The solution to the system is [`[$P]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

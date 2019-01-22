@@ -1,0 +1,126 @@
+##DESCRIPTION
+##  Algebra problem: read function values and solve equations from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('29')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+Context()->variables->add(t=>"Real",);
+
+$f = Formula("-10 (t+1)**3 + 10");
+$g = Formula("((x-10)/(-10))**(1/3)-1");
+$gn = Formula("-((x-10)/(10))**(1/3)-1");
+
+$y1 = 100;
+$x1a = $gn->eval(x=>$y1);
+$x1 = sprintf("%0.1f", $x1a );
+
+$y2 = -140;
+$x2a =  $g->eval(x=>$y2);
+$x2 = sprintf("%0.1f", $x2a );
+
+$y3 =-50;
+$x3a =  $g->eval(x=>$y3);
+$x3 = sprintf("%0.1f", $x3a );
+
+$y4 =-20;
+$x4a =  $g->eval(x=>$y4);
+$x4 = sprintf("%0.1f", $x4a );
+
+$y5 =40;
+$x5a =  $gn->eval(x=>$y5);
+$x5 = sprintf("%0.1f", $x5a );
+
+
+Context("Inequalities");
+Context()->variables->are(t=>"Real",);
+$int1 = Compute(" t < $x3");
+$int2 = Compute("  $x4> t and t > $x5");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+The figure shows a graph of  [` w(t) = [$f] `], for [`x\ge 0`]. Use the graph to estimate the solution to the equation or inequality. Show the solution or solutions on the graph. Then check your answers algebraically.
+
+>>[@  image( "fig-2-2-29.png", width=>263, height=>267 ,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' )
+@]*<<
+
+Solve the following
+
+a. 
+[` [$f] = [$y1]`]:  [`t\approx`][____]{Compute("$x1")->cmp(  tolType => 'absolute',  tolerance => .3,)}
+
+b. 
+[` [$f] = [$y2]`]:  [`t\approx`][____]{Compute("$x2")->cmp(  tolType => 'absolute',  tolerance => .3,)}
+
+c. 
+[` [$f] > [$y3]`]: [_____]{$int1} [@AnswerFormatHelp("inequalities") @]*
+
+d. 
+[`  [$y4] < [$f] < [$y5]`]: [________]{$int2->cmp(  tolType => 'absolute',  tolerance => .15,)} [@AnswerFormatHelp("inequalities") @]* 
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We estimate the value of [`x`] for the point on the curve where [`y=[$y1]`]: [`x\approx [$x1]`].
+
+b. 
+We estimate the value of [`x`] for the point on the curve where [`y=[$y2]`]: [`x\approx [$x2]`].
+
+c. 
+We estimate values of [`x`] for the points on the curve where [`y \gt  [$y3]`]: [`[$int1]`].
+
+d. 
+We estimate the value of [`x`] for the points on the curve where [`y \lt  [$y4]`]: [`[$int2]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,108 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents--evaluating
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('13')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+#"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+Context("Numeric");
+#
+#
+
+#@denominators = (2, 3, 4, 5, 6);
+#@big                  = (9, 6, 5, 4, 3);
+@denominators = ( 3, 4, 5, 6);
+@big                  = ( 6, 5, 4, 3);
+@slice = NchooseK($#denominators,3);
+@n = @denominators[@slice];
+@R = @big[@slice];
+@variables = ("x","y", "a","b", "p","q", "m","n");
+Context()->variables->add(y=>'Real', a=>'Real', b=>'Real', p=>'Real', q=>'Real', m=>'Real' , n=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+Context()->flags->set(limits=>[1,2]);
+
+
+foreach my $i ( 0..2 ) { 
+  $m[$i] = random(2, $n[$i] -1);
+  $base[$i] = random(2,$R[$i]);
+  $radicand[$i] = $base[$i]**$n[$i];
+  $f[$i] =" \sqrt[$n[$i]]{$radicand[$i]^{$m[$i]}} ";
+  $b[$i] = Compute( "$base[$i]**($m[$i])" );
+}
+
+$j = random(0, $#variables -1);
+$x = $variables[$j];
+$mv = random(2,9);
+$nv = $mv * $n[2];
+  $f[2] =" \sqrt[$n[2]]{$radicand[2]^{$m[2]} $x^{$nv} } ";
+  $b[2] = Compute( "$base[2]**($m[2]) * $x**($mv)" );
+
+
+#Context()->operators->undefine("^","**");
+LimitedPowers::OnlyPositiveIntegers();
+Context()->flags->set(limits=>[1,2]);
+
+
+##############################################################
+BEGIN_PGML
+
+
+Evaluate each root without using a calculator.  Assume that all variables represent positive numbers.
+  
+a. 
+[` [$f[0] ] = `][_______]{ $b[0]}  
+b. 
+[` [$f[1] ] = `][_______]{ $b[1] }  
+c. 
+[` [$f[2] ] = `][_______]{ $b[2] }  
+
+END_PGML
+
+
+
+##############################################################
+#
+#  Answers
+
+BEGIN_PGML_SOLUTION
+ 
+a.  [` [$f[0]] = [$radicand[0]]^{[$m[0]]/[$n[0]]}= (\sqrt[ [$n[0] ]] {[$radicand[0]] })^[$m[0]]= ([$base[0]])^[$m[0]]`]
+
+b. [` [$f[1]] = [$radicand[1]]^{[$m[1]]/[$n[1]]}= (\sqrt[ [$n[1] ]] {[$radicand[1]] })^[$m[1]]= ([$base[1]])^[$m[1]]`]
+
+c. [` [$f[2]] = [$radicand[2]]^{[$m[2]]/[$n[2]]} ([$x]^{[$nv]})^{1/[$n[2]]} = (\sqrt[ [$n[2] ]] {[$radicand[2]] })^[$m[2]] ([$x])^{[$nv]/[$n[2]]} = ([$base[2]])^[$m[2]] [$x]^{[$mv] }  `]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();     

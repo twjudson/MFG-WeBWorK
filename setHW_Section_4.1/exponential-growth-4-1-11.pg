@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--growth factor given for non-unit time
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/7/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('11')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$typical = 20000;
+$factor =2.5;
+$T = 6;
+$f = Formula("$typical * $factor**(t / $T)");
+
+#$t1 = 4;
+do {$t1 = random(3,8)} until ($t1 != 6);
+$P1 = $f->eval(t=>$t1);
+do {$t2 = random(13,20)} until ($t2 != 18);
+$P2 = $f->eval(t=>$t2);
+
+
+#Context()->{format}{number} = "%.0f";
+
+
+##################
+
+BEGIN_PGML
+
+
+A typical beehive contains [$typical] insects. The population can increase in size by a factor of [$factor] every [$T] weeks.  
+a. 
+Write a function that describes exponential growth.  
+[` P(t) =`][___________]{$f}   (Use [`t`] as the variable, but do not enter any comma.)  
+Use a graphing utility to graph the function.  
+b. 
+How many bees could there be after [$t1] weeks? [______]{$P1->cmp(  tolType => 'absolute',  tolerance => .5,)}  
+After [$t2] weeks? [______]{$P2->cmp(  tolType => 'absolute',  tolerance => .5,)}
+
+  
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+a. An decrease of [$percent] is equivalent to multiplication by a factor of [$factor], and  an increase of [$percent] is equivalent to multiplication by a factor of [$factor]. So we multiply the value of the portfolio by [` [$factor]2 \times [$factor] = [$factor3] `], which represents [$answer]%.    
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--solving literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('37 and 38')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+Parser::Number::NoDecimals();
+Context()->variables->add(R=>'Real', L=>'Real', v=>'Real', f=>'Real', p=>'Real', T=>'Real', E=>'Real', S=>'Real', A=>'Real'  );
+
+$j = random(0, 1 );
+if ($j == 0) {
+$num = "Lvf";
+$den = " pi ";
+$den_display = " \pi ";
+$y = "R" ;
+$x = "p"}
+else {
+$num = "E";
+$den = "S" ;
+$den_display = "S";
+$y = "T" ;
+$x = "A";
+};
+
+$z = Formula(" ($num)/($den $y^4) ");
+
+$given = " \sqrt[4]{ \dfrac{$num}{$den_display $x} } ";
+
+Context()->functions->disable("All");
+
+
+##################
+BEGIN_PGML
+  
+Solve 
+[` [$y]= [$given] `] for [` [$x] `].  
+  
+[` [$x] = `] [____________]{ $z }  
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+
+Raise both sides of the equation to the fourth power. Then multiply both sides by \($den_display\), take reciprocals of both sides, and finally multiply both sides by \($num\).
+
+END_SOLUTION
+
+ENDDOCUMENT();     

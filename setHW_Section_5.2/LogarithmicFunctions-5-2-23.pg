@@ -1,0 +1,107 @@
+##DESCRIPTION
+##  Algebra problem: exponential and inverse; compositions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+  "parserFunction.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->flags->set(useBaseTenLog=>1); 
+#Context("Inequalities");
+Context()->variables->add(y=>"Real");
+Context()->variables->set(x=>{limits=>[2,10]});
+parserFunction("LOG(x,y)" => "log(y)/log(x)");
+
+do {
+$a = non_zero_random(-9,9); # was -2;
+$b = random(2,9); #was 4;
+$c = random(100,900,100); #was 100;
+} until ($a != $b );
+
+$f = Formula("$c -  $b**(x - $a)")->reduce;
+$g = Formula("LOG($b,$c-x) + $a");
+
+do{
+$x0 = random($a,$a+5);
+$x1 = random($a, $a+5); } until ($x0 != $x1 );
+$y0 = $f->eval(x=>$x0);
+$y1 = $f->eval(x=>$x1);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+Simplify.
+
+a. 
+Find the inverse of the function  [`f(x) = [$f]`]?
+
+    Answer: [____________]{$g} (*For this WeBWorK problem*, if you want [` \log_{8} t`], you would enter "LOG(8,t)". You must use all caps for LOG.)
+
+b. 
+Show that  [`f^{-1}`] undoes the effect of [`f`] on [`x=[$x0]`].
+
+    [`f^{-1}\left(f([$x0])\right) = f^{-1}\Big(`] [__]{$y0} [`\Big) = `][___]{$x0} 
+
+c. 
+Show that  [`f`] undoes the effect of [`f^{-1}`] on [`x=[$y1]`].
+
+    [`f\left(f^{-1}([$y1])\right) = f\Big( `][___]{$x1} [`\Big) =`][__]{$y1}
+
+END_PGML
+
+Context()->normalStrings;
+
+
+###################################]###########################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+We solve [`y = [$f] `] for [`x`]  to get [`x =  \log_{[$b]} ([$c]-y) + [$a] =  f^{-1}(y)`], so [`f^{-1}(x) = \log_{[$b]} ([$c]-x) + [$a]`].
+
+b. 
+ [`f^{-1}\left(f([$x0])\right) = f^{-1}([$y0]) = [$x0] `] .
+
+b. 
+ [`f\left(f^{-1}([$y1])\right) = f([$x1]) = [$y1] `] .
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

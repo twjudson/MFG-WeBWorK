@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--rewriting in terms of simple logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('2/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('9')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"parserMultiAnswer.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", b=>"Real", r=>"Real", m=>"Real", P=>"Real");
+Context()->flags->set(limits=>[1,5]);
+@variables = ("x", "t", "r", "m", "P");
+$i = random(0, $#variables -1);
+$x = $variables[$i];
+
+do{$a = random(2,9);
+  $b = random(2,9);} until ($a != $b);
+
+do{$j = random(0, $#variables -1);} until ($j != $i);
+$t = $variables[$j];
+
+do{$c = random(2,9);} until ($c != $a);
+$d = random(11,19) /10;
+
+
+Context()->functions->disable("log");
+
+
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Use the properties of logarithms to expand each expression in terms of simpler logarithms. Assume that all variable expressions denote positive numbers.
+$PAR
+a. 
+\(\log_{$a} $a$x^{$b}= \)\{ans_rule(2)\}
+\(  + \) \{ans_rule(2)\} \(\cdot \log_{$a}\big( \) 
+\{ans_rule(2)\}
+\( \big) \)
+
+$PAR
+
+b. 
+\(\log_{$c} $d^{1/$t} =\)\{ans_rule(2)\}
+\(\cdot \log_{$c}\big( \) 
+\{ans_rule(2)\}
+\( \big) \)
+
+END_TEXT
+
+ANS( Compute("1")->cmp() ); 
+ANS( Compute("$b")->cmp() ); 
+ANS(Compute("$x")->cmp() ); 
+ANS( Compute("1/$t")->cmp() ); 
+ANS(Compute("$d")->cmp() ); 
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

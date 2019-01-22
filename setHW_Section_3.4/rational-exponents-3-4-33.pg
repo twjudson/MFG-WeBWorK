@@ -1,0 +1,104 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents-mammal species vs temperature range
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('2/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('31')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+###########################
+Context()->variables->are(M=>"Real",R=>"Real");
+
+$range0 = random(8, 12);
+$range1 = random(4, 9, 5);
+$range2 = $range1 + 1;
+$range3 = random(14, 19, 5);
+$range4 = $range3 + 1;
+
+@Range = ($range0, $range1, $range2, $range3, $range4); 
+
+$f = Formula("433.8 * R**(-0.742)");
+
+foreach my $i ( 0..4 ) {
+  $M[$i] = $f->eval(R=>$Range[$i]);
+};
+
+
+$f_inverse = Formula(" (M/433.8)**(-1/0.742)");
+$species = random(40,55,5);
+$R1 = $f_inverse->eval(M=>$species);
+
+
+Context()->{format}{number} = "%.0f"; 
+Context()->flags->set(tolerance => 0.5, tolType => "absolute");
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Which \(1^\circ\)  increase results in a greater decrease in diversity?", 
+"From \($range1^\circ \)C to \($range2^\circ \)C, where the slope is steeper (more negative)"
+);
+$mc->makeLast("From \($range3^\circ \)C to \($range4^\circ\)C, where the slope is less steep (less negative)");
+
+
+
+
+##############################################################
+BEGIN_PGML
+
+
+
+The climate of a region has a great influence on the types of animals that can survive there. Extreme temperatures create difficult living conditions, so the diversity of wildlife decreases as the annual temperature range increases. Along the west coast of North America, the number of species of mammals, [`M`], is approximately related to the temperature range, [`R`], (in degrees Celsius) by the function [`M = f (R) = 433.8R^{-0.742}`]. (Source: Chapman and Reiss, 1992)  
+  
+
+a. 
+Graph the function for temperature ranges up to [`30^\circ `]C.  
+b. 
+How many species would you expect to find in a region where the temperature range is [`[$range0]^\circ  `]C? [___]{$M[0]} Label the corresponding point on your graph.  
+c. 
+If [$species] different species are found in a certain region, what temperature range would you expect the region to experience?  
+Answer: [____]{$R1} degrees  
+Label the corresponding point on your graph.  
+d. 
+Evaluate the function to find [`f ([$range1])=`] [___]{$M[1]} , [`f ([$range2])=`] [___]{$M[2]} , [`f ([$range3])=`] [___]{$M[3]} , and [`f ([$range4])=`] [___]{$M[4]} . What do these values represent? Calculate the change in the number of species as the temperature range increases from [`[$range1]^\circ `]C to [`[$range2]^\circ `]C and from [`[$range3]^\circ `]C to [`[$range4]^\circ `]C. 
+[@ $mc->print_q() @]*
+[@ $mc->print_a() @]*
+Explain your answer in terms of slopes on your graph.
+
+END_PGML
+
+
+##############################################################
+#
+install_problem_grader(~~&std_problem_grader);
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+
+ENDDOCUMENT();     

@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inequality', 'fraction')
+
+## DBsubject('Algebra')
+## DBchapter('Power Functions')
+## DBsection('Variation')
+## Date('2/7/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and GraphsAlgebra for College Students')
+## EditionText1('')
+## AuthorText1('Katherine Yoshiwara')
+## Section1('3.1')
+## Problem1('1')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGcourse.pl",
+"niceTables.pl",
+"parserPopUp.pl",
+);
+
+######################################
+# Setup
+
+Context("Numeric");
+
+$len = random(4,10,2);
+$wid = random(4,10,2);
+
+$showPartialCorrectAnswers = 1;
+$f = Formula("cos^2(x)+sin^2(x)");
+
+$popup = PopUp(["select", 
+"YES", 
+"NO"], 
+"YES");
+
+######################################
+#  Main text
+
+TEXT(beginproblem());
+#TEXT(PGML::Format2(<<'END_PGML'));
+BEGIN_PGML
+The length of a rectangle is [$len] inches, and its width is [$wid] inches. Suppose we increase the length of the rectangle while holding the width constant.
+
+a) Fill in the table.
+[@
+DataTable(
+  [
+    [ Length, Width, Perimeter, Area ] ,
+    [ $len, $wid,  ans_rule(6),  ans_rule(6)  ],
+    [ $len + 2, $wid,  ans_rule(6),  ans_rule(6)  ],
+    [ $len + 5, $wid, ans_rule(6),  ans_rule(6)  ],
+    [ $len + 10, $wid, ans_rule(6),  ans_rule(6)  ]
+  ], 
+  align => '| c | c | c | c | ',
+  midrules=>1,
+ );
+@]***  
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+b) Does the perimeter vary directly with the length? [_______]{$popup}
+c) Write a formula for the perimeter of the rectangle in terms of its length, [`l`]. [__________]{"2l + 2*$wid"}
+d) Does the area vary directly with the length? [_______]{$popup}
+e) Write a formula for the area of the rectangle in terms of its length, [`l`]. [__________]{"$wid*l"}
+
+END_PGML
+
+######################################
+# Solution
+
+BEGIN_PGML_SOLUTION
+*SOLUTION*
+
+You can use PGML in your solution if you use the structure
+above.  There is currently no short cut.
+END_PGML_SOLUTION
+ENDDOCUMENT();

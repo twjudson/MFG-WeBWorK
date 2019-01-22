@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: proportion
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('37')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context("Fraction");
+
+$AE = 1;
+$DE = Formula("x-1");
+$CD = 1;
+$f = Formula("(x-1)/1");
+$gold = Compute("(1+sqrt(5))/2");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+In the figure, the rectangle [`ABCD`] is divided into a square and a smaller rectangle, [`CDEF`]. The two rectangles  [`ABCD`] and [`CDEF`] are similar (their corresponding sides are proportional.) A rectangle  with this property is called a **golden rectangle**, and the ratio of its length to its width is called the **golden ratio**.
+
+>>[@ image( "fig-7-5-37.svg", width=>160, tex_size=>700, extra_html_tags=>'alt="Golden rectangle"' )  @]***<<
+
+
+a. 
+Let [`AB=1`] and [`AD=x`]. What are the lengths of [`AE`], [`DE`], and [`CD`]?
+
+    [`AE=`][__]{$AE},  [`DE=`][__]{$DE}, and [`CD=`][__]{$CD}
+
+b. 
+Write a proportion in terms of [`x`] for the similarity of rectangles [`ABCD`] and  [`CDEF`]. Be careful to match up the corresponding sides.
+
+    [`` \frac{1}{x} = ``][______]{$f}
+
+
+c. 
+Solve your proportion for [`x`]. Find the golden ratio, [``\frac{AD}{AB}=\frac{x}{1}``] .
+
+    [`x=`][__________]{$gold}
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[`AE`] is a side of the square [`AEFB`] and hence is the same length as [`AB`], namely 1.  [`DE`] is the part of side [`AD`] after [`AE`] is removed, so [`DE= AD - AE =x-1`]. And [`CD`] is the same length as its opposite side in the rectangle [`ABCD`], namely [`CD=1`].
+
+b. 
+The ratio of short side to longer side in each rectangle gives [`` \frac{1}{x} = \frac{x-1}{1} ``]
+
+c. 
+We begin by multiplying both sides of the proportion by [`x`].
+
+    [` \begin{aligned}
+\frac{1}{x} &=  \frac{x-1}{1} \\
+1 &= x^2 - x \\
+0 &= x^2 - x - 1\\
+x &= \frac{-(-1)\pm \sqrt{(-1)^2 - 4(1)(-1)}}{2(1)} \\
+ &= \frac{1 \pm \sqrt{5}}{2} \\
+\end{aligned}`]
+
+    We reject the negative value (because the ratio of positive lengths cannot be negative), so we get that 
+[`` x = \frac{1 + \sqrt{5}}{2}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

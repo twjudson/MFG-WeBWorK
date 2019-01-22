@@ -1,0 +1,84 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--compound interest
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/4/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('55')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context("Numeric");
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+
+@frequency = ("daily", "monthly", "quarterly", "weekly");
+@times = (365, 12, 4, 52);
+$i = random(0,$#frequency);
+$freq = $frequency[$i];
+$n = $times[$i];
+
+@growth = ("triple", "quadruple", "double");
+@mult = (3, 4, 2);
+$j = random(0,$#growth);
+$triple= $growth[$j];
+$k = $mult[$j];
+
+
+$r0 = random(4,11); #was 10;
+$r = $r0/100;
+
+
+$ans = Compute("log($k)/( $n * log( 1+ $r /$n ) )") ;
+
+#Context()->{format}{number} = "%.1f#"; 
+
+BEGIN_PGML
+
+Use the formula for compound interest,
+>>[``A=P\left(1+\dfrac{r}{n} \right)^{nt} ``]<<
+
+
+How long will it take a sum of money to [$triple] if it is invested at [$r0]% compounded [$freq]?  Give you answer accurate to the nearest tenth of a year.
+
+[______]{$ans->cmp(  tolType => 'absolute',  tolerance => .05,)} years
+
+END_PGML
+
+
+
+BEGIN_PGML_SOLUTION
+
+We have [` A = [$k] P `], [` r = [$r]`], and [` n=[$n]`]. Substituting into the formula for compound interest, 
+>>[``
+\begin{align*}
+[$k] P &=P \left(1+\frac{[$r]}{[$n]} \right)^{[$n] t } &&\text{Divide by } P.  \\
+[$k] &= \left(1+\frac{[$r]}{[$n]} \right)^{[$n] t }  &&\text{Take logarithms. }  \\
+\log [$k] &= \log \left(   1+\frac{[$r]}{[$n]} \right)^{[$n] t } \\
+\log [$k] &=  [$n] t  \log \left(   1+ [$r] / [$n] \right) \\
+\dfrac{\log [$k]}{ [$n]  \log(    1+ [$r] / [$n]) }  &=   t  \\
+[$ans] & \approx   t  
+\end{align*}
+``]<<
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

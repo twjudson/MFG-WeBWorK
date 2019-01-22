@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: linear equation; intercept form of line
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear equation', 'line', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  "AnswerFormatHelp.pl",
+  "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+  
+
+Context("Point");
+Context()->variables->add(m=>"Real",b=>"Real");
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+a. 
+Find the [`y`]-intercept of the line [` y=mx+b`].
+    [_______]{" (0,b) "}.  [@AnswerFormatHelp("points") @]*
+
+b. 
+Find the [`x`]-intercept of the line [` y=mx+b`].
+    [_______]{" (-b/m,0) "}.  [@AnswerFormatHelp("points") @]*
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The [`x`]-intercept occurs when [`y=0`], and the [`y`]-intercept occurs when [`x=0`].
+
+a. 
+[`  (0,b)  `]
+b. 
+[`  (-b/m,0) `]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

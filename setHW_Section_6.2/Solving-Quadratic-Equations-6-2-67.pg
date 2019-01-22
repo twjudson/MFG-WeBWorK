@@ -1,0 +1,75 @@
+##DESCRIPTION
+##  Algebra problem: quadratic (with square already completed); literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('4/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('67')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(a=>"Real",b=>"Real");
+#No variatiobn
+
+
+$sum = Formula(" -b/a");
+
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+What is the sum of the two solutions of the quadratic equation [`ax^2 + bx + c = 0`]?  
+_Hint_: The two solutions are given by the quadratic formula.
+  
+
+[________]{$sum}   
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+Add [` \dfrac{-b + \sqrt{b^2-4ac}}{2a} `] to [` \dfrac{-b - \sqrt{b^2-4ac}}{2a} `]. Notice that the radicals cancel each other.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

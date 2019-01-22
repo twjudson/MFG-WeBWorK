@@ -1,0 +1,143 @@
+##DESCRIPTION
+##  Algebra problem: write formula for transformation of basic function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'translation', 'scale','reflection')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.3')
+## Problem1('63')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mca = new_checkbox_multiple_choice();
+
+$mca->qa(
+"The two transformations are",  
+"a translation 1 unit right.$BR",                
+"a translation 4 units up.$BR",
+);
+
+$mca->extra(
+"a translation 1 unit left.$BR",                
+"a reflection across the \(x\)-axis.$BR",
+"a translation 4 units down.$BR",
+);
+#$mca->makeLast("none of the above");
+
+$mcaf = new_multiple_choice();
+$mcaf->qa(
+"A formula for graph (a) is ",  "\( y=f(x-1)+4\)");
+
+$mcaf->extra(
+" \( y=f(x+1)+4\)",
+ "\( y=f(x-1)-4\)",
+ "\( y=f(x-4)+1\)",
+ "\( y=f(x+4)+1\)",
+);
+
+
+$mcb = new_checkbox_multiple_choice();
+
+$mcb->qa(
+"The two transformations are",  
+"a vertical stretch by a factor of 2.$BR",                
+"a translation by 4 units up.$BR",
+);
+
+$mcb->extra(
+"a vertical stretch by a factor of 4.$BR",                
+"a reflection across the \(x\)-axis.$BR",
+"a translation 2 units up.$BR",
+);
+#$mcb->makeLast("none of the above");
+
+$mcbf = new_multiple_choice();
+$mcbf->qa(
+"A formula for graph (b) is ",  "\( y= 2f(x)+4\)");
+
+$mcbf->extra(
+" \( y=4f(x)+2\)",
+ "\( y=4f(x)-2\)",
+ "\( y=2f(x)-4\)",
+ "\( y=-2f(x)+4\)",
+);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Each graph can be obtained by two transformations of the given graph. Describe the transformations and write a formula for the new graph in terms of [`f`].
+
+
+>>[@ image( "fig-2-3-63.png", width=>654, height=>242,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+(a) 
+
+[@ $mca -> print_q() @]***
+[@ $mca -> print_a() @]***
+
+    [@ $mcaf -> print_q() @]***
+[@ $mcaf -> print_a() @]***
+
+(b) 
+
+[@ $mcb -> print_q() @]***
+[@ $mcb -> print_a() @]***
+
+    [@ $mcbf -> print_q() @]***
+[@ $mcbf -> print_a() @]***
+ 
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( checkbox_cmp( $mca->correct_ans() ) );
+ANS( radio_cmp( $mcaf->correct_ans() ) );
+ANS( checkbox_cmp( $mcb->correct_ans() ) );
+ANS( radio_cmp( $mcbf->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+
+ENDDOCUMENT();  

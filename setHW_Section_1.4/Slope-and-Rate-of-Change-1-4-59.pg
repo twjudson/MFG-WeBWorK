@@ -1,0 +1,110 @@
+##DESCRIPTION
+##  Algebra problem: vertical change on a non-linear graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/29/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('59')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "PGgraphmacros.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+$mc = new_multiple_choice();
+$mc->qa(
+"An algebraic expression for the increase in \(y\) as \(x\) increases from 2 to 
+3:",  "\( H(3)-H(2) \)");
+$mc->extra(
+"1",
+"\(H(1)\)",
+"\( H(2-3) \)",
+);
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"An algebraic expression for the increase in \(y\) as \(x\) increases from \(a\) to 
+\(b\):",  "\( g(b) -g(a) \)");
+$mc1->extra(
+"\(b-a\)",
+"\(f(a-b)\)",
+"\( f(b-a) \)",
+);
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Find the coordinates of the indicated points, and then write an algebraic expression using function notation for the indicated quantity.
+
+a. 
+[@ image( "fig-ex-1-4-59a.png", width=>218, height=>184,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+b. 
+[@ image( "fig-ex-1-4-59b.png", width=>233, height=>216,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+    [@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The two points are [`(2, H(2))`] and [` (3,H(3))`]. The increase in [`y`] is the increase from [`H(2)`] to  [`H(3)`].
+
+b. 
+The two points are [`(a, g(a))`] and [` (b,g(b))`]. The increase in [`y`] is the increase from [`g(a)`] to  [`g(b)`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

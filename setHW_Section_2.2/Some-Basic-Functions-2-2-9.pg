@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: order of operations with absolute value
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'absolute value', 'order of operations')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('9')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+do {$a = random(1,7);
+  $b = random(2,9);} until ($a < $b  &&  $a+$b < 13);
+$ansa = abs($a - $b) ;
+$k = $a - $b;
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Simplify each expression according to the order of operations.
+
+[`  \Bigl| \,  \left| -[$a] \right| - \left| -[$b] \right|\,\Bigr|   =`][___]{$ansa}
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`   \begin{aligned}
+    \left|   \left| -[$a] \right| - \left| -[$b] \right|\right|   &= \left|   [$a] -[$b] \right| \\
+&=   | [$k] |   \\
+&= [$ansa]
+\end{aligned} 
+ `]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

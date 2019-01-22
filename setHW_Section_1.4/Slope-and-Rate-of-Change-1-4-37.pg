@@ -1,0 +1,142 @@
+##DESCRIPTION
+##  Algebra problem: compute slope from graph and interpret
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('37')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# NO RANDOMNESS!
+
+$m =12;
+$yintercept = 0;
+
+$f = Formula(" $m*x ");
+$x0 = 5;
+$y0 = $f->eval(x=>$x0);
+
+
+$xmin = -2;
+$xmax = 10;
+$xgrid = 12;
+$ymin = -10;
+$ymax = 100;
+$ygrid = 11;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label (0.94*$xmax, 0.05,'f','blue','left','bottom'));
+$gr -> lb(new Label (.2, 0.94*$ymax,'i','blue','left','bottom'));
+foreach my $i (1..4) {
+$xscale =2*$i;
+$yscale =20*$i;
+$gr -> lb(new Label ( $xscale,0.4*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.25*$xmin,$yscale,$yscale,'black','center','middle'));
+};
+
+add_functions( $gr,
+"$f for x in [0, $xmax] using color:red and weight:2");
+$gr->stamps( closed_circle($x0,$y0,'red') );
+
+$mc = new_multiple_choice();
+$mc->qa(
+"What are the units of the slope?",  "inches / foot");
+$mc->extra(
+"feet / inch",
+"feet",
+"inches",
+);
+$mc->makeLast("none of the above");
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Explain what the slope measures in the context of the problem.",  "The slope gives the conversion rate of 12 inches per foot.");
+$mc1->extra(
+"The slope indicates there are 12 feet in an inch.",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The graph shows the length in inches, [`i`], corresponding to various lengths in feet, [`f`].
+
+[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*
+
+a. 
+Choose two points and compute the slope of the graph: [`m=`][____] 
+    
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+d. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+ANS(Compute("$m")->cmp());
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We can use the vertical intercept, that is, the origin, and one other point. [`m = \frac{[$y0]-[$yintercept]}{[$x0]} = [$m]`]. The units of the numerator are inches, and the units of the denominator are feet. 
+    
+b. 
+The slope gives the conversion rate of 12 inches per foot.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

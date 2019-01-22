@@ -1,0 +1,138 @@
+##DESCRIPTION
+##  Algebra problem: functions; tables defining functions; heart rate w/ age
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "niceTables.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+  );
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Does \(f(50) = 2f(25)\)?",  "No");
+
+$mc->extra(
+"Yes"
+);
+
+$a0 = Compute("60");
+
+
+$mc2 = new_multiple_choice();
+$mc2->qa(
+"Is \(r=f(a)\) an increasing function or a decreasing function?",  "Decreasing");
+
+$mc2->extra(
+"Increasing"
+);
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Is \(f(a)=2a\) for all values of \(a\)?",  "No");
+
+$mc1->extra(
+"Yes"
+);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+When you exercise, your heart rate should increase until it reaches your target heart rate. The table shows target heart rate, [`r=f(a)`],  as a function of age.
+
+[@
+DataTable(
+  [
+    ['\(a \)', "20","22","30 ","35 ","40","45","50 ","55 ","60", "65", "70"]  ,
+    ['\(r \)', "150","146","142","139 ","135" , "131","127","124","120","116","112" ]
+  ], 
+  caption => 'Target Heart Rate', 
+  align => '| c | c |  c |   c |   c |   c | c |  c |   c |   c |   c | c |   c |   ',
+  midrules=>1,
+ );
+@]***
+
+
+a. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+b. 
+Find a value for [`a`] for which [`f(a) = 2a`].  [`a=`][____]
+
+    [@ $mc1 -> print_q() @]***
+    [@ $mc1 -> print_a() @]***
+
+
+c. 
+[@ $mc2 -> print_q() @]***
+[@ $mc2 -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS($a0->cmp);
+ANS( radio_cmp( $mc1->correct_ans() ) );
+ANS( radio_cmp( $mc2->correct_ans() ) );
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+The first column of the table lists the inputs, the second column lists the outputs, that is, the second column corresponds to values of the form [`T(x)`] when [`x`] is an input value.
+
+a. 
+[` f(50)= 127`] and [`2f(25) = 2\cdot 146 = 292`]; the two values are unequal.
+
+b. 
+[` f(60)= 120`] and [`2\cdot 60 = 120`], but in no other case is [`f(a)=2a`].
+
+c. 
+The values of [`r`] decrease as the values of [`a`] increase, that is, the target heart rate decreases with age. 
+
+END_PGML_SOLUTION
+
+
+ENDDOCUMENT();        

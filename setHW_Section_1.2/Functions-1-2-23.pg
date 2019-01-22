@@ -1,0 +1,117 @@
+##DESCRIPTION
+##  Algebra problem: functions; identifying tables defining functions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "niceTables.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# no randomness
+@x = (34,36,35,29,31,35,34);
+@y = (42,44,47,50,52,51,49);
+
+$mc0 = new_multiple_choice();
+$mc0->qa(
+"Does the table define the second variable as a function of the first variable?",  "No.");
+
+$mc0->extra(
+"Yes.",
+);
+
+
+$mc = new_multiple_choice();
+$mc -> qa ("Explain why or why not.", 
+"There is a value of the first variable with more than one associated value for the second variable. $BR"
+);
+$mc -> extra(
+"Each value of the first variable has only one associated value for the second variable. $BR",
+"There is a value of the second variable with more than one associated value for the first variable. $BR",
+"Each value of the second variable has only one associated value for the first variable. $BR",
+);
+$mc->makeLast("none of the above");
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+[@
+DataTable([
+[DataTable([
+   ["",['Temperature (\(T\))',header=>"CH"],['Humidity (\(h\))',header=>"CH"]],
+   [["Jan. 1",header=>"RH"],"\\($x[0]^\\circ \\) F","\\( $y[0] \\)%"],
+   [["Jan. 2",header=>"RH"],"\\($x[1]^\\circ \\) F","\\( $y[1] \\)%"],
+   [["Jan. 3",header=>"RH"],"\\($x[2]^\\circ \\) F","\\( $y[2] \\)%"],
+   [["Jan. 4",header=>"RH"],"\\($x[3]^\\circ \\) F","\\( $y[3] \\)%"],
+   [["Jan. 5",header=>"RH"],"\\($x[4]^\\circ \\) F","\\( $y[4] \\)%"],
+   [["Jan. 6",header=>"RH"],"\\($x[5]^\\circ \\) F","\\( $y[5] \\)%"],
+   [["Jan. 7",header=>"RH"],"\\($x[6]^\\circ \\) F","\\( $y[6] \\)%"],
+  ], 
+  caption => 'Table of values for two variables', 
+  midrules=>1,align=>"|c c|c|")]
+])
+@]***
+
+
+
+[@ $mc0 -> print_q() @]***
+[@ $mc0 -> print_a() @]***
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+ANS( radio_cmp( $mc0->correct_ans() ) );
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+Each input of a function has exactly one output associated with it. (A function is allowed but not required to have an output value with more than one associated input value.)
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

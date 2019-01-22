@@ -1,0 +1,141 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('33')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"AnswerFormatHelp.pl",
+"unionTables.pl",
+"PGchoicemacros.pl",
+"parserRoot.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+parser::Root->Enable;
+Context()->variables->add(t=>"Real", v=>"Real", n=>"Real", z=>"Real", r=>"Real",y=>"Real" , w=>"Real",u=>"Real" );
+
+@variables = ("x", "t", "v", "n", "z", "r","w", "u");
+@functions = ("f", "g", "h", "F", "G", "H", "h", "T", "Q", "P", "S");
+$i = random(0,$#variables-1);
+$x=@variables[$i];
+
+@slice = NchooseK($#functions,2);
+@f_name=@functions[@slice];
+
+$a = non_zero_random(-9,9);
+do { $b = non_zero_random(-9,9);} until ((abs($b) != abs($a)) and ( abs($b) != 1)  );
+#do { $c = non_zero_random(1, 10); } until ((abs($c) != abs($a)) and ( abs($c) != abs($b)));
+
+$f = Formula("$a+$b* root(3,$x)")->reduce;
+
+
+$r0 = non_zero_random(-3,3);
+do { $r1 = non_zero_random(-3,3);} until (abs($r1) != abs($r0));
+$x0=Compute($r0**3);
+$x1=Compute($r1**3);
+
+$y[0] = $f->eval($x=>$x0);
+$y[1] = $f->eval($x=>$x1);
+
+$mc[0]  = new_multiple_choice();
+$mc[0] ->qa(
+"Is the value $y0 in the range?",  "Yes");
+$mc[0] ->extra("No");
+$mc[0] ->makeLast("No");
+
+$mc[1]  = new_multiple_choice();
+$mc[1] ->qa(
+"Is the value $y1 in the range?",  "Yes");
+$mc[1] ->extra("No");
+$mc[1] ->makeLast("No");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+Decide whether the given value is in the range of the function. If so, find the domain value(s) that produce each range value.
+$BR
+\[ $f_name[0]($x)=$a+$b \sqrt[3]{$x} \] 
+
+(a) \(  $f_name[0]($x)=$y[0] \):  
+$BR
+
+\{ $mc[0] ->print_q() \}
+$BR
+\{ $mc[0] ->print_a() \}
+
+\($x=\)  \{ans_rule(3)\} $SPACE (Enter "DNE" if \($y[0]\) is not in the range.)
+$BR
+$BR
+(b) \(  $f_name[0]($x)=$y[1] \):  
+$BR
+
+\{ $mc[1] ->print_q() \}
+$BR
+\{ $mc[1] ->print_a() \}
+
+\($x=\)  \{ans_rule(3)\} $SPACE (Enter "DNE" if \($y[1]\) is not in the range.)
+$BR
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( radio_cmp( $mc[0] ->correct_ans() ) );
+ANS( Compute($x0)->cmp() );
+ANS( radio_cmp( $mc[1] ->correct_ans() ) );
+ANS( Compute($x1)->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The value \($y[0]\) is in the range when  there is a point (or points) on the graph with that `y`-value. We can try to read off approximate values of `$x` for the desired \(y=$y[0]\), or we can solve the equation \($a+$b \sqrt[3]{$x} = $y[0]\).
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

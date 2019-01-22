@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Functions as Mathematical Models')
+## Date('9/10/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.4')
+## Problem1('11')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGchoicemacros.pl",
+#"PGgraders.pl",
+);
+
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+# Create and use pop up lists 
+$tf = new_select_list();
+$tf->rf_print_q(~~&pop_up_list_print_q);
+
+# Specify choices presented to students
+$tf->ra_pop_up_list( 
+[ No_answer => "?", "I"=>"I", "II"=>"II", "III"=>"III", "IV"=>"IV",] );
+
+# Questions and answers
+$tf -> qa ( 
+"The volume of a cylindrical container of constant height as a function of its radius.",
+"II",
+"The time it takes to travel a fixed distance as a function of average speed.",
+"IV",
+"The simple interest earned at a given interest rate as a function of the investment.",
+"I",
+"The number of Senators present versus the number absent in the U.S. Senate.",
+"III",
+);
+
+# How many questions to use
+$tf->choose(4);
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_TEXT
+Match each graph with the function it illustrates.
+
+$BCENTER
+\{ image( "fig-ex-2-4-11.png",  width=>400, height=>400  ) \}
+$ECENTER
+
+$BR
+\{ $tf-> print_q \}
+END_TEXT
+
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+install_problem_grader(~~&std_problem_grader);
+$showPartialCorrectAnswers = 0;
+
+ANS(str_cmp($tf->ra_correct_ans));
+
+ENDDOCUMENT();        

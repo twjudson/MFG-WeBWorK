@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model: rectangle with fixed perimeter
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(w=>"Real", A=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$p= random(80, 240, 20); # was 100;
+$sp = $p/2;
+$l = Formula("$sp - w");
+$f = Formula("w*$l");
+$wv = $sp/2;
+$Av = $f->eval(w=>$wv);
+
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+As part of a collage for her art class, Sheila wants to enclose a rectangle with [$p] inches of yarn.
+
+a. 
+Let [`w`] represent the width of the rectangle, and write an expression for its length. Then write an expression in terms of [`w`] for the area, [`A`], of the rectangle.  
+Length: [_____]{$l}; area: [_______]{$f}
+b. 
+What is the area of the largest rectangle that Sheila can enclose with [$p] inches of yarn?  
+The largest area is [____]{$Av} sq in.
+ 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Because [`2(w+l) = [$p]`], [`l = [$sp] - w`].  
+b. 
+The max occurs at the vertex of the parabola [`A = [$f]`]. The horizontal coordinate is [`w=[$sp]/2 = [$wv]`], and evaluating [`[$f]`] with  [`w=[$wv]`], we find that the maximum area is [$Av] square inches.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

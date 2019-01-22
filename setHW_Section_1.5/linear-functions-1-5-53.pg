@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Algebra problem: linear functions: matching graphs with equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'point-slope', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('2/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.5')
+## Problem1('53')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+###########################
+
+@QA = (
+" \( y= \frac{3}{4} x -2 \)", 
+"fig-ex-1-5-53a.png", 
+"\( y= \frac{3}{4} x +2 \)", 
+"fig-ex-1-5-53b.png",
+"\( y= \frac{-3}{4} x +2 \)", 
+"fig-ex-1-5-53c.png",
+"\(y= \frac{-3}{4} x -2 \)", 
+"fig-ex-1-5-53d.png",
+);
+
+$ml = new_image_match_list(
+  link => 1,                #  do not link to separate image
+  size => [180,180],        #  image width, height in pixels
+  tex_size => 310,          #  tex size in precent times 10
+  columns => 4,             #  number of columns
+  separation => 20,         #  space between images
+);
+
+$ml->rf_print_q(~~&pop_up_list_print_q); # use pop-up-lists
+$ml -> ra_pop_up_list(
+[ No_answer=>"?", A=>"A", B=>"B", C=>"C", D=>"D" ] );
+
+$ml->qa(@QA);               #  set the questions and answers
+$ml->choose(4);             #  select 4 of them
+#$ml->choose_extra(1);      #  and show the other 1
+
+
+##############################################################
+BEGIN_TEXT
+
+Choose the correct graph for each equation. The scales on both axes are the same.
+
+$BR
+\{$ml->print_q\}
+$BR
+\{$ml->print_a\}
+
+
+END_TEXT
+
+
+##############################################################
+#
+install_problem_grader(~~&std_problem_grader);
+$showPartialCorrectAnswers = 0;
+
+ANS(str_cmp($ml->ra_correct_ans));
+
+
+ENDDOCUMENT();     

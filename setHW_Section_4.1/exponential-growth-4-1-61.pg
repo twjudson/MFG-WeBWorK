@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--exponential decay via percent loss
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/13/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('61')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+#"contextFraction.pl"
+ "PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$r0 = random(3,10); #text had 8
+do{$t0 = random(4,8);} until ($t0 != $r0); #text had 6;
+$gain = $r0 * $t0;
+$factor = 1+$gain/100;
+$b = $factor**(1/$t0);
+$rate = 100*($b-1);
+$about= Round(100*($b-1),2);
+$r0 = $gain/$t0;
+
+
+$mc  = new_multiple_choice();
+$mc ->qa(
+"Is she correct?",  "No");
+$mc->extra("Yes");
+$mc ->makeLast("No");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+Francine says that if a population grew by [$gain]% in [$t0] years, then it grew by [$r0]% per year. 
+  [@ $mc->print_q() @]*
+  [@ $mc->print_a() @]*
+Either justify or correct her calculation. The growth rate grew by [_____]% per year.
+
+
+END_PGML
+
+
+#$showPartialCorrectAnswers = 1;
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+ANS( Compute("$rate")->cmp( tolType => 'absolute',  tolerance => .05,));
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+No, an increase of [$gain]% in [$t0] years years corresponds to a growth factor of [`[$factor]^{1/6}\approx [$b]`], or an annual growth rate of about [$about]%.
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

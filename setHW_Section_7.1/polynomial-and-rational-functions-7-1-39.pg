@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('11/5/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('39')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+$n =  random(3, 9, 3);
+
+Context()->variables->add(y=>"Real");
+
+$poly = Compute("x^3*y^$n - 1");
+
+#
+#  Expanded form
+#
+
+$expandedform = Formula("(x*y^($n/3) - 1)*(x^2*y^(2*$n/3) + x*y^($n/3) + 1)");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+Factor the polynomial \( $poly \) completely.
+$BR
+$BR
+\{ ans_rule(30) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $expandedform->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

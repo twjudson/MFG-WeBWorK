@@ -1,0 +1,108 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--exponential decay word problem
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('39')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"PGgraphmacros.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add(   S => "Real" , t=>"Real");
+
+$rate = 20;
+$left = 100 - $rate;
+$b = $left/100;
+do {$c0 = random(6,9) / 10; # was 0.7;
+      $effective = (2,6) / 10;} until ($effective < $c0 -.3);
+$factor = "$effective/$c0";
+
+$f = Formula(" $c0 * $b^t ");
+$t = Compute("log($factor)/log($b)");
+$tdisplay = "\dfrac{\log($factor)}{\log($b)}";
+
+#for solution
+#  Graph canvas
+#
+$xmax=2 * $t;
+$ymax=1.2* $c0;
+$xmin = -.15*$xmax;
+$ymin = -.1*$ymax;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],size=>[300,300]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label (0.95*$xmax,0,'t','blue','left','bottom'));
+$gr -> lb(new Label (-.2*$xmin,0.92*$ymax,'C(t)','blue','left','bottom'));
+$gr -> lb(new Label (.1*$xmin,$c0, $c0,'blue','right','bottom'));
+$gr -> lb(new Label ($t,1.1*$effective,"($t, $effective)",'blue','left','bottom'));
+$gr->stamps( closed_circle($t,$effective,'red') );
+
+
+add_functions( $gr,
+               "$f for t in [0,$xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+Context()->texStrings;
+BEGIN_PGML
+
+The concentration of a certain drug injected into the bloodstream decreases by [$rate]% each hour as the drug is eliminated from the body. The initial dose creates a concentration of [$c0] milligrams per milliliter.
+
+a. 
+Write a function for the concentration of the drug as a function of time.
+
+[` C(t) =`][__________]{$f}  
+b. 
+The minimum effective concentration of the drug is [$effective] milligrams per milliliter. When should the second dose be administered? Round your answer to the nearest tenth of an hour.  
+[_______]{$t->cmp(  tolType => 'absolute',  tolerance => .05,)} hours  
+
+
+Verify your answer with a graph.
+
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+If the concentration decreases by [$rate]% each hour, then what remains is [$left]%, and the decay factor is [$b].  
+b. 
+We solve for when concentration is [` [$effective]`]:
+
+>>[` \begin{aligned}
+  [$c0] \cdot [$b]^t  & =  [$effective]   \\
+  [$b]^t  & =  [$factor]   \\
+  \log [$b]^t  & =  \log [$factor]   \\
+   t \log[$b]  & =   \log [$factor] \\
+    t  & = [$tdisplay]
+    \end{aligned}
+`]<<
+[@image(insertGraph($gr), width=>200, height=>200, tex_size=>700)@]*
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

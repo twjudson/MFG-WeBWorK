@@ -1,0 +1,156 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('19')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+
+Context()->variables->add(t=>'Real');
+$v = random(1,5) * 16;
+$f = Compute("-16t^2 + $v * t");
+
+$tmax = $v/16 ;
+$hmax=$f->eval(t=>$tmax/2);  ;
+
+$mc = new_multiple_choice();
+$mc->qa(
+"The domain gives values of",  "time the ball was in the air.");
+
+$mc->extra(
+"height of the ball in the air.",
+"cost of the ball.",
+);
+$mc->makeLast("none of the above");
+
+$mc2 = new_multiple_choice();
+$mc2->qa(
+"The range gives values of", "height of the ball in the air.");
+
+$mc2->extra(
+ "time the ball was in the air.",
+"cost of the ball.",
+);
+$mc2->makeLast("none of the above");
+
+
+#
+Context("Inequalities")->variables->are(t=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+Context()->flags->set(ignoreEndpointTypes => 1);
+
+$domain = Compute("[0, $tmax]");
+Context()->variables->add(h=>"Real");
+$range = Compute("[0, $hmax]");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+The height of a golfball, in feet, \(t\) seconds after being hit is given by the function \(h = $f\).
+$BR
+$BR
+(a) Graph the function by hand or with a graphing utility.
+$BR
+
+(b) State the domain and range of the function and explain what they tell us about the golfball.
+$BR
+
+
+Domain:  
+\{ans_rule(10)\}
+$SPACE
+\{AnswerFormatHelp("intervals")\}
+$BR
+$BR
+
+\{ $mc->print_q() \}
+$BR
+\{ $mc->print_a() \}
+$BR
+
+$BR
+Range: \{ans_rule(10)\}
+$SPACE
+\{AnswerFormatHelp("intervals")\}
+$BR
+$BR
+
+\{ $mc2->print_q() \}
+$BR
+\{ $mc2->print_a() \}
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc->correct_ans() ) );
+$showPartialCorrectAnswers = 1;
+ANS( $range->cmp() );
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc2->correct_ans() ) );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain of the function consists of all \(t\) from \(t=0\), when the ball is struck, until it returns to the ground. The ball hits the ground when \(h=0\). so we want the positive solution to the equation \($f = 0\).
+The range consists of all values of \(h\) from \(h=0\) to the highest point on the graph. Because the graph is (part of) a parabola, the maximum occurs at the vertex, and the value of \(t\) there, because of the symmetry of a parabola, is midway between the two \(t\)-intercepts. So we find the vertex \(t\)-value by averaging the endpoints of the domain, then plug that value of \(t\) into \($f\).
+
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

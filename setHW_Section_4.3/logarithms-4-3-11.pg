@@ -1,0 +1,49 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--write logarithmic equivalent to exponential equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('11')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros("PG.pl",
+           "PGbasicmacros.pl",
+           "PGchoicemacros.pl",
+           "PGanswermacros.pl",
+           "PGauxiliaryFunctions.pl",
+           "extraAnswerEvaluators.pl",
+"PGML.pl",
+);
+
+$b = random(2,3);
+$log = random(6,10);
+$power = $b**$log;
+
+
+BEGIN_PGML
+Rewrite the equation in logarithmic form.
+>>[`` [$b]^{[$log]} = [$power] ``]<<
+That is, the given equation is equivalent to [` y = \log_{b} {x} `], where
+
+[`y=`][___]{$log},  
+[` b =`][___]{$b}, and  
+[` x = `][___]{$power}
+
+END_PGML
+
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

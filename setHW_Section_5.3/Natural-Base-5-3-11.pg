@@ -1,0 +1,162 @@
+##DESCRIPTION
+##  Algebra problem: exponential growth of bacteria
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('3/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"niceTables.pl",
+ "PGgraphmacros.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real");
+@x = ( 0, 5, 10, 15, 20, 25, 30, 24);
+
+$N0 = random(5000, 9000, 1000); #was 6000;
+$N1 = 100000;
+$k = random(0.03, 0.05, 0.01); #was 0.04;
+$f = Formula(" $N0 * e**($k*t)");
+
+foreach my $i (0..7) {
+$y[$i] = $f->eval(t=>$x[$i]);
+};
+
+$t1 = Compute(" ln($N1/$N0) / $k ");
+
+
+$xmin = -5;
+$ymin = -2500;
+$xmax=30;
+$ymax=25000;
+$xgrid = ($xmax - $xmin)/5;
+$ygrid = ($ymax - $ymin)/2500;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[500,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.96*$xmax, 0.05,'t','blue','left','bottom'));
+$gr -> lb(new Label ( 1,0.94*$ymax,'N(t)','blue','left','bottom'));
+
+foreach my $i (1..4) {
+$xscale =10*$i;
+$yscale =5000*$i;
+$gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for t in [0, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The number of bacteria in a culture grows according to the function
+
+>>[`` N(t)=N_0 e^{[$k]t}  ``]<<
+
+where [`N_0`] is the number of bacteria present at time [`t=0`] and [`t`] is the time in hours.
+
+a. 
+Write a growth law for a sample in which [$N0] bacteria were present initially.
+
+    [`N(t)=`][__________]{$f->cmp(  )}
+
+b. 
+Make a table of values for [`N(t)`] in 5-hour intervals over the first 30 hours.
+[@
+DataTable(
+  [
+    [ '\(x\)', [$x[0]],[$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]] ]  ,
+    [ '\(f(x)\)', ans_rule(3) , ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(4), ans_rule(4), ans_rule(4) ]
+  ], 
+  caption => 'The function f(x)', 
+  align => '| r | c | c | c | c  |c | c | c  |',
+  midrules=>1,
+ );
+@]***
+
+c. 
+Graph [` N(t)`]
+
+d. 
+How many bacteria were present at [`t=[$x[7]]`] hours?
+
+    Answer: [______] bacteria
+
+e. 
+How much time must elapse (to the nearest tenth of an hour) for the original [$N0] bacteria to increase to 100,000?
+
+    Answer: [_____] hours
+
+
+END_PGML
+Context()->normalStrings;
+##
+foreach my $i ( 0..7) {
+  ANS( Compute("$y[$i]")->cmp(  tolType => 'absolute',  tolerance => 50, ) );
+};
+
+ ANS( $t1->cmp(  tolType => 'absolute',  tolerance => .05, ) );
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[`N_0`] is the initial population, in this case, [`N_0 = [$N0]`].
+
+b. 
+Evaluate [`[$f]`] for [`t`] values from 0 to 30.
+
+c. 
+[@image(insertGraph($gr), width=>300, height=>300, tex_size=>700)@]***
+
+
+d. 
+Evaluate [`[$f]`] for [`t=24`]: [`N(24) = [$y[7]]`].
+
+e. 
+Solve [`[$f] = [$N1]`] by dividing both sides of the equation by [`[$N0]`], taking natural logarithms, then dividing by [$k].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

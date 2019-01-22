@@ -1,0 +1,127 @@
+##DESCRIPTION
+##  Algebra problem: solve equations and inequalities from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'inequality')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('17')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#Context()->variables->add(t=>"Real",);
+
+$f = Formula("1/x");
+$g = Formula("1/x^2");
+
+$xl = 1;
+
+Context("Interval");
+#Context()->variables->are(t=>"Real",);
+$int1 = Compute("  (1, inf) ");
+
+
+$xmin = -3;
+$xmax = 3;
+$xgrid = $xmax - $xmin;
+$ymin = -5;
+$ymax = 5;
+$ygrid = $ymax - $ymin;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label (0.94*$xmax, 0.05,'t','blue','left','bottom'));
+$gr -> lb(new Label (.2, 0.94*$ymax,'W','blue','left','bottom'));
+
+foreach my $i (1..4) {
+$xscale =1*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+};
+
+add_functions( $gr,
+"$f for x in [$xmin, -0.1] using color:red and weight:2",
+"$g for x in [$xmin, -0.1] using color:blue and weight:2",
+"$f for x in [0.1,$xmax] using color:red and weight:2",
+"$g for x in [0.1, $xmax] using color:blue and weight:2",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>[``f(x) = [$f]``],  [``g(x) = [$g]``]<<
+
+a. 
+Sketch both functions on the same grid, paying attention to the shape of the graph. Plot at least three guidepoints for each graph to ensure accuracy.
+
+b. 
+Use the graph to find all solutions of the equation [` f(x) = g(x)`]: [___]{$xl} [@AnswerFormatHelp("numbers") @]* (Separate different solutions with commas.)
+
+c. 
+On what interval is  [` f(x) > g(x)`]: [___________]{$int1} [@AnswerFormatHelp("intervals") @]*
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*
+
+b. 
+The two curves meet at the point [`(1,1)`]. We find the [`x`]-value of that point of intersection.
+
+c. 
+The graph of [`f`] is above the graph of [`g`] only from the point of intersection onwards.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

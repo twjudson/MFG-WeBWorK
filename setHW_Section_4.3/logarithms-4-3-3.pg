@@ -1,0 +1,59 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--evaluate by definition
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('1')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros("PG.pl",
+           "PGbasicmacros.pl",
+           "PGchoicemacros.pl",
+           "PGanswermacros.pl",
+           "PGauxiliaryFunctions.pl",
+           "extraAnswerEvaluators.pl",
+"PGML.pl",
+);
+  Context()->flags->set(     reduceConstants => 0,
+     reduceConstantFunctions => 0,
+  );
+
+do{$b1 = random(2,12);} until ( ($b1 != 4) and ($b1 != 9));
+$ans1 = Compute("1/2");
+
+$ans2 =Compute("-1");;
+
+
+BEGIN_PGML
+Find the exact value for each expression:
+  
+a. 
+[` \log_{[$b1]} \sqrt{[$b1]} =`][___]{$ans1}  
+b. 
+[` \log_{[$b1]} \dfrac{1}{[$b1]}   =`] [___]{$ans2}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+If we rewrite [`\sqrt{[$b1]}`] as [`[$b1]^{[$ans1]}`], then we see that by the definition of logarithms, [` \log_{[$b1]} [$b1]^{[$ans1]}=[$ans1]`].  
+b. 
+We rewrite [`\dfrac{1}{[$b1]} `] as [`[$b1]^{[$ans2]}`], and by the definition of logarithms, [` \log_{[$b1]} [$b1]^{[$ans2]}=[$ans2]`].  
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

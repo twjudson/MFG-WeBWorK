@@ -1,0 +1,104 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--growth factor and percent growth rate
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/7/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('9')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+
+$F[0] = 1 + random(1,9) /10;
+$F[1] = 1 + random(1,9) / 100;
+$F[2] = 1 + random(15, 95, 10) /1000;
+$F[3] = 2.0;
+$F[4] = 2 + random(11, 99) / 100;
+
+foreach my $i ( 0..4 ) { 
+  $p[$i] = ($F[$i] - 1)*100;
+};
+
+
+
+
+
+##################
+
+
+BEGIN_PGML
+
+The table shows the growth factor for a number of different populations. For each population, find the percent growth rate.  
+  
+
+[@
+DataTable(
+  [
+    [ 'Population  ', '\(A\)', '\(B\)', '\(C\)', '\(D\)', '\(E\)' ]  ,
+    [ 'Growth factor', $F[0], $F[1], $F[2], $F[3],$F[4] ],
+    [ 'Percent growth rate (%)', ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2)  ]
+  ], 
+  caption => 'Growth factors and percent growth rate', 
+  align => '| l | c | c | c | c | c |',
+  midrules=>1,
+ );
+@]***
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+Subtract 1 from [$F[0]] and multiply the result by 100.  
+Subtract 1 from [$F[1]] and multiply the result by 100.  
+Subtract 1 from [$F[2]] and multiply the result by 100.  
+Subtract 1 from [$F[3]] and multiply the result by 100.  
+Subtract 1 from [$F[4]] and multiply the result by 100.  
+
+END_PGML_SOLUTION
+
+foreach my $i (0..4) { 
+ANS(Compute($p[$i])->cmp);
+}
+
+ENDDOCUMENT(); 

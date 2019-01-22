@@ -1,0 +1,169 @@
+##DESCRIPTION
+##  Algebra problem: quadratic formula; braking distance
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('3/31/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.2')
+## Problem1('39')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+"niceTables.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(t=>"Real",h=>"Real");
+
+Context()->{format}{number} = "%.1f#";  
+
+$h0 = 11000;
+$delt = 5;
+$f = Formula(" -16*t^2 -16*t + $h0 ");
+
+foreach my $i (0..5) {
+$t[$i] = $delt*$i;
+$h[$i] = $f->eval(t=>$t[$i] );
+} ;
+
+
+$g = Formula("sqrt($h0 - h + 4)/4-1/2");
+$h1 = random(1000, 2000, 500); #was 1000;
+$t1 = $g->eval(h=>$h1);
+
+$h2 = 0;
+$t2 = $g->eval(h=>$h2);
+$tmarker = $t2 - $t1;
+
+#  Graph canvas
+#
+$xmin = -5;
+$ymin = -1000;
+$xmax=30;
+$ymax=12000;
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[7, 13],size=>[400,300]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+foreach my $i (1..10) {
+ $xscale =5*$i;
+ $yscale =2000*$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for t in [0, 25.72] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($t1,$h1,'red') );
+$gr -> lb(new Label (0.8* $t1,$h1, "($t1,$h1)",'black','center','middle'));
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+ A skydiver jumps out of an airplane at [$h0] feet. While she is in free-fall, her altitude in feet [`t`] seconds after jumping is given by
+>>[``h = [$f] ``]<<  
+
+a. 
+Make a table of values showing the skydiver's altitude at [$delt]-second intervals after she jumps from the airplane.  (Use the *Table* feature of your calculator.)  
+[@
+DataTable(
+  [
+    [ '\(t\)', '0', '5',  '10', '15',  '20',  '25'  ]  ,
+    [ '\(h\)', ans_rule(2),  ans_rule(2), ans_rule(2),  ans_rule(2),  ans_rule(3), ans_rule(3)    ]
+  ], 
+  caption => 'Table of skydiver heights', 
+  align => '| c | c | c | c |c | c | c |  ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+Graph the equation for [`h`] in terms of [`t`]. Use your table values to help you choose appropriate window settings.  
+c. 
+Write and solve an equation to answer the question: If the skydiver must open her parachute at an altitude of [$h1] feet, how long can she free-fall? Write and solve an equation to find the answer, and give the answer to the nearest tenth of a second.  
+Equation: [`[$f] =`][___] ; solution: [____] sec  
+d. 
+If the skydiver drops a marker just before she opens her parachute, how long will it take the marker to hit the ground? Give the answer to the nearest tenth of a second. (_Hint_: The marker continues to fall according to the equation given above.)  
+The marker hits the ground [___] sec after the skydiver drops it. 
+e. 
+Find points on your graph that correspond to your answers to parts (c) and (d).
+  
+
+
+
+
+END_PGML
+Context()->normalStrings;
+
+foreach my $i (0..5) {
+ANS(Compute("$h[$i]")->cmp(  tolType => 'absolute',  tolerance => .05,) );
+} ;
+ANS(Compute("$h1")->cmp( ) );
+ANS(Compute("$t1")->cmp(  tolType => 'absolute',  tolerance => .05,) );
+ANS(Compute("$tmarker")->cmp(  tolType => 'absolute',  tolerance => .05,) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Evaluate [`[$f]`] for [`d = 0, 5, \ldots , 25 `].  
+[@
+DataTable(
+  [
+    [ '\(t\)', '0', '5',  '10', '15',  '20',  '25'  ]  ,
+    [ '\(h\)',  "\\( $h[0] \\)", "\\( $h[1] \\)",  "\\( $h[2] \\)", "\\( $h[3] \\)",  "\\( $h[4] \\)",  "\\( $h[5] \\)"  ]
+  ], 
+  caption => 'Table of skydiver heights', 
+  align => '| c | c | c | c |c | c | c | c | ',
+  midrules=>1,
+ );
+@]*** 
+b. 
+[@image(insertGraph($gr), width=>200, height=>250, tex_size=>700)@]*
+c. 
+Solve [`[$f] = [$h1]`]:  [`t = [$t1]`].  
+d. 
+Solve [`[$f] = [$h2]`] to find that the marker hits the ground  [`t = [$t2]`] sec after the skydiver leaves the plane, then subtract [$t1], the time at which the skydiver opens her parachute, to find that the marker took [`t = [$tmarker] `] seconds to reach the ground after release.  
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

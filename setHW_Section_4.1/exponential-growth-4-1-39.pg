@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--solve equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('37')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(r=>"Real");
+
+$n = random(4,12,2);
+do{$a = random(70, 90);} until ( ($a % 10) != 0);
+do{$k = random(1100, 5700);} until ( ($k % 10) !=0);
+$c = $k/100;
+
+$f = Formula("$a ( 1-r )^$n");
+$answer = Formula(" 1 - ($c/$a)**(1/$n)   ");
+
+#Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+
+Solve the equation.  Round your answer to two places if necessary. Assume that the base of a power is a positive number.
+
+[` [$c] = [$f] `]
+[` \qquad r = `][______]{$answer->cmp(  tolType => 'absolute',  tolerance => .005,)}  
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+Divide both sides of the equation by [$a], raise both sides to the exponent [`1/[$n]`], subtract 1 from both sides, then take the opposite of both sides. 
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

@@ -1,0 +1,112 @@
+##DESCRIPTION
+##  Algebra problem: two linear equations in two variables: graphs
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Two Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.1')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context()->variables->add(s=>'Real', t=>'Real');
+#Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+do{$x0 = non_zero_random(-7,7); #was -2;
+} until ($x0 % 5 != 0);
+$y0 = non_zero_random(-7,7); 3;
+
+$m1 = random(2.2,2,8,0.2); #was 2.6;
+$b1 = $y0 - $m1 * $x0;
+
+$m2 = random(-0.8, -0.2, 0.2); #was -0.6;
+$b2 = $y0 - $m2 * $x0;
+
+$f  = Formula(" $m1*x + $b1 ")->reduce;
+$g = Formula("  $m2*x + $b2")->reduce;
+
+
+
+Context("Point");
+$ans=Compute("($x0, $y0)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Solve the system of equations by graphing. Use the window
+
+>>[`\text{Xmin} = -9.4 \qquad \text{Xmax} = 9.4`]<<
+
+>>[`\text{Ymin} = -10 \qquad \text{Ymax} = 10`]<<
+ 
+Verify algebraically that your solution satisfies both equations.
+
+>>[``\begin{align}
+y&= [$f] \\
+y &= [$g] 
+\end{align}``]<<
+
+
+Solution: [____]{$ans}  [@AnswerFormatHelp("points") @]*
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The two lines intersect at the point [`[$ans]`].  We verify that **both** equations are satisfied when [`x=[$x0]`] and [`y=[$y0]`]:
+
+    [` [$y0] = [$m1]([$x0]) +[$b1]`]
+
+and
+
+    [` [$y0] = [$b2] + [$m2]([$x0]) `]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,107 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--doubling time
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/13/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('65')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+#"contextFraction.pl"
+ "PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+#Context("Fraction");
+Context()->variables->add(t=>"Real", r=>"Real");
+
+$P0 = random(5000, 45000, 5000); # was 10000;
+$t1 = random(10, 30, 5); # was 20;
+$b = 2**(1/$t1);
+$r = $b - 1;
+$r_percent = 100*$r;
+
+$P1 = random( 25, 65, 10) * 10**4; # was 350000;
+
+$mc  = new_multiple_choice();
+$mc ->qa(
+"If a population doubles in $t1 years, does the percent increase depend on the size of the original population?",  "No");
+$mc->extra("Yes");
+$mc ->makeLast("No");
+
+
+##############################################################
+
+BEGIN_PGML
+
+
+Assume that each population grows exponentially with constant annual percent increase, [`r`].
+
+a. 
+The population of Rainville was [$P0] in [$Year0] and doubled in [$t1] years. What was the annual percent increase to the nearest hundredth percent? 
+ [____]{Compute("$r_percent")->cmp(  tolType => 'absolute',  tolerance => .005,)}%
+b. 
+The population of Elmira was [$P1] in [$Year0] and doubled in [$t1] years. What was the annual percent increase to the nearest hundredth of a percent? [____]{Compute("$r_percent")->cmp(  tolType => 'absolute',  tolerance => .005,)}%  
+c. 
+  [@ $mc->print_q() @]*
+  [@ $mc->print_a() @]*  
+d. 
+The population of Grayling doubled in [$t1] years. What was the annual percent increase to the nearest hundredth of a percent? [____]
+
+
+END_PGML
+Context()->normalStrings;
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+ANS( Compute("$r_percent")->cmp(  tolType => 'absolute',  tolerance => .005,));
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+We can find the growth factor [` b= 1+r `] by noticing that [` \dfrac{P_0 b^{[$t1]} }{P_0 }  = b^{[$t1]}`], so we find that [` b^{[$t1]} = 2`], then by raising to the exponent 1/[$t1], we find that [`b \approx [$b]`]. Subtracting 1 from [`b`] gives the decimal form of [`r`], and multiplying that value by 100 gives us the percent form of the annual percent growth rate.
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

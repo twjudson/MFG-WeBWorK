@@ -1,0 +1,169 @@
+##DESCRIPTION
+##  Algebra problem: linear model; profit for photocopying
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear model', 'line')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGgraphmacros.pl",
+"PGchoicemacros.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(P=>"Real", t=>"Real");
+
+
+$rate = 40;
+$cost = random(600, 1000, 40); #was 800;
+$f = Formula(" $rate * t  -  $cost ");
+$t0 = $cost/$rate;
+
+
+$xmin = -10;
+$ymin = -1000;
+$xmax=40;
+$ymax=400;
+$xgrid = 10;
+$ygrid = 14;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.95*$xmax, .5,'t','blue','left','bottom'));
+$gr -> lb(new Label ( 1,0.85*$ymax,'P','blue','left','bottom'));
+
+foreach my $i (1..10) {
+$yscale =100*$i;
+$gr -> lb(new Label (-2,-$yscale,-$yscale,'black','center','middle'));
+$gr -> lb(new Label (-2,$yscale,$yscale,'black','center','middle'));
+}
+foreach my $i (1..8) {
+$xscale =5*$i;
+$gr -> lb(new Label ( $xscale,-20, $xscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for t in [0, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$ml = new_match_list();
+$ml->rf_print_q(~~&pop_up_list_print_q);
+$ml->ra_pop_up_list([
+"No answer" => "?",
+"A" => "A", "B" => "B"
+]);
+$ml->qa(
+"The P-intercept ", "Gives the initial profit (or loss).",
+"The t-intercept", "Gives the time required to break even."
+);
+
+# use pop-up-lists
+$ml->rf_print_q(~~&pop_up_list_print_q);
+# you may need to add more letters D=>"D", etc. 
+$ml->ra_pop_up_list([No_answer=>"?",A=>"A",B=>"B",C=>"C",D=>"D"]);
+
+$ml->choose(2);
+
+# to add extra answers that show up in the
+#    matching list, we would uncomment
+#    (remove the leading "# " from) the two
+#    lines below:
+$ml->extra("Gives the maximum profit.", "Tells when the maximum profit occurs.");
+ $ml->choose_extra(2);
+  
+
+
+
+Context("Point");
+$Pint = Point(0,-$cost);
+$tint = Point($t0,0);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Phil and Ernie buy a used photocopier for $[$cost]   and set up a copy service on their campus. For each hour that the copier runs, Phil and Ernie make  $[$rate].
+
+
+a. 
+Write an equation that expresses Phil and Ernie's profit (or loss), [`P`],  in terms of the number of hours, [`t`],  they run the copier.
+    
+    [`P=`][__________]{$f}
+
+b. 
+Find the intercepts and sketch the graph. (Suggestion: Scale the horizontal axis from 
+0  to 40  in increments of 5,  and scale the vertical axis from [`-1000`] to 400  in increments of 
+100.)
+
+    The [`P`]-intercept is [_______]{$Pint}.  [@AnswerFormatHelp("points") @]*
+
+    The [`t`]-intercept is [_______]{$tint}.  [@AnswerFormatHelp("points") @]*
+
+c. 
+What do the intercepts tell us about the profit?:
+[@ $ml -> print_q() @]***
+[@ $ml -> print_a() @]***
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( str_cmp( $ml->ra_correct_ans ) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We subtract the initial cost of [$cost] from the [`[$rate]t`] revenue : [`P =  [$f] `]
+b. 
+[`P`]-intercept [`[$Pint]`]; [`t`]-intercept [`[$tint]`]
+    
+    [@ image(insertGraph($gr), width=>280, height=>280, tex_size=>700) @]*
+
+c. 
+The [`P`]-intercept, [`-[$cost]`], is the initial ([`t=0`] ) value of the profit. Phil and Ernie start out $[$cost] in
+debt. The [`t`]-intercept, [$t0], is the number of hours required for Phil and Ernie to break even. 
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

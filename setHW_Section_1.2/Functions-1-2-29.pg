@@ -1,0 +1,110 @@
+##DESCRIPTION
+##  Algebra problem: functions; identifying tables defining functions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "niceTables.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$y4=15;
+$y3=14;
+$x4 = Compute("(7010+9169)/2"); 
+$delta = (9169-7010)/2;
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+[@
+DataTable(
+  [
+    [ 'Adjusted gross income  (\(I\))', 'Tax bracket (\(T\))' ]  ,
+    [ "\$0 -- 2479", "0% " ],
+    [ "\$2480 -- 3669", "4.5% " ],
+    [ "\$3670 -- 4749", "12%" ],
+    [ "\$4750 -- 7009", "14%" ],
+    [ "\$7010 -- 9169", "15%" ],
+    [ "\$9170 -- 11,649", "16%" ],
+    [ "\$11,650 -- 13,919", "18%" ],
+  ], 
+  caption => 'Table of values for two variables', 
+  align => '| c | c |  ',
+  midrules=>1,
+ );
+@]***
+
+The function described by the table above is called [`T`],  so that [`T=T(I)`].  Find the following:
+
+a. 
+[` T(8750) =`][_____]{$y4} %
+
+b. 
+[`T(6249)=`][_____]{$y3} %
+
+c. 
+A value of [`x`] so that [`T(x)=15`]%:  [`x=`][_____]{$x4->cmp(  tolType => 'absolute',  tolerance => $delta,)}
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+
+BEGIN_PGML_SOLUTION
+
+The first column of the table lists the inputs, the second column lists the outputs, that is, the second column corresponds to values of the form [`T(x)`] when [`x`] is an input value.
+
+a. 
+We find 8750 in the first column, namely in the row with [`\$7010 - 9169`], and the value of [`T(8750)`] is in the second column of the same row: [$y4].
+
+b. 
+We find 6249 in the first column, and the value of [`T(6249)`] is in the second column of the same row: [$y3].
+
+c. 
+We find 15 in the *second* column, and the value we want is in the *first* column of the same row: [$x4]. Any value of [`x`] in the interval of values from 7010 to 9169 is appropriate.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

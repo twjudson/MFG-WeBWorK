@@ -1,0 +1,106 @@
+##DESCRIPTION
+##  Algebra problem: quintic and inverse (compound interest for 5 years)
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('3/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->are(r=>"Real",I=>"Real");
+
+$t = 5;
+$f = Formula("  (1 + r )**$t - 1 ");
+$r0 = 0.05;
+$rate = 100*$r0;
+
+$i0 = sprintf("%0.2f",  $f->eval(r=>$r0) );
+#$i0 = $f->eval(r=>$r0) ;
+
+$i1 =  sprintf("%0.2f",0.50);
+
+$f_inverse = Formula("  (I+1)**(1/$t) - 1 ");
+$r1 =  sprintf("%0.4f", $f_inverse->eval(I=>$i1) );
+$rate1 = sprintf("%0.2f",$r1 * 100);
+
+#Context()->{format}{number} = "%.2f";  
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+  
+The function [`I = g(r ) = [$f] `] gives the interest, [`I`], that a dollar earns in [$t] years in terms of the interest rate, [`r`].
+
+a. 
+Evaluate [`g([$r0]) \approx`][__]{Compute($i0)->cmp(  tolType => 'absolute',  tolerance => .005,)} to two decimal places, and explain its meaning in this context.  
+b. 
+Find the interest rate needed to earn $[$i1] by substituting [`I = [$i1] `] in the formula and solving for [`r`].  
+[`r \approx`][___]{$r1}  to four decimal places 
+c. 
+Find a formula for the inverse function. [`g^{-1}(I) =`][_________]{$f_inverse}  
+d. 
+Write your answer to part (b) with inverse function notation.
+
+[` g^{-1} \big(`][__]{$i1}[` \big) \approx `][___]{$r1}
+
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+A dollar earning an interest rate of [$r0] or [$rate]% for [$t] years yields $[$i0] in interest.
+
+b. 
+An interest rate of [$r1] or [$rate1]% yields $[$i1] in interest.
+
+c. 
+Solving [`I = [$f] `] for [`r`] yields [`r = [$f_inverse]`]. 
+
+d. 
+The input for [`g^{-1}`] is the dollars of interest earned [`I`], and the output is the required rate [`r`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

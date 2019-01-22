@@ -1,0 +1,114 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('11/5/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('47')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+$m = random(7, 9, 1);
+
+
+
+
+
+$area_poly = Formula("(6 - 5*pi/4)*x^2");
+
+
+#
+#  Expanded form
+#
+
+$area = Compute("(6 - 5*pi/4)*$m^2");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+a.  Write a polynomial function, \(A(x)\), that gives the area of the front face of the speaker frame (the region in color) in the figure.
+
+$BR
+$BR
+
+\(A(x) = \) \{ ans_rule(30) \}
+
+
+$BR
+$BR
+
+b. If \(x = $m\) inches, find the area of the front face of the frame.  \{ ans_rule(30) \}
+
+$BR
+$BR
+
+$BCENTER
+\{ image( "fig-7-1-47.png",  width=>200, height=>200  ) \}
+$ECENTER
+
+$BR
+$BR
+
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $area_poly->cmp() );
+
+ANS( $area->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

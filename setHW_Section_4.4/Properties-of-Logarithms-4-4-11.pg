@@ -1,0 +1,75 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--rewriting in terms of simple logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('2/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('11')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"parserMultiAnswer.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", b=>"Real", r=>"Real", m=>"Real", P=>"Real");
+Context()->flags->set(limits=>[1,5]);
+@variables = ("x", "t", "r", "m", "P");
+$i = random(0, $#variables -1);
+$x = $variables[$i];
+
+do{$a = random(3,5);
+  $b = random(2,6);} until ($a != $b);
+
+do{$j = random(0, $#variables -1);} until ($j != $i);
+$t = $variables[$j];
+
+$c = random(1,9);
+
+
+Context()->functions->disable("log");
+
+
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Use the properties of logarithms to expand each expression in terms of simpler logarithms. Assume that all variable expressions denote positive numbers.
+$PAR
+a. 
+\(\log_{b} \sqrt{ b$x }= \)\{ans_rule(2)\}
+\(  + \) \{ans_rule(2)\} \(\cdot \log_{b}\big( \) 
+\{ans_rule(2)\}
+\( \big) \)
+
+$PAR
+
+b. 
+\(\log_{$a} \sqrt[$a]{ $t^{$b}+$c } =\)\{ans_rule(2)\}
+\(\cdot \log_{$a}\big( \) 
+\{ans_rule(5)\}
+\( \big) \)
+
+END_TEXT
+
+ANS( Compute("1/2")->cmp() ); 
+ANS( Compute("1/2")->cmp() ); 
+ANS(Compute("$x")->cmp() ); 
+ANS( Compute("1/$a")->cmp() ); 
+ANS(Compute("$t^{$b}+$c")->cmp() ); 
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

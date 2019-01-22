@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: functions; tables defining functions; percent women 20-24 w/ children
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/17/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "niceTables.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$ans0 = Compute("67.7");
+$ans1 = Compute("1985");
+$ans2 = Compute("1988");
+$ans3 = Compute("1991");
+$ans4 = Compute("1997");
+$ans5 = Compute("64.9");
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Data indicate that U.S. women are delaying having children longer than their counterparts 50 years ago. The table shows [`f(t)`] the percent of 20-24 year-old women in year [`t`] who had not yet had children. (Source: U.S. Dept of Health and Human Services)
+
+[@
+DataTable(
+  [
+    ['Year (\(t \))', "1960","1965","1970 ","1975 ","1980","1985","1990 ","1995 ","2000"]  ,
+    [ 'Percent of women', "47.5","51.4","47.0","62.5 ","66.2" , "67.7","68.3","65.5","66.0" ]
+  ], 
+  caption => 'Table of values for two variables', 
+  align => '| c | c |  c |   c |   c |   c | c |  c |   c |   c |   c |   ',
+  midrules=>1,
+ );
+@]***
+
+
+a. 
+Evaluate [` f(1985)`]  and explain what it means.
+
+    Answer: [` f(1985)=`][____]{$ans0} percent
+
+    In the year [____]{$ans1},  [____]{$ans0}% of 20-24 year old women had not yet had children.
+
+b. 
+Estimate two solutions to the equation [`f(t)=68`] and explain what each means.  
+
+    Answer:  
+    The first solution is [`t\approx`][____]{$ans2->cmp(  tolType => 'absolute',  tolerance => 1,)} , which means that 68% of the 20-24 year old women had not yet had children in the year [____]{$ans2->cmp(  tolType => 'absolute',  tolerance => 1,)}.
+
+    The second solution is [`t\approx`][____]{$ans3->cmp(  tolType => 'absolute',  tolerance => 1,)} , which means that 68% of the 20-24 year old women had not yet had children in the year [____]{$ans3->cmp(  tolType => 'absolute',  tolerance => 1,)}.
+
+c. 
+In 1997, 64.9% of the 20-24-year-old women had not yet had children.  Write an equation with function notation that states this fact.
+
+    [`f \Big(`][____]{$ans4} [` \Big)=`][_____]{$ans5} 
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+The first column of the table lists the inputs, the second column lists the outputs, that is, the second column corresponds to values of the form [`T(x)`] when [`x`] is an input value.
+
+a. 
+We find 1985 in the first row, and the value of [`f(1985)`] is in the second row of the same column: [$ans0].
+
+b. 
+We want to find 68 in the *second* row, and the value of [`t`] we seek is in the *first* row of the same row: [$ans3]. Because 68 lies between 67.7 (from 1985) and 68.3 (from 1990), one solution will be a year between 1985 and 1990. And because 68 lies between 68.3 (from 1990) and 65.5 (in 1995), another solution will be a year between 1990 and 1995.
+
+c. 
+1997 is the input of [`f`] and 64.9 is the ouput.
+
+END_PGML_SOLUTION
+
+
+ENDDOCUMENT();        

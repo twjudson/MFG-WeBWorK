@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: two linear equations in two variables: consistent and independent?
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Two Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.1')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(r=>'Real', s=>'Real');
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+do {$a = non_zero_random(-4,4);
+$b = non_zero_random(-5,5);
+} until ( abs($a1) != abs($b) );
+$f1 = Formula(" r + $a * s ")->reduce;
+$g1 =non_zero_random(-9,9);
+
+$f2 = Formula(" $b*r + s ")->reduce;
+$g2 = non_zero_random(-9,9);
+
+
+
+$popup = PopUp(["select", 
+"dependent", 
+"inconsistent", 
+"consistent and independent"], 
+"consistent and independent");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Use linear combinations to identify the system as dependent, inconsistent, or consistent and independent.
+
+>>[``[$f1] = [$g1]``]<<
+
+>>[``[$f2] = [$g2]``]<<
+
+This system is  [_______]{$popup}
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+This system is consistent and independent because it has a unique solution.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

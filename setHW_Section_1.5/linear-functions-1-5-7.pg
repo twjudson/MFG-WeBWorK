@@ -1,0 +1,106 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Linear Functions')
+## Date('1/19/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.5')
+## Problem1('5')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "contextFraction.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context("Numeric");
+
+$a =random(3,5,1) + 0.2;
+
+
+$b = - random(0,2,5) + 0.3;
+
+$c = random(5,7,1 + 0.6);
+
+
+$ans=Formula("-($a/$b)x + $c/$b");
+
+$slope = Compute("-$a/$b");
+
+$intercept = Compute("$c/$b");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Suppose that 
+\[
+$a x + $b y = $c.
+\]
+
+
+$BR
+$BR
+
+a.  Write the equation in slope-intercept form. \(y =\) \{ ans_rule(30) \}
+
+$BR
+$BR
+
+b.  What is the slope?  \(m =\) \{ ans_rule(30) \}
+
+$BR
+$BR
+
+c.  What is the \(y\)-intercept?  \(b =\) \{ ans_rule(30) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp());
+
+ANS( $slope->cmp() );
+
+ANS( $intercept->cmp() );
+
+
+
+ENDDOCUMENT();        

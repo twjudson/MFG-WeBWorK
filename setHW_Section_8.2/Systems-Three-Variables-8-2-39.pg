@@ -1,0 +1,142 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('39')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+  "contextFraction.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context("Fraction");
+Context()->variables->add(y=>'Real', z=>'Real');
+Context()->flags->set(showMixedNumbers=>1, allowMixedNumbers=>1);
+
+#$k1 = 95;
+#$k2 = 75;
+#$k3 = 100;
+
+$x0 =  random(10, 40, 10); # was20;
+$y0 = random(10, 25, 5); # was 15;
+$z0 = random(10, 30, 10); #was 10;
+
+$P = Point($x0, $y0, $z0);
+
+
+$a11 = 3; #tennis racket glue
+$a12 = 1; #ping-pong racket glue
+$a13 = 2; #squash racket glue
+
+$a21 = 2; #tennis racket sand
+$a22 = 1; #ping-pong racket sand
+$a23 = 2; #squash racket sand
+
+$a31 = 3; #tennis racket finishing
+$a32 = 1; #ping-pong racket finishing
+$a33 = 5/2;  #squash racket finishing
+$a33d = Fraction($a33);  #squash racket finishing
+
+
+$f1 = Formula(" $a11*x + $a12 *y + $a13*z")->reduce;
+$f2 = Formula(" $a21*x + $a22*y + $a23*z")->reduce;
+$f3 = Formula(" $a31*x + $a32*y + $a33*z")->reduce;
+
+$k1 = $f1->eval(x=>$x0, y=>$y0, z=>$z0);
+$k2 = $f2->eval(x=>$x0, y=>$y0, z=>$z0);
+$k3 = $f3->eval(x=>$x0, y=>$y0, z=>$z0);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+
+Solve by using a system of equations.
+
+Ace, Inc. produces three kinds of wooden rackets: tennis rackets, Ping-Pong paddles, and squash rackets. After the pieces are cut, each racket goes through three phases of production: gluing, sanding, and finishing. A tennis racket takes [$a11] hours to glue, [$a21] hours to sand, and 
+[$a31] hours to finish. A Ping-Pong paddle takes [$a12] hour to glue, [$a22] hour to sand, and 
+[$a32] hour to finish. A squash racket takes [$a13] hours to glue, [$a23] hours to sand, and 
+[`[$a33d]`] hours to finish. Ace has available [$k1] labor-hours in its gluing department, 
+[$k2] labor-hours in sanding, and [$k3] labor-hours in finishing per day. How many of each racket should it make in order to use all the available personnel?
+
+a. 
+Identify three unknown quantities and choose variables to represent them.
+
+b. 
+If appropriate, make a table organizing the information in the problem.
+
+c. 
+Write three equations about the variables in the problem.
+
+d. 
+Solve the system and answer the question in the problem.
+
+    Ace should produce [__]{$x0} tennis rackets,  [__]{$y0} Ping-Pong paddles, and  [__]{$z0} squash rackets.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+If we choose [`x`], [`y`], and [`z`] to represent respectively the number of reports for respectively score only, evaluation, and narrative reports, then we can set up the following system.
+
+From the fact that Ace has [$k1] labor-hours inits gluing department available:
+
+>>[`` [$f1] = [$k1] ``]<<
+
+Considering the [$analyze] hours (or [$k2] minutes) for analyzing results:
+
+>>[`` [$f2] = [$k2] ``]<<
+
+And considering the [$print] hours (or [$k3] minutes) for printing results:
+
+>>[`` [$f3] = [$k3] ``]<<
+
+
+The solution to the system is [`[$P]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

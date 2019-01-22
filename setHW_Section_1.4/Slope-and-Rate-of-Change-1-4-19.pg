@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: compute delta x from slope and delta y 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context("Fraction");
+
+#$m = Compute("7/10");
+
+$dely =random(10,16,2);
+$num = 10*$dely;
+$delx = "$num/7";
+
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Residential staircases are usually built with a slope of 70%, or [`\dfrac{7}{10}`].  If the vertical distance between stories is [$dely]  feet, how much horizontal space does the staircase require?
+
+Answer: [____]{Compute("$delx")->cmp(  tolType => 'absolute',  tolerance => .005,)} feet
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+Because [`m = \frac{\Delta y}{\Delta x}`], [`\Delta x = \frac{\Delta y}{m}`]
+
+[`\Delta x = \frac{\Delta y}{m}= [$dely]\div [$m] = [$delx]`]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

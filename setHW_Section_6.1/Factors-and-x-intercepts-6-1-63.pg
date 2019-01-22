@@ -1,0 +1,90 @@
+##DESCRIPTION
+##  Algebra problem: solving area problem--sail
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('63')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "contextLimitedPolynomial.pl",
+"contextPolynomialFactors.pl",
+"contextLimitedPowers.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+
+$A= Formula("1/2 *(x**2-y**2)") ;
+
+Context("PolynomialFactors-Strict");
+Context()->flags->set(singleFactors=>0); LimitedPowers::OnlyIntegers( minPower => 0, maxPower => 1, message => "either 0 or 1", );
+Context()->variables->add(y=>"Real");
+
+$F = Formula(" 1/2 (x-y)(x+y)");
+$a = 18;
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+  
+The sail in the figure is a right triangle of base and height [`x`]. It has a colored stripe along the hypotenuse and a white triangle of base and height <m>y</m> in the lower corner.</p>
+
+[@image( "fig-6-1-63.png", width=>156, height=>159, tex_size=>700, extra_html_tags=>'alt="sail"' )@]*
+
+
+a. 
+Write an expression for the area of the colored stripe.  
+[` A =`][________]{$A}
+b. 
+Express the area of the stripe in factored form.  
+[` A =`][________]{$F}    
+c. 
+If the sail is [`7\frac{1}{2} `] feet high and the white strip is [`4\frac{1}{2} `] feet high, use your answer to (b) to calculate mentally the area of the stripe. 
+The area is [__]{$a} square feet
+
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+Subtract the area of the white triangular part of the sail from the area of the entire sail.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

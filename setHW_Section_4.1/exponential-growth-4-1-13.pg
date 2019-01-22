@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--annual compound interest
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/7/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('13')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$principal = random(2000,9000, 1000); # textbook has 4000;
+$rate = random(2,8); # textbook has 8;
+$base = 1 + $rate/100;
+$f = Formula("$principal * $base**t ");
+
+$t1 = random(2,4); #textbook has 2;
+$P1 = $f->eval(t=>$t1);
+
+$t2= random(8, 12); #textbook has 10;
+$P2 = $f->eval(t=>$t2);
+
+
+Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+A sum of $[$principal] is invested in an account that pays [$rate]% interest compounded annually. 
+a. 
+Write a function that describes exponential growth.  
+[` A(t) =`][___________]{$f} (Use [`t`] as the variable, but do not enter any comma.)    
+Use a graphing utility to graph the function.  
+b. 
+How much is in the account after [$t1] years?  
+$[______]{$P1->cmp(  tolType => 'absolute',  tolerance => .5,)}  
+After [$t2] years? $[______]{$P2->cmp(  tolType => 'absolute',  tolerance => .5,)}
+
+  
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+A rate of [$rate] compounded annually is equivalent to a growth factor of [$base].    
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

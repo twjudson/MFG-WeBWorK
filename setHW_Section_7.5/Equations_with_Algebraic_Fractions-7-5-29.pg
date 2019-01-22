@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: proportion
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context("Fraction");
+Context()->variables->are(r=>"Real",y=>"Real");
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$r = 1000*random(.0205, .0265, .001); #$r = .0225*1000;
+$v0 = random(120, 240, 20); $v0= 120;
+$t0 = $r * $v0; # was 2700;
+$v1 = random(275, 975,50); #was 275;
+
+$t1 =  $t0/$v0 * $v1;
+$ans = sprintf("%0.2f", $t1 );
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Property taxes on a house vary directly with the value of the house. If the taxes on a house worth 
+$[$v0],000 are $[$t0], what would the taxes be on a house assessed at $[$v1],000
+?
+
+    $[________]{$ans}
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`` \begin{aligned}
+\frac{[$t0]}{[$v0]} &= \frac{x}{[$v1]} \\
+\frac{[$t0]}{[$v0]} &= x \\
+[$ans] = x
+\end{aligned}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

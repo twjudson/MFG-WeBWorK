@@ -1,0 +1,69 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--solve in terms of log10
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('29')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+
+do{$a = random(2,9);
+  $b = random(11,29);}
+ until ( (gcd($a,$b) == 1)  );
+
+$ANSa =  Compute("sqrt(log($b) / log($a)),-sqrt(log($b) / log($a))");
+
+#Context()->functions->disable("log", "log10", "ln");
+
+Context()->texStrings;
+BEGIN_PGML
+
+Solve the equation by using logarithms base 10. Round answers to four decimal places.
+
+[`   [$a]^{x^2} = [$b] `]
+
+[`x =`][____________________________]{$ANSa->cmp(  tolType => 'absolute',  tolerance => .00005,)} [@AnswerFormatHelp("numbers") @]*
+
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+Taking logs on both sides, we get
+
+
+>>[` \begin{aligned}
+    \log \left( [$a] ^{x^2}\right) & = \log [$b] \\
+    (x^2) \log \left( [$a] \right) & = \log [$b] \\
+    x^2 & = \dfrac{\log [$b]}{ \log[$a]}  \\
+    x & = \pm \sqrt{ \dfrac{\log [$b]}{ \log[$a]}}  
+    \end{aligned}
+`]<<
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

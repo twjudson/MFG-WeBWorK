@@ -1,0 +1,122 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--two exponential growth functions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/14/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('67')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+#"contextFraction.pl"
+ "PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+#Context("Fraction");
+Context()->variables->add(t=>"Real", r=>"Real");
+
+$k = 5;
+$t_A = random(2,12,2);
+do {$t_B = random(2,12,2);} until ( $t_B != $t_A );
+$P0 = random(30, 60, 10);  # originally 30;
+$rate_A = $k * $t_A;
+$factor_A = 1 + $rate_A/100;
+$b1 = ($factor_A)**(1/$t_A);
+$P_A = $factor_A * $P0;
+
+$b1 = ($factor_A)**(1/$t_A);
+$rate_B = $k * $t_B;
+$factor_B = 1 + $rate_B/100;
+$b2 = ($factor_B)**(1/$t_B);
+$P_B = $factor_B * $P0;
+
+if ($t_A < $t_B) {
+  $one = "A";
+  $two = "B"; }
+else {
+  $one = "B";
+  $two = "A"; }
+
+$mc  = new_multiple_choice();
+$mc ->qa(
+"Which species multiplies more rapidly?",  $one);
+$mc->extra($two);
+$mc ->makeLast("B");
+
+
+##############################################################
+
+BEGIN_PGML
+
+
+A researcher starts 2 populations of fruit flies of different species, each with [$P0] flies. Species A increases by [$rate_A]% in [$t_A] days and species B increases by [$rate_B]% in [$t_B] days.
+  
+a. 
+What was the population of species A after [$t_A] days? [___]{Compute("$P_A")}  
+Find the daily growth factor for species A. [_____]{Compute("$b1")->cmp(  tolType => 'absolute',  tolerance => .005,)}  
+b. 
+What was the population of species B after [$t_B] days? [___]{Compute("$P_B")}  
+Find the daily growth factor for species B. [_____]{Compute("$b2")->cmp(  tolType => 'absolute',  tolerance => .005,)}  
+c. 
+  [@ $mc->print_q() @]*
+  [@ $mc->print_a() @]*  
+
+
+END_PGML
+Context()->normalStrings;
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+When A grows by [$rate_A]%. the new size is [$factor_A] times what it had been. We can find the growth factor [`b_1`] of A by noticing that [` \dfrac{A_0 {b_1}^{[$t_A]} }{A_0 }  = {b_1}^{[$t_A]}`], so we find that [` {b_1}^{[$t_A]} = [$factor_A]`], then by raising to the exponent 1/[$t_A], we find that [`b_1 \approx [$b1]`]. 
+Similarly, the growth factor [`b_2`] of B can be found from  [` \dfrac{B_0 {b_2}^{[$t_B]} }{B_0 }  = {b_2}^{[$t_B]}`], and hence [`b_2 = [$factor_B]^{1/[$t_B]}\approx [$b2]`].  
+The species with the larger growth factor multiplies more rapidly
+
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

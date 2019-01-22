@@ -1,0 +1,120 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--estimating maximum walking speed
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('39')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+Context()->variables->add(v=>'Real', g=>'Real', r=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+
+
+$f = Formula("sqrt(gr)");
+$g = 10;
+$r_man = 0.9;
+$m_v = $f->eval(g=>$g, r=>$r_man);
+$r_child = 0.5;
+$c_v = $f->eval(g=>$g, r=>$r_child);
+$gm = 1.6;
+$m_v_m = $f->eval(g=>$gm, r=>$r_man);
+
+$f_inv = Formula ("v^2/g");
+$v_racer = 4.4;
+$length = $f_inv->eval(g=>$g, v=>$v_racer);
+
+Context()->functions->disable("All");
+#Context()->{format}{number} = "%.0f";
+$v = Compute("$m_v");
+$cv= Compute("$c_v");
+$vm = Compute("$m_v_m");
+
+$l = Compute("$length");
+
+##################
+BEGIN_PGML
+  
+If you walk in the normal way, your maximum speed, [`v`], in meters per second, is limited by the length of your legs, [`r`], according to the formula
+    [`` v=[$f] ``]
+
+where the constant [`g`] is approximately [$g] meters per second squared. (Source: Alexander, 1992)  
+a.
+A typical adult man has legs about [$r_man] meter long. How fast can he walk?  
+His maximum speed is [___]{ $v->cmp(tolType => 'absolute',  tolerance => .05) } meters per second.  
+b.
+A typical four-year-old has legs [$r_child] meter long. How fast can she walk?    
+His maximum speed is [____]{ $cv->cmp(tolType => 'absolute',  tolerance => .05) } meters per second.  
+c.
+Graph maximum walking speed as a function of leg length.  
+d.
+Race-walkers can walk as fast as [$v_racer] meters per second by rotating their hips so that the effective length of their legs is increased. What is that effective length?    
+The effective length is [____]{ $l->cmp(tolType => 'absolute',  tolerance => .05) } meters.  
+e.
+On the Moon the value of [`g`] is [$gm] meters per second squared. How fast can a typical adult man walk on the Moon?  
+His maximum speed on the moon is [___]{ $vm->cmp(tolType => 'absolute',  tolerance => .05) } meters per second.  
+
+
+  
+
+  
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+  
+a.
+Substitute [` g=[$g] `] and [` r= [$r_man]`] into [`[$f]`].  
+b.
+Substitute [` g=[$g] `] and [` r= [$r_child]`] into [`[$f]`].  
+c.
+Sketch by hand or use a graphing utility.  
+d.
+Substitute [` g=[$g] `] and [` v= [$v_racer]`] into the equation [` v=[$f] `] and solve for [` r`].  
+e.
+Substitute [` g=[$gm] `] and [` r= [$r_man]`] into [`[$f]`].
+
+ END_PGML_SOLUTION
+
+
+ENDDOCUMENT(); 

@@ -1,0 +1,87 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('11/2/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('35')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+$a1 = list_random(2, 3, 4);
+
+
+$poly = Compute("x^3 + $a1^3");
+
+#
+#  Expanded form
+#
+
+$expandedform = Formula("(x + $a1)*(x^2 - $a1*x^2 + $a1^2)");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+Factor the polynomial \( $poly \) completely.
+$BR
+$BR
+\{ ans_rule(30) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $expandedform->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

@@ -1,0 +1,143 @@
+##DESCRIPTION
+##  Algebra problem: absolute value for distances
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/16/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('57')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$x[0] = -12;
+$x[1] = -4;
+$x[2] = 24;
+$x[3] = -4;
+
+foreach my $i (0..2) {
+  $d[$i] = Formula(" abs(x - $x[$i])" )->reduce; };
+
+$f = Formula(" $d[0] + $d[1] + $d[2] ");
+
+$xmin = -20;
+$ymin = -30;
+$xmax= 30;
+$ymax= 80;
+$xgrid =( $xmax-$xmin)/2;
+$ygrid = ($ymax - $ymin)/10;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.8*$xpix);
+$yp = round(.7*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix, $ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label ( .95*$xmax,0.05*$ymax, "x",'blue','center','middle'));
+$gr -> lb(new Label (.05*$xmax, 0.95*$ymax, "y" ,'blue','center','middle'));
+
+foreach my $i (1..8) {
+$xscale =10*$i;
+$yscale =10*$i;
+$gr -> lb(new Label ( $xscale,-2, $xscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,-2, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-2,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin,$xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+>>
+<<
+A small pottery is setting up a workshop to produce mugs. Three machines are located on a long table, as shown in the figure. The potter must use each machine once in the course of producing a mug. Let [`x`] represent the coordinate of the potter's station.
+>>[@ image( "fig-2-5-57.jpg", width=>477, height=>55,  
+tex_size=>700, extra_html_tags=>'alt="pottery workshop"' ) @]***<<
+
+
+a. 
+Write expressions for the distance from the potter's station to each of the machines.
+
+    Distance to left-most machine: [________]{$d[0]}
+
+    Distance to middle machine: [________]{$d[1]}
+
+    Distance to right-most machine: [________]{$d[2]}
+
+b. 
+Write a function that gives the sum of the distances from the potter's station to the three machines.
+
+    [` f(x) = `] [_____________________]{$f}  
+
+c. 
+Graph your function for [` -20 \le x \le 30 `]. Where should the potter stand in order to minimize the distance she must walk to the machines?
+
+    Answer: at [`x`]-coordinate [___]{$x[3]}
+
+END_PGML
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The distance from [`x`] to [`-12`] is [`[$d[0]]`]; the distance from [`x`] to [`-4`] is [`[$d[1]]`]; and the distance from [`x`] to [`24`] is [`[$d[2]]`]; 
+
+b. 
+The sum of the three distance in part (a) is [` [$f] `].
+
+c. 
+[@ image(insertGraph($gr), width=>210, height=>280, tex_size=>700) @]***
+
+
+    From the graph, the smallest value of [`f(x)`] occurs at [`x = [$x[3]]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

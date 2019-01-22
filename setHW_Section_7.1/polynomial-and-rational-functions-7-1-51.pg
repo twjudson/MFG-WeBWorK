@@ -1,0 +1,112 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('11/5/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('51')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+Context()->variables->add(r=>"Real");
+
+$p = random(5,9,1);
+
+
+
+$amount_formula = List(Formula("500*(1 + r)^2"), Formula("500*(1 + r)^3"), Formula("500*(1 + r)^4"));
+
+
+#
+#  Expanded form
+#
+
+$amounts = List(Compute("500*(1 + $p/100)^2"), Compute("500*(1 + $p/100)^3"), Compute("500*(1 + $p/100)^4"));
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+a. Jack invests $500 in an account bearing interest rate \(r\), compounded annually. This means that each year his account balance is increased by a factor of \(1 + r\).
+$BR
+$BR
+
+a. Write expressions for the amount of money in Jack's account after 2 years, after 3 years, and after 4 years.
+
+\(V = \) \{ ans_rule(30) \}
+
+
+$BR
+$BR
+
+b. How much money will be in Jack's account after 2 years, after 3 years, and after 4 years if the interest rate is $p%?
+
+\{ ans_rule(30) \}
+
+
+
+$BR
+$BR
+
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $amount_formula->cmp() );
+
+ANS( $amounts->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

@@ -1,0 +1,118 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('13')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"unionTables.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$text = "The graph shows the elevation of the Los Angeles Marathon course as a function of the distance into the race, \( a = f (t) \). Estimate the domain and range of the function. (Source: Los Angeles Times)";
+
+#
+#  Graph canvas
+#
+
+$image = "\{ image( "fig-LA-marathon.png", width=>578, height=>195,  tex_size=>700, extra_html_tags=>'alt="LA marathon elevation"' ) \}";
+
+Context("Inequalities")->variables->are(d=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+Context()->flags->set(ignoreEndpointTypes => 1);
+
+$domain = Compute("[0, 26.2]")->with(
+  tolerance => .05,
+);
+Context()->variables->add(a=>"Real");
+$range = Compute("[90, 300]")->with(
+  tolerance => .05,
+);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$text
+$BR
+$BR
+(a) Domain:  
+\{ans_rule(7)\}
+$SPACE
+\{AnswerFormatHelp("intervals")\}
+$BR
+$BR
+(b) Range: \{ans_rule(7)\}
+$SPACE
+\{AnswerFormatHelp("intervals")\}
+
+$BR
+$BR
+
+\{ image( "fig-LA-marathon.png", width=>578, height=>195,  
+tex_size=>700, extra_html_tags=>'alt="LA marathon elevation"' ) \}
+$BR.
+$BR
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the values of the independent variable from the left-most point on the curve to the right-most point on the curve.
+The range includes all the values of the dependent variable from the bottom-most point on the curve to the top-most point on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

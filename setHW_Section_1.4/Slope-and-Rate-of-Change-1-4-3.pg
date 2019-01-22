@@ -1,0 +1,73 @@
+##DESCRIPTION
+##  Algebra problem: identify greater rate from verbal description
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('3')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+
+$mc = new_multiple_choice();
+$mc -> qa ("Grimy Gulch Pass rises 0.6 miles over a horizontal distance of 26 miles. Bob's driveway rises 12  feet over a horizontal distance of 150 feet. Which is steeper?", 
+"Bob's driveway" );
+
+$mc -> extra(
+"Grimy Gulch Pass"
+);
+$mc->makeLast("none of the above");
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The average slope of Grimy Gulch Pass is [` 0.6 \text{ mi}/( 26 \text{ mi})\approx 0.023`], which is less than Bob's driveway with an average slope of [` 12 \text{ ft}/(150 \text{ ft})\approx 0.08`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

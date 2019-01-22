@@ -1,0 +1,81 @@
+##DESCRIPTION
+##  Algebra problem: convert logarithmic equation to exponential form
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('45')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+ "PGML.pl",
+ "contextFraction.pl",
+ "AnswerFormatHelp.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$b = random(3,8); #was 7
+do {
+$num = random(2,5); #was 2
+$a = random(2,6); #was 3
+} until (gcd($num,$a) == 1);
+
+$c = random(2,9); #was 5;
+$d = $num + $c;
+Context("Fraction");
+$power = Compute("$num/$a");
+Context("Numeric");
+
+$x = Compute("$b**($power)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+Solve for the unknown value.
+
+>>[`` [$a] (\log_{[$b]} x ) + [$c] = [$d] ``]<<
+
+    [` x =`][_______]{$x} [@AnswerFormatHelp("numbers") @]* (Enter an expression for the exact value.)
+
+END_PGML
+
+Context()->normalStrings;
+
+
+
+###################################]###########################
+#
+BEGIN_PGML_SOLUTION
+
+We first subtract [`[$c]`] from both sides of the equation, then divide by [`[$a]`] to get the logarithmic equation [` \log_{[$b]} x = [$power]`]. This is equivalent to  [`x=[$b]^{[$power]}`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

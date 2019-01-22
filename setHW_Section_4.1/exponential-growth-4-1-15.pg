@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--annual inflation rate
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/7/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('15')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$principal = random(200000,900000, 100000); # textbook has 20000;
+$rate = random(2,8); # textbook has 5;
+$base = 1 + $rate/100;
+
+$Year0 = 2003; #textbook has 1983
+$f = Formula("$principal * $base**t ");
+
+$t1 = random(10,13); #textbook has 12;
+$Year1 = $Year0 + $t1;
+$P1 = $f->eval(t=>$t1);
+
+$t2= random(25, 29); #textbook has 27;
+$P2 = $f->eval(t=>$t2);
+$Year2 = $Year0 + $t2;
+
+
+Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+Paul bought a house for $[$principal] in [$Year0]. Since [$Year0], housing prices have risen an average of [$rate]% per year.  
+a. 
+Write a function that describes exponential growth.  
+[` P(t) =`][___________]{$f}  (Use [`t=0`] to represent the year [$Year0], but do not enter any comma.)  
+Use a graphing utility to graph the function.  
+b. 
+How much was the house worth in [$Year1]?  $[________]{$P1->cmp(  tolType => 'absolute',  tolerance => .5,)}  
+How much will it be worth in [$Year2]? $[________]{$P2->cmp(  tolType => 'absolute',  tolerance => .5,)}
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+A rate of [$rate] compounded annually is equivalent to a growth factor of [$base].    
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

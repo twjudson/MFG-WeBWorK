@@ -1,0 +1,133 @@
+##DESCRIPTION
+##  Algebra problem: read function values and solve equations from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('13')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"PGgraphmacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+
+$f = Formula("1/x");
+$g = Formula("1/x");
+
+$x1 = random(32,34,2) / 10; #was 3.4;
+$y1a = $f->eval(x=>$x1);
+$y1 = sprintf("%0.1f", $y1a );
+
+$y2 = random(-3.5,-1.5,1); # was -2.5
+$x2a =  $g->eval(x=>$y2);
+$x2 = sprintf("%0.1f", $x2a );
+
+do {$temp = random(31, 48);} until ($temp % 5 !=0);
+$y3 =$temp/10; #was 4.8;
+$x3a =  $g->eval(x=>$y3);
+$x3 = sprintf("%0.1f", $x3a );
+
+
+$xmin = -5;
+$ymin = -5;
+$xmax= 5;
+$ymax= 5;
+$xgrid = 2*($xmax-$xmin);
+$ygrid = ($ymax-$ymin)*2;
+
+$width = 600;
+$height = 600;
+$xs = .4*$width;
+$ys = .4*$height;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$width, $height]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.97*$xmax, .5,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .8,0.96*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..2) {
+$xscale =2*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( $xscale,-.2, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-.3,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label (- $xscale,-.2, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-.3,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, -.01] using color:red and weight:2",
+"$f for x in [.01,$xmax] using color:red and weight:2");
+#($gr->fn)[0]->steps(200);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+This exercise is about how to use the graphs to find the values. Estimate your answers to one decimal point. Compare your estimates to values obtained with a calculator.
+
+ Refer to the graph of [` f(x) = x^3`]. (Click on the image to get an enlargeable version.)
+>>[@ image(insertGraph($gr), width=>$xs, height=>$ys, tex_size=>700) @]*<<
+
+
+a. 
+Estimate the value of [`` \frac{1}{[$x1]} ``]. [___]{Compute("$y1")->cmp(  tolType => 'absolute',  tolerance => .06,)}
+
+b. 
+Find all numbers whose cubes are [`[$y2]`]. [___]{Compute("$x2")->cmp(  tolType => 'absolute',  tolerance => .09,)}
+
+c. 
+Find all solutions of the equation [``\frac{1}{x} = [$y3]``]. [___]{Compute("$x3")->cmp(  tolType => 'absolute',  tolerance => .09,)}
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We estimate the value of [`y`] for the point on the curve where [`x=[$x1]`], [`y\approx [$y1]`].
+
+b. 
+We estimate the value of [`x`] for the point on the curve where [`y=[$y2]`], [`x\approx [$x2]`].
+
+b. 
+We estimate the value of [`x`] for the point on the curve where [`y=[$y3]`], [`x\approx [$x3]`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

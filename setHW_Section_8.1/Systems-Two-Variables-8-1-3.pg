@@ -1,0 +1,169 @@
+##DESCRIPTION
+##  Algebra problem: two linear equations in two variables: graphs
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Two Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.1')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(s=>'Real', t=>'Real');
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$x0 =random(20, 60, 10); #was 50;
+$y0 = random(50, 80, 10); #was 70;
+
+$a1 = 35; $b1 =-17; 
+$c1 = $a1*$x0 + $b1*$y0; #was 560;
+$m1 =- $a1/$b1; $d1 = $c1/$b1;
+
+$a2 = 24; $b2 = 15; 
+$c2 = $a2*$x0 + $b2*$y0;  #was 2250;
+$m2 =- $a2/$b2; $d2 = $c2/$b2;
+$f1 = Formula(" $a1*s + $b1*t ")->reduce;
+$f2 = Formula("  $a2*s + $b2*t")->reduce;
+
+$f = Formula(" $m1*s + $d1 ")->reduce;
+$g = Formula("  $m2*s + $d2")->reduce;
+
+$fi = Formula(" (x- $d1)/$m1 ")->reduce;
+$gi = Formula("  (x- $d2)/$m2 ")->reduce;
+
+$xmin = -10 + $x0-50; 
+$xmax= 100+ $x0-50;
+$ymin = -10+ $y0-70; $my = $ymin-1;
+$ymax= 100+ $y0-70;
+$xgrid = ($xmax - $xmin)/10;
+$ygrid = ($ymax - $ymin)/10;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 1,'s','blue','left','bottom'));
+$gr -> lb(new Label (3,0.94*$ymax,'t','blue','left','bottom'));
+
+foreach my $i (1..2) {
+$xscale =50*$i;
+$yscale =50*$i;
+$gr -> lb(new Label ( $xscale,-3, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-3,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,-3, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-3,-$yscale,-$yscale,'black','center','middle'));
+}
+
+$begin=$xmin-1;
+$bm = $b-.001;
+$bp = $b+.001;
+$end = $xmax+1;
+add_functions( $gr,
+"$f for s in [$begin, $end] using color:red and weight:2",
+"$g for s in [$begin, $end] using color:blue and weight:2");
+($gr->fn)[0]->steps(200);
+
+# axes
+$gr->moveTo($begin,0);
+$gr->arrowTo($xmax,0,'black');
+$gr->moveTo(0, $my);
+$gr->arrowTo(0,$ymax,'black');
+
+#first line
+$gr->moveTo($x0,$y0);
+$x1m = $fi->eval(x=>$ymax);
+$gr->arrowTo($x1m,$ymax,'red',2);
+$x1m = $fi->eval(x=>$ymin);
+$gr->arrowTo($x1m,$ymin,'red',2);
+
+#second line
+$gr->moveTo($x0,$y0);
+$y2m = $g->eval(s=>$xmax);
+$gr->arrowTo($xmax,$y2m,'blue',2);
+$x1m = $gi->eval(x=>$ymax);
+$gr->arrowTo($x1m,$ymax,'blue',2);
+
+
+$ya = $f->eval(s=>$xmax) ;
+$gr -> lb(new Label (($xmax-.3), $ya,'(A)','red','right','bottom'));
+$yb = $g->eval(s=>$xmin) ;
+$gr -> lb(new Label (($xmin+.3), $yb,'(B)','blue','left','bottom'));
+
+
+Context("Point");
+$ans=Compute("($x0, $y0)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Solve the system of equations using the graph given. Verify algebraically that your solution satisfies both equations.
+
+>>[``\begin{align}
+[$f1] &= [$c1] && \text{(A)}\\
+[$f2] &= [$c2] && \text{(B)}
+\end{align}``]<<
+
+>>[@image(insertGraph($gr), width=>300, height=>300, tex_size=>700)@]***<<
+
+Solution: [______]{$ans}  [@AnswerFormatHelp("points") @]*
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The two lines intersect at the point [`[$ans]`].  We verify that **both** equations are satisfied when [`x=[$x0]`] and [`y=[$y0]`]:
+
+    [` [$a1]([$x0]) +[$b1]([$y0]) = [$c1]`]
+
+and
+
+    [` [$a2]([$x0]) +[$b2]([$y0]) = [$c2]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: matching image to verbal description of model
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('10/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('61')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+ "PGML.pl",
+"imageChoice.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+@QA = (
+" The area, \(A\) of a pentagon is a quadratic function of the length, \(l\),  of its side.", 
+"fig-5-2-61-II.svg", 
+"The strength, \(F\), of a hurricane varies inversely with its speed, \(s\).", 
+"fig-5-2-61-VI.svg", 
+"The price of food has increased by 3% every year for a decade.", 
+"fig-5-2-61-III.svg", 
+"The magnitude, \(M\), of a star is a logarithmic function of its brightness, \(I\).", 
+"fig-5-2-61-V.svg", 
+"The speed of the train increased at a constant rate.", 
+"fig-5-2-61-I.svg", 
+"If you do not practice a foreign language, you lose \(\frac{1}{8}\) of the words in your working vocabulary, \(V\), each year.", 
+"fig-5-2-61-IV.svg" 
+);
+
+$ml = new_image_match_list(
+  link => 1,                #  do not link to separate image
+  size => [127, 110],        #  image width, height in pixels
+  tex_size => 310,          #  tex size in precent times 10
+  columns => 3,             #  number of columns
+  separation => 20,         #  space between images
+);
+
+$ml->rf_print_q(~~&pop_up_list_print_q); # use pop-up-lists
+$ml -> ra_pop_up_list(
+[ No_answer=>"?", A=>"A", B=>"B", C=>"C", D=>"D", E=>"E", F=>"F"  ] );
+
+$ml->qa(@QA);               #  set the questions and answers
+$ml->choose(6);             #  select 6 of them
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+Choose the graph for each function described below.
+
+[@ $ml->print_q @]***
+[@ $ml->print_a @]***
+
+END_PGML
+
+ANS(str_cmp($ml->ra_correct_ans));
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+Two graphs pass through the origin: the parabola corresponds to the area of a pentagon as a function of the length of its side, the linear graph has a constant slope or rate, so it corresponds to the speed of the train that increased at a constant rate.
+
+Two other curves are increasing: the concave up increasing graph corresponds to the exponential growth of the price of food increasing by 3% each year. The concave down increasing graph is the graph of a logarithmic function giving the magnitude of a star as a function of its brightness.
+
+The decreasing graph with the vertical axis as an asymptote corresponds to inverse variation between the strength of a hurricane and its speed. The other decreasing graph is the exponential decay of working vocabulary over time without practice.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

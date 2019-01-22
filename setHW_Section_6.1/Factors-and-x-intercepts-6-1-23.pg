@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: solve quadratic equation in factored form
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(a=>"Real",b=>"Real", y=>"Real", t=>"Real", z=>"Real", v=>"Real", w=>"Real");
+@variables = ("x", "y", "a", "b", "v", "w","t", "z");
+$i = random(0,$#variables);
+$x = $variables[$i];
+do {$r0 = random(-9,-3);
+      $r1 = random(3,9);} until (abs($r0) != abs($r1)  );
+# was $r0 = -3; $r1 = 6;
+
+$del = non_zero_random(-2,2);
+$y0 = $r0 + $del;
+$y1 = $r1 - $del;
+
+$c = $y0 * $y1 - $r0 * $r1;
+
+$f = Formula("($x - $y0) ($x - $y1) ")->reduce;
+
+$ans =  "$r0, $r1";
+
+$R01 = - $r01;
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Solve by factoring. (See   [@htmlLink( "https://byoshiwara.github.io/MFG-online/appendix-a.html#appendix-Factoring-Quadratic-Trinomials", "Algebra Skills Refresher", "TARGET=~~"text~~"" )@]*   to review factoring.)
+
+[` [$f]= [$c] `]    
+
+[`[$x] = `][________]{$ans} [@AnswerFormatHelp("numbers") @]*
+
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+We expand [` [$f] `], subtract [`[$c]`] from both sides, and factor to get 
+[` ([$x] - [$r0])([$x] - [$r1]) =0 `]. We set each linear factor to 0 and solve.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

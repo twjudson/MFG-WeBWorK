@@ -1,0 +1,106 @@
+##DESCRIPTION
+##  Algebra problem: equations with rational expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('13')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(p=>"Real", C=>"Real");
+$a = 72;
+
+$f = Formula(" ($a*p)/(100-p)")->reduce;
+$fi = Formula(" 100*C / ($a + C)")->reduce;
+
+#$C0 = 168;
+#$ans = $fi->eval(C=>$C0);
+
+do {$ans = random(10,90,10);} until ($ans !=30);
+$C0 = $f->eval(p=>$ans);
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The cost, in thousands of dollars, for immunizing [`p`] percent of the residents of Emporia against a dangerous new disease is given by the function
+
+>>[``C(p) = [$f]``]<<
+
+Write and solve an equation to determine what percent of the population can be immunized for 
+$[$C0],000.
+
+    Equation: [___]{$C0}[``=[$f]``]
+
+    [_]{$ans}% of the population can be immunized for $[$C0],000.
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We solve for [`p`] when [`C(p) = [$C0]`]:
+
+ [` \begin{aligned}
+[$C0] &= [$f] \\
+[$C0](100-p) &= [$a] p \\
+[$C0]\cdot100 &= [$a] p + [$C0] p \\
+[$C0]\cdot100 &= ([$a] + [$C0]) p \\
+\dfrac{[$C0]\cdot100}{[$a] + [$C0]} &= p \\
+[$ans] &= p \\
+\end{aligned}`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

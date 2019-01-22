@@ -1,0 +1,129 @@
+##DESCRIPTION
+##  Algebra problem: exponential decay of light intensity
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('3/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('13')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"niceTables.pl",
+ "PGgraphmacros.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real");
+
+$N0 = random(900, 1100,100); #was 1000;
+$N1 = 800;
+$k = random(0.1, 0.3, 0.1); #was 0.1;
+$f = Formula(" $N0 * e**(-$k*t)");
+
+$t0 = random(0.5, 0.7, .1);  #was 0.6
+
+$ansb = $f->eval(t=>$t0 );
+$t1 = Compute(" ln($N0/$N1) / $k ");
+
+
+$xmin = -1;
+$ymin = -100;
+$xmax= 8;
+$ymax= 1200;
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/100;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[500,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.96*$xmax, 0.05,'t','blue','left','bottom'));
+$gr -> lb(new Label ( .5,0.94*$ymax,'I(t)','blue','left','bottom'));
+
+foreach my $i (1..4) {
+$xscale =2*$i;
+$yscale =400*$i;
+$gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for t in [0, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The intensity, [`I`] (in lumens), of a light beam after passing through [`t`] centimeters of a filter having an absorption coefficient of [$k]  is given by the function
+
+>>[`` I(t)=[$N0] e^{-[$k]t}  ``]<<
+
+
+a. 
+Graph [` I(t)`]
+
+b. 
+What is the intensity (to the nearest tenth of a lumen) of a light beam that has passed through 
+[$t0]  centimeter of the filter?
+
+    Answer: [______]{$ansb->cmp(  tolType => 'absolute',  tolerance => .05,)}  lumens
+
+c. 
+How many centimeters (to the nearest tenth) of the filter will reduce the illumination to [$N1]  lumens?
+
+    Answer: [_____]{$t1->cmp(  tolType => 'absolute',  tolerance => .05,)} cm
+
+
+END_PGML
+Context()->normalStrings;
+##
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@image(insertGraph($gr), width=>300, height=>300, tex_size=>700)@]***
+
+b. 
+Evaluate [`[$f]`] for [`t=[$t0]`]: [`I([$t0]) = [$ansb]`].
+
+c. 
+Solve [`[$f] = [$N1]`] by dividing both sides of the equation by [`[$N0]`], taking natural logarithms, then dividing by [`-[$k]`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,125 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--compare linear and exponential decay
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/14/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('61')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+"contextFraction.pl",
+"niceTables.pl",
+ "PGML.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+# this exercise is static. 
+
+$P0 =10400;
+$T0 = 1980;
+
+$P1 = 6000;
+$T1 = 1998;
+
+$t1 = $T1 - $T0;
+$diff = $P1 - $P0;
+
+Context("Fraction");
+$m = Fraction("($P1 - $P0)/$t1");
+$factor = Fraction("$P1/$P0");
+
+Context("Numeric");
+Context()->flags->set(reduceConstants=>0);
+Context()->variables->add(t=>"Real");
+$L = Formula("$P0 + $m t");
+$decrease = -$m;
+$real_decrease = ($P0 - $P1)/$t1;
+$E = Formula("$P0 * $factor**(t/$t1)");
+$b = Compute(" $factor**(1/$t1)");
+$rate = 100*(1 - $b);
+
+$T2 = 2010;
+$t2 = $T2 - $T0;
+
+$P_L = $L->eval(t=>$t2);
+$P_E = $E->eval(t=>$t2);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The world's population of tigers declined from [$P0] in [$T0] to [$P1] in [$T1].  
+a. 
+If the population declined linearly, what was its annual rate of decrease?  
+It decreased by [______]{Compute("$real_decrease")->cmp(  tolType => 'absolute',  tolerance => .5,)} tigers per year
+
+b. 
+If the population declined exponentially, what was its annual decay factor? [_____]{$b->cmp(  tolType => 'absolute',  tolerance => .5,)}  
+What was its annual percent decrease? [___]{$rate->cmp(  tolType => 'absolute',  tolerance => .5,)}%  
+c. 
+Predict the number of tigers in [$T2] under each assumption, linear or exponential decline.  
+Linear prediction: [________]{$P_L->cmp(  tolType => 'absolute',  tolerance => .5,)} tigers  
+Exponential prediction: [________]{$P_E->cmp(  tolType => 'absolute',  tolerance => 5,)} tigers  
+
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+The number of tigers decreased by [` [$P1] -[$P0] `] tigers in  [$t1] years. So the slope of the linear function is [` [$diff] / [$t1] = [$m] `], which corresponds to a decrease each year. So the linear function is [` L(t) = [$L] `].  
+
+The number of tigers decreased by a factor of [`[$factor]`] in  [$t1] years, an annual growth factor of [` [$factor]^{1/[$t1]} `]. The exponential function is  [`  E(t) = [$E]  `].  
+
+We evaluate each of the two functions at [`t= [$t2] `] to predict populations in [$T2].
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

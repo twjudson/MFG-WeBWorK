@@ -1,0 +1,178 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('21')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->{format}{number} = "%.2f"; 
+
+@place=("New York City","San Francisco","Austin","San Diego");
+@entry=("2.50","3.50","2.50","2.60");
+@unit=("fifth","fifth","sixth","ninth");
+@cost=(0.50,0.55,0.40,0.30);
+
+@reciprocal_unit=(5,5,6,9);
+@uni=("Columbia University","University of San Francisco","University of Texas","University of San Diego");
+@recreation=("Rockefeller Center","the San Francisco Museum of Modern Art","the White Horse", "the San Diego Civic Center");
+@distance=("5.7","2.9", "2.1","5.2");
+
+$i = random(0,3);
+$city=$place[$i];
+$Flagpull=Compute($entry[$i]);
+$fraction=$unit[$i];
+$rate=$cost[$i];
+$denom=$reciprocal_unit[$i];
+$school=$uni[$i];
+$destination=$recreation[$i];
+$trip=$distance[$i];
+
+
+#Context()->variables->add(x=>'Real');
+$f=Compute("$Flagpull+ int($denom * x) * $rate");
+
+
+
+#
+Context("Inequalities")->variables->are(d=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+Context()->flags->set(ignoreEndpointTypes => 1);
+
+$range = Compute("{$Flagpull }");
+
+foreach my $j ( 0..$denom -1) {
+$y[$j]= Compute($Flagpull + $j*$rate);
+$range = Union("$range U {$y[$j]}");
+}
+
+#  Graph canvas
+#
+$xmax=1;
+$ystep=int(2*($y[$denom-1]+ $rate))+1;
+$ymax=$ystep/2;
+$gr = init_graph(-1/$denom,-0.5,$xmax,$ymax,axes=>[0,0],grid=>[$denom+1,$ystep+1],size=>[300,300]);
+$gr -> lb('reset');
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label (.97,0,'d','blue','right','bottom'));
+$gr -> lb(new Label ( 0.03,$ymax,'F(d)','blue','left','top'));
+
+
+foreach my $j ( 0..$denom -1) {
+  $xstart = $j/$denom;
+  $xend = $xstart+1/$denom;
+  $yy = $Flagpull + $j * $rate;
+
+  add_functions( $gr,
+               "$yy for x in ($xstart, $xend) using color:red and weight:2");
+  
+if ($j!=0)   {$gr->stamps( closed_circle($xstart,$yy,'red') )};
+
+}
+$gr -> lb(new Label (1,0,'1','blue','top','right'));
+$gr -> lb(new Label ( 0,2.15,'2.00','blue','right'));
+$gr -> lb(new Label ( 0,4.15,'4.00','blue','right'));
+$gr -> lb(new Label ( 0,6.15,'6.00','blue','right'));
+$gr -> lb(new Label ( 0,8.15,'8.00','blue','right'));
+
+Context()->{format}{number} = "%.2f"; 
+$fare = Compute($Flagpull + floor($trip*$denom) * $rate);
+Context()->{format}{number}= "%g"; 
+$times = Compute(floor($trip*$denom) );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+In $city, taxi cabs charge $DOLLAR$Flagpull for the first $fraction mile, plus $DOLLAR$rate for each additional $fraction mile or portion thereof.
+$BR
+$BR
+(a) Sketch a graph of \(F(d)\), which gives taxi fare as a function of distance traveled, on the domain \( 0\lt d \lt 1\).
+$BR
+
+(b) State the range of \(F(d)\) on that domain.
+$BR
+Range: \{ans_rule(40)\}
+$SPACE
+
+$BR
+(c) How much will it cost Renee to travel by taxi from $school to $destination, a distance of $trip miles?
+$BR
+
+$DOLLAR\{ans_rule(5)\}
+$SPACE
+
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $range->cmp() );
+ANS( $fare->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+$BR
+\{image(insertGraph($gr), width=>300, height=>300, tex_size=>700)\}
+$BR
+The graph is a "step function" with a vertical jump every $fraction of a mile.
+The range consists only of the $denom values that correspond to the possible charges up to one mile.$BR
+To compute Renee's fare, count how many whole times one-$fraction goes into $trip (namely $times), then add \($times \times\)$DOLLAR$rate to $DOLLAR$Flagpull.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

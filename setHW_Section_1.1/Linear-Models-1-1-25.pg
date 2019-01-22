@@ -1,0 +1,187 @@
+##DESCRIPTION
+##  Algebra problem: linear model; budget for two types of gasoline
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear model', 'line', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('25')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+  "AnswerFormatHelp.pl",
+  "parserImplicitEquation.pl",
+  "PGauxiliaryFunctions.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("ImplicitEquation");
+Context()->variables->set(x=>{limits=>[0,50000]},y=>{limits=>[0,50000]}
+);
+
+$n = random(4,9); #intercepts to be in ratio n to n-1
+$k = ceil(30/$n) / 10; #divisor of gas prices
+$premium = $n*$k; #originally 3.20
+$regular = ($n-1)*$k; #originally 2.40
+$q = floor( 10/($n) ) * 1000;
+$yi = $q * ($n-1);
+$xi = $q * $n;
+$total = $xi * $regular;
+
+$r = sprintf("%0.2f", $regular );
+$p = sprintf("%0.2f", $premium );
+#$xi = $total/$regular;
+#$yi = $total/$premium;
+$cr = Formula("$regular *x");
+$cp = Formula("$premium *y");
+
+$eqn = ImplicitEquation(" $total = $regular*x + $premium*y ");
+
+$f = Formula(" ($total - $regular*x)/$premium ");
+
+
+$xmin = -1000;
+$ymin = -1000;
+$xmax=10000;
+$ymax=10000;
+$xgrid = 11;
+$ygrid = 11;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[500,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.95*$xmax, .5,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 1,0.95*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..4) {
+$yscale =2000*$i;
+$gr -> lb(new Label (-300,$yscale,$yscale,'black','center','middle'));
+}
+foreach my $i (1..4) {
+$xscale =2000*$i;
+$gr -> lb(new Label ( $xscale,-200, $xscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [0, $xi] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$ml = new_match_list();
+$ml->rf_print_q(~~&pop_up_list_print_q);
+$ml->ra_pop_up_list([
+"No answer" => "?",
+"A" => "A", "B" => "B"
+]);
+$ml->qa(
+"The x-intercept ", "Gives the number of gallons of regular that can be purchased if no premium is purchased.",
+"The y-intercept", "Gives the number of gallons of premium that can be purchased if no regular is purchased."
+);
+
+# use pop-up-lists
+$ml->rf_print_q(~~&pop_up_list_print_q);
+# you may need to add more letters D=>"D", etc. 
+$ml->ra_pop_up_list([No_answer=>"?",A=>"A",B=>"B",C=>"C",D=>"D"]);
+
+$ml->choose(2);
+
+# to add extra answers that show up in the
+#    matching list, we would uncomment
+#    (remove the leading "# " from) the two
+#    lines below:
+$ml->extra("Gives the initial price of premium.", "Gives the initial price of regular.");
+ $ml->choose_extra(2);
+  
+
+Context("Point");
+$xint = Point($xi,0);
+$yint = Point(0,$yi);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The owner of a gas station has $[$total] to spend on unleaded gas this month. Regular unleaded costs him $[$r]  per gallon, and premium unleaded costs $[$p] per gallon.
+
+
+a. 
+How much do [`x`] gallons of regular cost? $[____]{$cr}
+    
+    How much do [`y`] gallons of premium cost? $[____]{$cp}
+
+b. 
+Write an equation in general form that relates the amount of regular unleaded gasoline, 
+[`x`], the owner can buy and the amount of premium unleaded, [`y`]:  [_______________]{$eqn}
+
+c. 
+Find the intercepts and sketch the graph. 
+
+    The [`x`]-intercept is [_______]{$xint}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yint}.  [@AnswerFormatHelp("points") @]*
+
+d. 
+What do the intercepts tell us about the profit?:
+[@ $ml -> print_q() @]***
+[@ $ml -> print_a() @]***
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( str_cmp( $ml->ra_correct_ans ) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We multiply the price per gallon times the number of gallons. For regular we get [` [$cr] `] dollars, and for premium we get [` [$cp] `] dollars.
+b. 
+The sum of the cost of [`x`] gallons of regular and the cost of [`y`] gallons of premium must be the total budget of $[$total]: [` [$eqn] `].
+c. 
+[`x`]-intercept occurs when [`y=0`]:[`[$xint]`]; The [`y`]-intercept occurs when [`x=0`]: [`[$yint]`]
+    
+    [@ image(insertGraph($gr), width=>280, height=>280, tex_size=>700) @]*
+
+d. 
+The [`x`]-intercept, [`[$xint]`], gives the number of gallons of regular unleaded gasoline the owner can purchase if no premium is purchased. The [`y`]-intercept, [`[$yint]`], gives the number of gallons of premium unleaded gasoline the owner can purchase if no regular is purchased
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

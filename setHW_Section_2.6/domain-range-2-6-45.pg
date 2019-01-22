@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: identify range from graph, use interval notation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('45')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"AnswerFormatHelp.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", v=>"Real", n=>"Real", z=>"Real", r=>"Real",y=>"Real" , w=>"Real",u=>"Real" );
+
+@variables = ("x", "t", "v", "n", "z", "r","w", "u");
+@functions = ("f", "g", "h", "F", "G", "H", "h", "T", "Q", "P", "S");
+$i = random(0,$#variables-1);
+$x=@variables[$i];
+
+@slice = NchooseK($#functions,2);
+@f_name=@functions[@slice];
+
+$c = non_zero_random(-2,12);
+@squares=(1,4,9,16,25,36);
+$y0=random(0,2);
+$a = $c + $y0**2;
+do { $y1 = random(2,$#squares - 1);} until ($y1 != $y0);
+$b = $c + $y1**2;
+
+$f = Formula("sqrt($x-$c)")->reduce;
+$ymin  = $f->eval($x=>$a);
+$ymax = $f->eval($x=>$b);
+
+Context("Interval");
+$domain = Compute("[$a,$b]");
+$range = Compute("[$ymin,$ymax]");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+Use a graphing utility to graph the function on the given domain. Using the <em>TRACE</em> key, and adjust <em>Ymin</em> and <em>Ymax</em> until you can estimate the range of the function. Verify your answer algebraically by evaluating the function. State the domain and range in interval notation.
+$BR
+
+\[ $f_name[0]($x)=$f\text{;}   \quad $a \le $x \le $b \]
+
+$BR
+Domain: $SPACE \{ans_rule(7) \} $SPACE
+\{AnswerFormatHelp("intervals")\}
+"$BR
+
+
+
+Range: $SPACE \{ans_rule(7) \} $SPACE
+\{AnswerFormatHelp("intervals")\}
+$BR
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+With an increasing function, the minimum value occurs at the left endpoint of the interval and the maximum at the right endpoint.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

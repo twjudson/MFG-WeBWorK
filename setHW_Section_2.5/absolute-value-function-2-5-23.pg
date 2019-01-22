@@ -1,0 +1,93 @@
+##DESCRIPTION
+##  Algebra problem: solve absolute value equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('23')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+"contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(m=>"Real");
+
+$h = non_zero_random(-9,9);
+$k = random(2,11);
+$a = random(2,5);
+$b =non_zero_random(-8,8);
+
+$f = Formula("$a *m - $h")->reduce;
+
+
+$ans = "none";
+
+
+
+Context("Inequalities");
+Context()->constants->add(EmptySet => Set());
+Context()->constants->add(none => Set());
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+    
+Solve.
+
+[``  -[$k] =\left| [$f ] \right| ``] 
+
+[_________]{$ans} [@AnswerFormatHelp("numbers") @]* (Separate different solutions with commas.)
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+An absolute value is never negative, so there is no solution.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--solve equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/11/2018')
+## Author8(Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('35')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(b=>"Real");
+
+do{$k = random(11,29)} until ( ($k % 5) != 0);
+$answer = $k/10;
+$n = random(3,6);
+$a = random(3,9) * 10**$n;
+$c = $a * $answer**$n;
+
+$f = Formula("$a b^$n");
+
+#Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+
+Solve the equation.  Round your answer to two places if necessary.
+
+[` [$c] = [$f] `]
+[` \qquad b = `][______]{$answer}  
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+Divide both sides of the equation by [$a], then raise both sides to the exponent [`1/[$n]`]. 
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

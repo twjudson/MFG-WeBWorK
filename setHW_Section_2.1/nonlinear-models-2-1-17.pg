@@ -1,0 +1,179 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Some Basic Functions')
+## Date('8/4/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.1')
+## Problem1('17')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "niceTables.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$volume = random(300,310,1) + 0.2;
+
+Context()->variables->add(r=>"Real",V=>"Real");
+$ans_formula=Formula("8.4 pi r^2/3");
+
+$ans1 = Real("pi*1^2*8.4/3");
+$ans2 = Real("pi*2^2*8.4/3");
+$ans3 = Real("pi*3^2*8.4/3");
+$ans4 = Real("pi*4^2*8.4/3");
+$ans5 = Real("pi*5^2*8.4/3");
+$ans6 = Real("pi*6^2*8.4/3");
+$ans7 = Real("pi*7^2*8.4/3");
+$ans8 = Real("pi*8^2*8.4/3");
+
+$ans_double = 4;
+
+$ans_volume = Real("sqrt(3*$volume/(8.4*pi))");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+A conical coffee filter is \(8.4\) centimeters tall.
+
+$BR
+$BR
+
+a. Write a formula for the filter's volume in terms of its widest radius, \(r\), (at the top of the filter).
+
+$BR
+$BR
+
+$BCENTER
+\(V =\) \{ ans_rule(30) \}
+$ECENTER
+
+$BR
+$BR
+
+b. Complete the table of values for the volume equation.
+
+$BR
+$BR
+
+\{
+DataTable(
+  [
+    [['\(r\)', headerrow => 1],'\(1\)', '\(2\)', '\(3\)', '\(4\)', '\(5\)', '\(6\)', '\(7\)', '\(8\)', ],
+    ['\(V\)', ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2),  ans_rule(2), ans_rule(2)]
+  ],
+  align => '| c | c | c | c | c | c | c | c | c | c | c | c|',
+  midrules=>1,
+);
+\}
+
+$BR
+$BR
+
+c.  If you double the radius of the filter, the volume increases by a factor of \{ ans_rule(3) \}.
+
+$BR
+$BR
+
+d. If the volume of the filter is $volume cubic centimeters, what is its radius?  \{ ans_rule(3) \}.
+
+$BR
+$BR
+
+e. Use your calculator to graph the volume equation. Locate the point on the graph that corresponds to the filter in part (d).
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans_formula->cmp());
+
+ANS($ans1->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans2->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans3->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans4->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans5->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans6->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans7->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS($ans8->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ANS(Compute("$ans_double")->cmp());
+
+ANS($ans_volume->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+ENDDOCUMENT();        

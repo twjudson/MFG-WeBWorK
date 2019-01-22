@@ -1,0 +1,144 @@
+##DESCRIPTION
+##  Algebra problem: Finding formula for linear and exponential functions through 2 points
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.5')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"contextFraction.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+$b =  random(2,4,2);
+$k = random(2,4);
+$x0 = -$k;
+$x1 = 2 * $k;
+$delx = $x1 - $x0;
+
+
+$a0 =random(0,3)/2 + .25;
+$y0 = $a0 * $b;
+$a1 = $y0 * $b**2;
+
+$f = Formula(" $y0*$b**{x/$k} ");
+
+#linear:
+$num = 4*($a1 - $a0); 
+$den = 4*($x1 - $x0);  
+
+Context("Fraction");
+$m = Fraction("$num / $den");
+$ratio = Fraction("$a1/$a0");
+Context("Numeric");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+
+$fl = Formula(" $a1 + $num / $den (x - $x1)");
+
+
+#  Graph canvas
+#
+$xmin = $x0 -1;
+$xmax=$x1 + $k;
+$xgrid = $xmax-$xmin;
+$ymax= $a1*$b; 
+$ymark = $b;
+$ygrid = $a1+1;
+$ymin = -$b;
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[300,300]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label (0.94*$xmax,-.1*$ymin,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 0.05*$xmin,0.94*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..5) {
+ $xscale =2*$i;
+ $yscale = 2*$b*$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label ( -$xscale,0.3*$ymin, -$xscale,'black','center','middle'));
+  $gr -> lb(new Label (-.5,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [-15, 15] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+add_functions( $gr,
+               "$fl for x in [-15, 15] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($x0,$a0,'blue') );
+$gr->stamps( closed_circle($x1,$a1,'blue') );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Given two points: [` ([$x0], [$a0]), ~([$x1], [$a1]) `]
+
+a. 
+Fit a linear function to the points: [` L(x) = `][________]{$fl}  
+b. 
+Fit an exponential function to the points. [` E(x) = `][________]{$f}  
+c. 
+Graph both functions in the same window.
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+The slope of the line through the points [` ([$x0], [$a0]) `] and  [` ([$x1], [$a1]) `] is [` m = \dfrac{[$a1] - [$a0]}{[$x1]-[$x0]} = [$m] `]. The slope-intercept form gives [`y=  [$m](x-[$x0]) + [$a0] `].  
+b. 
+The exponential function has the form [` y = E(x) = E_0 \cdot b^x`].  Because [`\dfrac{E([$x1])}{E([$x0])} =\dfrac{E_0 b^{[$x1]}}{E_0 b^{[$x0]}} =b^{[$delx]}`], and also [`\dfrac{P([$x1])}{P([$x0])} = \dfrac{[$a1]}{[$a0]}= [$ratio] `], we see that  [`b= \left([$ratio]\right)^{1/[$delx]}`].  We can find [`E_0 `] using either of the [`E([$x0])`] or [`E([$x1])`]. If we choose [`x=[$x0]`], we have [` E([$x0]) =E_0\cdot ([$ratio])^{[$x0]/[$delx]} = [$a0]`], so [`E_0 = \dfrac{[$a0]}{([$ratio])^{-1/[$k]}} = [$a0]\cdot [$b]  = [$y0]`]. 
+
+
+[@ image(insertGraph($gr), width=>210, height=>210, tex_size=>700) @]*
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,142 @@
+##DESCRIPTION
+##  Algebra problem: linear equation; intercepts 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear equation', 'line','intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('21')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGgraphmacros.pl",
+"PGchoicemacros.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->are(x=>"Real", y=>"Real");
+
+do {$xi = non_zero_random(-15,15);
+  $yi = non_zero_random(-15,15);}
+  until ( abs($xi*$xy) < 100  && ($xi>0 || $yi>0) );
+
+$a = $yi/10;
+$b = $xi/10;
+$c = $xi *$yi/10;
+
+$F = Formula(" $a *x +  $b*y ")->reduce;
+$f = Formula("($c - $a*x)/$b")->reduce;
+
+$xstep = abs($xi);
+$ystep = abs($yi);
+$xdel = 1;
+$ydel = 1;
+
+$xmin = min($xi-2*$xdel, -2*$xdel);
+$ymin = min($yi-2*$ydel, -2*$ydel);
+$xmax=max($xi+2*$xdel, 2*$xdel);
+$ymax=max($yi+2*$ydel, 2*$ydel);
+$xgrid = $xstep+4;
+$ygrid = $ystep+4;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[480,360]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, .4*$ydel,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .4*$xdel,0.95*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..max($xstep,$ystep)) {
+$xscale =2*$xdel*$i;
+$yscale =2*$ydel*$i;
+$gr -> lb(new Label (-.5*$xdel,-$yscale,-$yscale,'black','center','middle'));
+$gr -> lb(new Label (-.5*$xdel,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,-.4*$ydel, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-$xscale,-.4*$ydel,-$xscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle(0,$yi,'red') );
+$gr->stamps( closed_circle($xi,0,'red') );
+
+
+Context("Point");
+$yint = Point(0,$yi);
+$xint = Point($xi,0);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+
+>>[``[$F] = [$c]``]<<
+
+a. 
+Find the intercepts of the graph.
+
+    The [`x`]-intercept is [_______]{$xint}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yint}.  [@AnswerFormatHelp("points") @]*
+
+
+b. 
+Graph the equation by the intercept method.
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The [`x`]-intercept occurs when [`y=0`]: [`[$xint]`]; 
+    The [`y`]-intercept occurs when [`x=0`]: [`[$yint]`]
+    
+ 
+b. 
+   [@ image(insertGraph($gr), width=>360, height=>270, tex_size=>700) @]*
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

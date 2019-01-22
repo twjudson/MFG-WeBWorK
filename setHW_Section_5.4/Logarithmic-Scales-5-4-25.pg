@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: logarithmic scale: decibels
+##ENDDESCRIPTION
+      
+## DBsection(Logarithmic Scales)
+## Date('10/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.4')
+## Problem1('25')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->variables->are(R=>"Real");
+Context()->flags->set(useBaseTenLog=>1);
+ 
+
+$ans = Compute("100");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use the appropriate formula for logarithmic models.
+
+A lawn mower generates a noise of intensity [`10^{-2}`] watts per square meter. Find the decibel level of the sound of a lawn mower.
+
+    Answer: [___________]{$ans}
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+[` D = 10 \log_{10} \left( \dfrac{I}{10^{-12}}   \right)`], where [` I`] is the intensity of its sound waves (in watts per square meter).
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

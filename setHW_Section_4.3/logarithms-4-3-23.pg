@@ -1,0 +1,59 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--write logarithmic equivalent to exponential equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('23')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros("PG.pl",
+           "PGbasicmacros.pl",
+           "PGchoicemacros.pl",
+           "PGanswermacros.pl",
+           "PGauxiliaryFunctions.pl",
+           "extraAnswerEvaluators.pl",
+"PGML.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->{format}{number} = "%.1f#"; 
+Context()->variables->are(t=>"Real", z=>"Real", v=>"Real", x=>"Real", y=>"Real");
+
+@variables = ("t", "z", "v", "x", "y");
+$i = random(0, $#variables - 1);
+$log =$variables[$i] ;
+
+$b = random(2,9) ;
+
+do{$p= random(21,99);} until ( ($p % 10) != 0);
+$power = $p/10;
+
+$y = Formula("log($power)/log($b)")->reduce;
+
+BEGIN_PGML
+
+a. 
+Solve the equation [`` [$b]^{[$log]} = [$power] ``], writing your answer as a logarithm.  
+That is, the solution to the given equation is [` \log_{b} {x} `], where [` b =`][____]{$b}, and [` x = `][_____]{$power}  
+b. 
+Use trial and error to approximate the logarithm to one decimal place.  
+The solution is [`[$log] \approx`][_____]{$y->cmp(  tolType => 'absolute',  tolerance => .05,)}
+
+END_PGML
+
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

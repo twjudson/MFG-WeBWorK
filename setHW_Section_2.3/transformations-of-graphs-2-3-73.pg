@@ -1,0 +1,147 @@
+##DESCRIPTION
+##  Algebra problem: write formula for transformation of a function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph', 'translation', 'scale','reflection')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.3')
+## Problem1('73')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mca = new_multiple_choice();
+
+$temp = 5000;
+$mca->qa(
+"Graph (a) shows a state where",  
+"taxpayers earn $DOLLAR$temp more than Californians in each tax rate."
+);
+
+$mca->extra(
+"taxpayers earn $DOLLAR$temp less than Californians in each tax rate.",
+"taxpayers pay  $DOLLAR$temp more in taxes than Californians in each tax rate.",
+"taxpayers pay  $DOLLAR$temp less in taxes than Californians in each tax rate."
+);
+#$mca->makeLast("none of the above");
+
+
+$mcaf = new_multiple_choice();
+$mcaf->qa(
+"A formula for graph (a) is ",  "\( y=f(x-5000)\)");
+
+$mcaf->extra(
+" \( y=f(x+5000)\)",
+ "\( y=f(x)-5000\)",
+ "\( y=f(x)+5000\)",
+);
+
+
+
+$mcb = new_multiple_choice();
+
+
+$mcb->qa(
+"Graph (b) shows a state where",  
+"taxpayers pay 2$PERCENT less tax than Californians of the same income."
+);
+
+$mcb->extra(
+"taxpayers pay 2$PERCENT  more tax than Californians of the same income.",
+"there are 2$PERCENT more taxpayers than in California.",
+"there are 2$PERCENT  fewer taxpayers than in California."
+);
+#$mcb->makeLast("none of the above");
+
+$mcbf = new_multiple_choice();
+$mcbf->qa(
+"A formula for graph (b) is ",  "\( y= f(x) -2 \)");
+
+$mcbf->extra(
+" \( y=f(x)+2\)",
+ "\( y=f(x-2)\)",
+ "\( y=f(x+2)\)",
+ "\( y=2f(x)\)",
+);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>[@ image( "fig-2-3-73.png", width=>250, height=>219,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+The graph of [`f(x)`] shows the California state income tax rate, in percent, for a single taxpayer whose annual taxable income is [`x`] dollars. Write a formula for each transformation of [`f`]; then explain what it tells you about the income tax scheme in that state.
+
+
+>>[@ image( "fig-2-3-73a.png", width=>236, height=>186,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*
+[@ image( "fig-2-3-73b.png", width=>236, height=>186,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]*<<
+
+a. [@ $mcaf -> print_q() @]***
+[@ $mcaf -> print_a() @]***
+
+    [@ $mca -> print_q() @]***
+[@ $mca -> print_a() @]***
+
+   
+b. [@ $mcbf -> print_q() @]***
+[@ $mcbf -> print_a() @]***
+ 
+    [@ $mcb -> print_q() @]***
+[@ $mcb -> print_a() @]***
+
+   
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+ANS( radio_cmp( $mcaf->correct_ans() ) );
+ANS( radio_cmp( $mca->correct_ans() ) );
+ANS( radio_cmp( $mcbf->correct_ans() ) );
+ANS( radio_cmp( $mcb->correct_ans() ) );
+
+##############################################################
+#
+
+
+
+
+ENDDOCUMENT();  

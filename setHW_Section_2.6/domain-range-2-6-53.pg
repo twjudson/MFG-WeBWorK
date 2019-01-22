@@ -1,0 +1,146 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/21/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('53')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+#"unionTables.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$a = non_zero_random(-9,9);
+do { $b = non_zero_random(-9,9);} until (abs($b) != abs($a));
+do { $c = non_zero_random(-9, 9); } until ((abs($c) != abs($a)) and ( abs($c) != abs($b)));
+
+$f = Compute( "1/x^2" );
+
+Context("Inequalities")->variables->are(x=>"Real");
+Context()->variables->add(y=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+  $dom[0]= Compute( "(-inf,$a) U ($a,inf)" );
+  $ran[0] = Compute( "(0,inf)" );
+  $dom[1]= Compute( "(-inf,0) U (0,inf)" );
+$neg_a = Compute( "-$a" ); #just so answer display looks ok
+  $ran[1] = Compute( "($neg_a,inf)" );
+
+  $dom[2]= Compute( "(-inf,$b) U ($b,inf)" );
+$neg_c = Compute( "-$c" ); #just so answer display looks ok
+  $ran[2] = Compute( "($neg_c,inf)" );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+
+Find the domain and range of each transformation of the given function.
+$BR
+
+\[ f(x)=$f \]  
+$BR
+(a) \( y = f(x - $a) \)
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+(b) \( y = f(x) - $a \) 
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+
+$BR
+$BR
+(b) \( y = f(x - $b) - $c \) 
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $dom[0]->cmp() );
+ANS( $ran[0]->cmp() );
+ANS( $dom[1]->cmp() );
+ANS( $ran[1]->cmp() );
+ANS( $dom[2]->cmp() );
+ANS( $ran[2]->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the `x`-values corresponding to points on the curve.
+The range includes all the `y`-values corresponding to points on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

@@ -1,0 +1,145 @@
+##DESCRIPTION
+##  Algebra problem:quadratic function for wildlife management
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle'')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('49')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGgraphmacros.pl",
+"AnswerFormatHelp.pl",
+"niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$P0 = 2000;
+$P1 = 5000;
+$P2 = 7000;
+
+$a = 1.2;
+$b = 0.0002;
+
+$f = Formula("$a x - $b x^2 ");
+$int = $a/$b;
+
+$xp = $int/2;
+$Ip = $f->eval(x=>$xp);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+  
+This problem deals with wildlife management. The annual increase, [`I`], in a population often depends on the size [`x`]of the population, according to the formula
+>>[``I = kCx - kx^2``]<<
+where [`k`] and [`C`] are constants related to the fertility of the population and the availability of food.
+    
+The annual increase, [`f (x)`] in the deer population in a national park is given by
+>>[``f (x) = [$f]``]<<
+where [`x`] is the size of the population that year.
+
+a. 
+Make a table of values for [`f (x)`] for [`0 \le x \le 7000`]. Use increments of 500 in [`x`].  
+[@
+DataTable(
+  [
+    [ '\(x\)', '500',  '1000', '1500', '2000',  '2500', '3000', '3500'  ]  ,
+    [  '\(I\)',  ans_rule(4) , ans_rule(4), ans_rule(4),  ans_rule(4) , ans_rule(4), ans_rule(4),  ans_rule(4)  ]
+  ], 
+  caption => 'Table of Increase for a population', 
+  align => '| c | c | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***  [@
+DataTable(
+  [
+    [ '\(x\)', '4000',  '4500', '5000', '5500',  '6000', '6500', '7000'  ]  ,
+    [  '\(I\)',  ans_rule(4) , ans_rule(4), ans_rule(4),  ans_rule(4) , ans_rule(4), ans_rule(4),  ans_rule(4)  ]
+  ], 
+  caption => 'Table of  Increase for a population', 
+  align => '| c | c | c | c | c | c | c | c | ',
+  midrules=>1,
+ );
+@]***  
+  
+b. 
+How much will a population of [$P0] deer increase? [______]  
+A population of [$P1] deer? [______]  
+A population of [$P2] deer? [______]  
+c. 
+Use your calculator to graph the annual increase, [`f (x)`], versus the size of the population, [`x`], for [`0 \le x \le 7000`].  
+d. 
+What do the [`x`]-intercepts tell us about the deer population?  
+e. 
+Estimate the population size that results in the largest annual increase. What is that increase?  
+The population size [_____] gives the largest annual increase, namely [_____] deer.
+
+
+
+END_PGML
+Context()->normalStrings;
+
+foreach my $i (1..14) {
+  $X[$i] =500*$i;
+  $v = $f->eval(x=>$X[$i]);
+  ANS(Compute($v)->cmp() );
+};
+
+$I0 = $f->eval(x=>$P0);
+ANS(Compute($I0)->cmp() );
+$I1 = $f->eval(x=>$P1);
+ANS(Compute($I0)->cmp() );
+$I2 = $f->eval(x=>$P2);
+ANS(Compute($I2)->cmp() );
+ANS(Compute($xp)->cmp() );
+ANS(Compute($Ip)->cmp() );
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. Evaluate [` [$f]`] for [` x = 500, 1000, \cdots`]  
+b. 
+Evaluate [`[$f]`] for [`x = [$P0], [$P1], [$P2] `].  
+c. 
+(The graph is a parabola opening downward, with [`x`]-intercepts at 0 and at [$int].)  
+d. 
+The [`x`]-intercepts corresponds to stable populations sizes:  Populations of size 0 or [$int] will be the same size the next year.  
+e. 
+The peak of the parabola has a height representing the largest increase. It occurs halfway between the two [`x`]-intercepts at [`x=[$xp]`] and corresponds to a population increase of [` I=[$Ip]`] per year.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

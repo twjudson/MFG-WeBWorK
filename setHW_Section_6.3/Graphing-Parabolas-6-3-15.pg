@@ -1,0 +1,153 @@
+##DESCRIPTION
+##  Algebra problem: graphing parabolas: vertex as max or min
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/14/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('15')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$c[0] = random(1,9);
+$b[0] = random(2,9,2);
+$d[0] = $b[0]/2;
+$a[0] = 1;
+
+$c[1] = non_zero_random(-9,9);
+do {$num = random(1,8);} until ( ($num % 3) != 0);
+$b[1] = "$num / 3";
+$a[1] = "1/2";
+$d[1] = $b[1];
+
+do{$c[2] =random(19,59)  /10;} until ( floor($c[2]) != $c[2]);
+$a[2] = random(2,9) / 10;
+$b[2] = random(2,9,2) * $a[2];
+$d[2] = -$b[2] /(2*$a[2]);
+
+
+@func = ("$c[0] + $b[0] *x - x^2", "$a[1]* x^2 - $b[1] *x+ $c[1]", "$c[2] - $b[2] *x - $a[2]* x^2");
+@extreme = ("maximum", "minimum", "maximum");
+@slice = NchooseK(3,3);
+
+@f = @func[@slice];
+foreach my $i ( 0..2 ) { 
+  $F[$i] = Formula("$func[$i]"); #first compute the y-coordinate of vertices
+  $k[$i] = $F[$i]->eval(x=>$d[$i]);
+  $F[$i] = Formula("$f[$i]"); #permute the order of functions
+}
+@vert = ("($d[0], $k[0])", "($d[1], $k[1])", "($d[2], $k[2])");
+@vtext = @vert[@slice];
+@ext = @extreme[@slice];
+
+
+
+Context("Point");
+
+foreach my $i ( 0..2 ) { 
+  $v[$i] = Compute("$vtext[$i]");
+  $mc[$i]  = new_multiple_choice();
+  $mc[$i] ->qa( "The vertex is a",  "$ext[$i]");
+  $mc[$i] ->makeLast("maximum", "minimum");
+};
+
+Context("Numeric");
+
+
+
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Find the coordinates of the vertex. Decide whether the vertex is a maximum point or a minimum point on the graph.  
+
+a. 
+[`` y=[$F[0]] ``]  
+Vertex: [_________] [@AnswerFormatHelp("points") @]*  
+[@ $mc[0] -> print_q() @]***
+[@ $mc[0] -> print_a() @]***
+  
+
+a. 
+[`` y=[$F[1]] ``]  
+Vertex: [_________] [@AnswerFormatHelp("points") @]*  
+[@ $mc[1] -> print_q() @]***
+[@ $mc[1] -> print_a() @]***
+  
+
+a. 
+[`` y=[$F[2]] ``]  
+Vertex: [_________] [@AnswerFormatHelp("points") @]*  
+[@ $mc[2] -> print_q() @]***
+[@ $mc[2] -> print_a() @]***
+  
+
+
+END_PGML
+  
+
+Context()->normalStrings;
+
+ANS($v[0]->cmp() );
+ANS(  radio_cmp( $mc[0]->correct_ans() ));
+ANS($v[1]->cmp() );
+ANS(  radio_cmp( $mc[1]->correct_ans() ));
+ANS($v[2]->cmp() );
+ANS(  radio_cmp( $mc[2]->correct_ans() ));
+
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The vertex of [` y = ax^2 + bx + c`] occurs when [`x = \dfrac{-b}{2a}`], and the [`y`]-coordinate can be computed from the equation of the parabola and the computed [`x`]-coordinate of the vertex.
+
+The vertex is a maximum when [`a`] is negative. The vertex is a minimum when [`a`] is positive; 
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

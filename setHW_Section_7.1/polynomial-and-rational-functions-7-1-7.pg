@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('10/30/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('7')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+$a1 = list_random(2,4,1);
+$b1= list_random(3,5,1);
+
+Context()->variables->add(y=>"Real");
+
+$poly = Compute("(y - $a1)*(y + $a1)*(y - $b1)*(y + 1)");
+
+#
+#  Expanded form
+#
+Context("LimitedPolynomial-Strict");
+
+$b = -$b1 +1;
+$c = -$b1 - $a1**2;
+$d = ($a1**2)*$b1 - $a1**2;
+$e = $a1**2*$b1;
+
+Context()->variables->add(y=>"Real");
+$expandedform = Formula("y^4 + $b y^3 + $c y^2 + $d y  + $e")->reduce();
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+Multiply the polynomial \( $poly \)
+$BR
+$BR
+\{ ans_rule(30) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $expandedform->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

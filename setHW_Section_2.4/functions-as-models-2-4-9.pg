@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Functions as Mathematical Models')
+## Date('9/10/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.4')
+## Problem1('9')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "AnswerFormatHelp.pl",
+   "PGchoicemacros.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context()->strings;
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"Choose the graph that depicts the function that best illustrates the situation where inflation is still rising, but by less each month.",  
+"(b)");
+
+$mc->makeLast("(a)", "(b)", "(c)", "(d)");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+
+$BR
+
+$BCENTER
+\{ image( "fig-ex-2-4-9.png",  width=>400, height=>400  ) \}
+$ECENTER
+
+$BR
+\{ $mc->print_q() \}
+$BR
+\{ $mc->print_a() \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+ENDDOCUMENT();        

@@ -1,0 +1,138 @@
+##DESCRIPTION
+##  Algebra problem: identify linear function from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/29/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('41')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+$m = random(3,6); #was 5;
+$yintercept = random(2,4); #was 2;
+$x0 = random(2,4); #was 2
+
+$f = Formula(" $m*x + $yintercept");
+$f1 = Formula(" x**2");
+foreach my $i (0..4) {
+  $x[$i] = $i + $x0;
+  $y[$i] = $f->eval(x=>$x[$i]);
+  $y1[$i] = $f1->eval(x=>$x[$i]);
+};
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Are variables related by a linear function?",  
+"Yes");
+$mc->extra(
+"No ",
+);
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Are variables related by a linear function?",  
+"No");
+$mc1->extra(
+"Yes ",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Which of the tables represent(s) variables that are related by a linear function? (Hint: Which relationships have constant slope?)
+
+a. 
+[@
+DataTable(
+  [
+    [ '\(x\)', '\(y\)']  ,
+    [  "\\(  $x[0]  \\) ",  "\\(  $y[0]  \\) "]  ,
+    [  "\\(  $x[1]  \\) ",  "\\(  $y[1]  \\) "]  ,
+    [  "\\(  $x[2]  \\) ",  "\\(  $y[2]  \\) "]  ,
+    [  "\\(  $x[3]  \\) ",  "\\(  $y[3]  \\) "]  ,
+    [  "\\(  $x[4]  \\) ",  "\\(  $y[4]  \\) "]  ,
+  ], 
+  caption => 'Table of two variables', 
+  align => '| c | c |',
+  midrules=>1,
+ );
+@]***
+
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+b. 
+[@
+DataTable(
+  [
+    [ '\(x\)', '\(y\)']  ,
+    [  "\\(  $x[0]  \\) ",  "\\(  $y1[0]  \\) "]  ,
+    [  "\\(  $x[1]  \\) ",  "\\(  $y1[1]  \\) "]  ,
+    [  "\\(  $x[2]  \\) ",  "\\(  $y1[2]  \\) "]  ,
+    [  "\\(  $x[3]  \\) ",  "\\(  $y1[3]  \\) "]  ,
+    [  "\\(  $x[4]  \\) ",  "\\(  $y1[4]  \\) "]  ,
+  ], 
+  caption => 'Table of two variables', 
+  align => '| c | c |',
+  midrules=>1,
+ );
+@]***
+
+    [@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The slope between any two points in the table is [$m].
+b. 
+The slope is not constant.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

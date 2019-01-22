@@ -1,0 +1,99 @@
+##DESCRIPTION
+##  Algebra problem: logarithmic scale: find number midway between two others
+##ENDDESCRIPTION
+      
+## DBsection(Logarithmic Scales)
+## Date('10/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.4')
+## Problem1('15')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->variables->are(R=>"Real");
+Context()->flags->set(useBaseTenLog=>1);
+ 
+$a = random(1.1,1.8,.1); #was 1.5;
+$b = 2;
+$m = ($a+$b)/2;
+$ans[0] = Compute("10**($m)");
+
+$c = random(20,70,10); #was 20;
+$d = $c+10; #was 30;
+$m2 = $c*$d;
+$ans[1] = Compute("10**(log($m2)/2)");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+a. 
+What number is halfway between [`10^{[$a]}`] and  [`10^{[$b]}`]  on a log scale?
+
+    Answer: [___________]{$ans[0]}
+
+b. 
+What number is halfway between[$c] and  [$d]  on a log scale?
+
+    Answer: [_____________]{$ans[1]}
+
+
+
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+a. 
+Halfway between [$a]  and [$b] on a number line would be [$m], so on a log scale (where constant differences in the exponents on 10 are equally spaced), halfway between [`10^{[$a]}`] and  [`10^{[$b]}`] would be [`10^{[$m]}\approx [$ans[0]]`].
+
+b. 
+Halfway between [$c] and [$d] on a log scale would be the point whose exponent on 10 is the average of the exponents on 10 of  [$c]  and [$d], that is, the average of  [`\log [$c]`]  and [`\log[$d]`]. 
+The average of  [`\log [$c]`]  and [`\log[$d]`] is [` \frac{1}{2}(\log [$c] + \log [$d])= \frac{1}{2}\log [$m2]`]. 
+The point midway between [$c] and [$d] on a log scale is [`10^{\log([$m2])/2}\approx [$ans[1]]`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

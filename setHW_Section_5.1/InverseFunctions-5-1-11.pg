@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Algebra problem: square root and inverse (distance to horizon)
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('9/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->are(h=>"Real",d=>"Real");
+
+$f = Formula("  sqrt(7920*h) ");
+$g = Formula(" d**2 / 7920 ");
+$x0 = random(0.3,0.8,0.1); #was 0.5;
+
+$y0 = $f->eval(h=>$x0);
+$y0a = sprintf("%0.1f", $y0 );
+
+
+$y1 = random(10,30,5);
+$x1 = $g->eval(d=>$y1);
+$xft =$x1*5280;
+$x1ft= sprintf("%0.1f", $xft );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+If you are flying in an airplane at an altitude of [`h`] miles, on a clear day you can see a distance of 
+[`d`] miles to the horizon, where [` d= f(h)= [$f] `].
+
+a. 
+Evaluate [`f([$x0])`], and explain its meaning in this context.  
+
+     [`f([$x0]) \approx`][_____]{$y0->cmp( tolType => 'absolute',  tolerance => .05,)}
+b. 
+Find the altitude needed in order to see a distance of  [$y1] miles by substituting 
+[`d= [$y1] `] in the formula and solving for [`h`]:
+
+    [`h \approx`][________]{$x1->cmp( tolType => 'absolute',  tolerance => .0005,)} miles.
+
+c. 
+Find a formula for the inverse function.  
+
+    [` f^{-1}(d) = `] [________]{$g}
+d. 
+Write your answer to part (b) with inverse function notation.
+
+    [` f^{-1} \big(`][__]{$y1}[` \big) \approx `][___]{$x1->cmp( tolType => 'absolute',  tolerance => .0005,)}
+
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+ [`f([$x0]) \approx [$y0]`] At an altitude of [$x0] miles, you can see about [$y0a] to the horizon.
+
+b. 
+To solve [` [$y1] = [$f]`], we square both sides of the equation and then divide by 7920 to get [`h\approx [$x1]`] miles. This is approximately [$x1ft] feet.
+
+c. 
+To solve [` d = [$f]`], we square both sides of the equation and then divide by 7920 to get [`h = [$g] `]. 
+
+d.
+[` f^{-1}(d) = h `] is the inverse function equivalent of [` f(h) = d`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

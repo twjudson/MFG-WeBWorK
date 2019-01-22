@@ -1,0 +1,74 @@
+##DESCRIPTION
+##  Algebra problem: identify greater rate from verbal description
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('1')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+
+$mc = new_multiple_choice();
+$mc -> qa ("Carl runs 100  meters in 10  seconds. Anthony runs 200  meters in 19.6
+seconds. Who has the faster average speed?", 
+"Anthony" );
+
+$mc -> extra(
+"Carl"
+);
+$mc->makeLast("none of the above");
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+Carl's average speed is [` 100 \text{ m}/( 10 \text{ sec})=10\text{ m/sec}`], which is less than Anthony's average speed of [` 200 \text{ m}/( 19.6 \text{ sec})\approx 10.2\text{ m/sec}`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

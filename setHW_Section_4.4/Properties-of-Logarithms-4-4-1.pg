@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--relating laws of exponents and properties of logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('2/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('1')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"MathObjects.pl",
+"PGcourse.pl",
+"parserMultiAnswer.pl",
+"contextLimitedPowers.pl",
+"contextLimitedNumeric.pl",
+"unionTables.pl",
+"PGML.pl",
+#"PGchoicemacros.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real" );
+
+
+do{$a = random(2,9);
+  $b = random(2,9); } until ($a != $b);
+$c = $a + $b;
+
+Context()->texStrings;
+if ($displayMode eq 'TeX') {
+  $showpower =
+  "\( \displaystyle 10^{$a} \cdot 10^{$b} = 10^{". ans_rule(2) . "}\)";
+} else {
+  $showpower =
+  ColumnTable(
+  "\( \displaystyle 10^{$a} \cdot 10^{$b}  ~ = ~10 \)",
+  ans_rule(2).$BR.$BR,
+  indent =>0, separation => 0, valign => "BOTTOM"
+  );
+}
+
+Context()->texStrings;
+BEGIN_TEXT
+
+
+a. 
+Simplify by filling in the correct exponent: $BR
+$PAR$PAR
+
+$showpower 
+$PAR
+
+b. 
+Compute \(\log 10^{$a}=\) \{ans_rule(2)\}, 
+\(\log 10^{$b}=\) \{ans_rule(2)\}, and \(\log \left(10^{$a} \cdot 10^{$b}\right)=\) \{ans_rule(2)\}.  
+$PAR 
+
+How are they related?
+
+
+
+
+
+END_TEXT
+
+ANS( Compute($c)->cmp() );
+ANS( Compute($a)->cmp() );
+ANS( Compute($b)->cmp() );
+ANS( Compute($c)->cmp() );
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

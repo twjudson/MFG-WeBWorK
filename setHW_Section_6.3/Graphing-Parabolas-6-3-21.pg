@@ -1,0 +1,141 @@
+##DESCRIPTION
+##  Algebra problem: graphing parabolas: vertex and intercepts
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('21')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"AnswerFormatHelp.pl",
+"contextFraction.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+
+$a =random(-1,1,2);
+$k = non_zero_random(-2,2);
+$b = 2*$k;
+$c = (random(1,5) + $k**2)*$a ;
+
+$f = Formula("$a * x^2 + $b*x + $c")->reduce;
+
+$xv = -$k/$a;
+$yv = $f->eval(x=>$xv);
+
+Context("Point");
+
+$xint= Compute("dne");
+$yint= Compute("(0,$c)");
+$v= Compute("($xv,$yv)");
+
+Context("Numeric");
+$yv0 = Compute("$yv");
+#graph
+$xmin = min(-6, $xv -3 );
+$ymin = min(-6, floor($yv0) - 3, $c-1 );
+$xmax= max(6, $xv +3 );
+$ymax= max(6, ceil($yv0) +3, $c+1);
+$xgrid = $xmax - $xmin;
+$ygrid = $ymax - $ymin;
+
+$gr[0] = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,500]);
+$gr[0] -> lb('reset'); #remove default label and tick marks
+
+$gr[0] -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr[0] -> lb(new Label ( 0.15,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..6) {
+ $xscale =5*$i;
+ $yscale =5*$i;
+  $gr[0] -> lb(new Label ( $xscale,0.05*$ymin, $xscale,'black','center','middle'));
+  $gr[0] -> lb(new Label (0.05*$xmin,$yscale,$yscale,'black','center','middle'));
+  $gr[0] -> lb(new Label ( -$xscale,0.05*$ymin, -$xscale,'black','center','middle'));
+  $gr[0] -> lb(new Label (0.05*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr[0],
+              "$f for x in [$xmin,$xmax] using color:red and weight:2");
+($gr[0]->fn)[0]->steps(200);
+
+
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+[`` y=[$f] ``]  
+    
+a. 
+Find the coordinates of the intercepts and the vertex.  
+[`x`]-intercepts: [__________________]{$xint} [@AnswerFormatHelp("points") @]*  
+[`y`]-intercept: [__________________]{$yint} [@AnswerFormatHelp("points") @]*  
+Vertex: [__________________]{$v} [@AnswerFormatHelp("points") @]*  
+b. 
+Sketch the graph by hand.  
+c. 
+Use your calculator to verify your graph.
+
+ 
+
+END_PGML
+  
+
+Context()->normalStrings;
+
+
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+There are no real solutions to  [`[$f]=0`], so there are no [`x`]-intercepts.  
+We find the  [`y`]-coordinate of the  [`y`]-intercept by setting  [`x=0`] to find  [`y = [$c]`], and the  [`x`]-coordinate is 0.  
+We find the  [`x`]-coordinates of the vertex by setting [`x_{v}=\dfrac{-[$b]}{2([$a])} = [$xv]`], and find the  [`y`]-coordinate by evaluating [`[$f]`] for that value of [`x`].
+b. 
+[@image(insertGraph($gr[0]), width=>200, height=>225, tex_size=>700)@]*  
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

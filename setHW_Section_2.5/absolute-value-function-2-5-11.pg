@@ -1,0 +1,143 @@
+##DESCRIPTION
+##  Algebra problem: write absolute value expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('11')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context()->variables->are(x=>"Real");
+
+$h = non_zero_random(-4,4); #was 4
+$k = random(2,3);
+$ka = 0;
+do {
+$kb = random(-5, -1) * $k;  
+$kc = random(-5, -1) * $k; 
+} until ($kb != $kc);
+
+
+$f = Formula("abs($k * x - $k*$h)")->reduce;
+$ansa = $h;
+
+$xmin = -10 + $h;
+$ymin = -1;
+$xmax= $xmin + 20;
+$ymax= 10;
+$xgrid = $xmax-$xmin;
+$ygrid = $ymax - $ymin;
+$xpix = 500;
+$ypix = 260;
+
+$xp = round(.8*$xpix);
+$yp = round(.9*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix, $ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label ( .95*$xmax,0.05*$ymax, "x",'blue','center','middle'));
+$gr -> lb(new Label (.05*$xmax, 0.95*$ymax, "y" ,'blue','center','middle'));
+
+foreach my $i (1..9) {
+$xscale =2*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( $xscale,-0.2, $xscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,-0.2, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.2,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin,$xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+
+Context("Inequalities");
+Context()->constants->add(EmptySet => Set());
+Context()->constants->add(none => Set());
+$ansb = "none";
+$ansc = "none";
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>>
+    
+Graph [` y = [$f]`].  Use your graph to solve the following equations and inequalities.
+  
+a. 
+[`[$f] = [$ka]`]:  [_____]{$ansa} [@AnswerFormatHelp("numbers") @]* (Separate different solutions with commas.)
+
+b. 
+[`[$f] = [$kb]`]:  [________]{$ansb}  [@AnswerFormatHelp("inequalities") @]*
+
+c. 
+[`[$f] \lt [$kc]`]:  [________]{$ansc} [@AnswerFormatHelp("inequalities") @]*
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+>>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700); @]*<<
+
+a. 
+The graph has a [`y`]-coordinate of zero only at one point, namely where [`x=[$h]`].
+
+b. 
+The graph never has a negative [`y`]-coordinate, so there is no solution.
+
+c. 
+The graph never has a negative [`y`]-coordinate, so there is no solution.
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: Finding formula for exponential based on two points, neither the y-intercept
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.5')
+## Problem1('7')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Fraction");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$x0 = random(2,4) - .5; #was 4
+$k = random(2,3) - .5;
+$x1 = $x0 + $k;
+
+$b0 = random(2,3);
+$b = $b0 **2;
+$den = Compute("5*$b0*$b");
+$y0 = Compute("1/$den");
+
+$f = Formula(" $y0*$b**{x} ");
+
+$a0 = $f->eval(x=>$x0);
+$a1 =$f->eval(x=>$x1);
+$bk = Compute("$b**$k");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Find an exponential function that has the given values.
+
+[` s([$x0]) = [$a0]`], [`\quad s([$x1]) = [$a1]`]  
+[` s(x) =`][_______________]{$f}
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+An exponential function has the form [` s(x) = s_0 \cdot b^x`].  Because [`\dfrac{s([$x1])}{s([$x0])} =\dfrac{s_0 b^{[$x1]}}{s_0 b^[$x0]} =b^{[$k]}`], and also [`\dfrac{s([$x1])}{s([$x0])} = \dfrac{[$a1]}{[$a0]}= [$bk] `], we see that  [`b^{[$k]}= [$bk]`] and  [`b= [$bk]^{1/[$k]} = [$b]`]. We can find [`s_0`] using either of the [`s([$x0])`] or [`s([$x1])`]. If we choose [`x=[$x0]`], we have [` s([$x0]) =s_0\cdot ([$b])^{[$x0]} = [$a0]`], so [`s_0 = \dfrac{[$a0]}{([$b])^{[$x0]}} = [$y0]`]. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

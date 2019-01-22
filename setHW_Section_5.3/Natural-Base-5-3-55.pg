@@ -1,0 +1,109 @@
+##DESCRIPTION
+##  Algebra problem: half-life
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('55')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->flags->set(useBaseTenLog=>1);
+Context()->variables->are(t=>"Real");
+Context()->variables->add(N0 => ['Real',TeX=>"N_0"]);
+
+$hl = 8;
+$k = Compute("-ln(2)/$hl");
+
+$half = Formula("N0/2");
+$quarter = Formula("N0/4");
+$sixteenth = Formula("N0/16");
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The half-life of iodine-131 is approximately [$hl] days.
+
+a. 
+If a sample initially contains [`N_0`] grams of iodine-131, how much will it contain after 8 days? [______]{$half} grams (For this WeBWorK problem, enter "N0" to get [`N_0`])
+
+    How much will it contain after 16 days? [______]{$quarter} grams
+
+    After 32 days?    [______]{$sixteenth} grams  
+
+b. 
+Use your answers to part (a) to sketch a graph of [`N(t)`], the amount of iodine-131 remaining, versus time. (Choose an arbitrary height for [`N_0`] on the vertical axis.)
+
+c. 
+Graph [`N(t)`] and illustrate the half-life on your graph.
+
+d. 
+Calculate [`k`], and hence find a decay law of the form [`N(t)=N_0 e^{kt}`], where [`k
+\lt 0`],  for iodine-131.
+
+    [`k=`][________]{$k->cmp(  tolType => 'relative',  tolerance => .005,)}
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+
+Because the half-life is [$hl], every [$hl] days the remaining amount of iodine-131 is halved. Thus after one half-life ([$hl] days) the original [`N_0`] is reduced to [`[$half]`], after another half-life (for a total of 16 days) the original [`N_0`] is reduced to [`[$quarter]`], after another two half-lives (for a total of 32 days) the original [`N_0`] is reduced to [`[$sixteenth]`].
+
+b. 
+[@ image( "fig-ans-5-3-55.svg", width=>200,  
+tex_size=>700, extra_html_tags=>'alt="Graph of a function."' ) @]***
+
+c. 
+To find the constant [`k`] we can solve the equation [`\frac{1}{2}N_0 = N_0 e^{k\cdot[$hl]}`] for [`k`] to get [`k = -\ln(2)/[$hl] \approx [$k]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

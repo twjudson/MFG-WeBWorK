@@ -1,0 +1,141 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Graphs of Functions')
+## Date('8/18/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.3')
+## Problem1('1')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "AnswerFormatHelp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+
+
+$h_intercept_minus3 = Compute("-2");
+$h_intercept_1 = Compute("0");
+$h_intercept_3 = Compute("5");
+
+$h_equal_3 = Compute("2");
+
+$z_intercept = List(Compute("-2"), Compute("1"));
+$h_intercept = Compute("-2");
+
+$hmax = Compute("5");
+$zmax = Compute("3");
+
+Context("Interval");
+$h_increasing = List(Compute("[-4,-2]"), Compute("[0,3]"));
+$h_decreasing = Compute("[-2,0]");
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Use the graph below to answer the questions about the function \(h(z)\).
+$BR
+$BR
+
+
+\{ image( "fig-ex-1-3-1.png",  width=>300, height=>300  ) \}
+
+$BR
+$BR
+
+a.  Find \(h(-3)\) \{ ans_rule(5) \},  \(h(1)\) \{ ans_rule(5) \}, and \(h(3)\) \{ ans_rule(5) \}.
+
+$BR
+$BR
+
+b.  For what values of \(z\) is \(h(z) = 3\)? \{ ans_rule(5) \}
+
+$BR
+$BR
+
+c.  Find the intercepts of the graph. List the function values given by the intercepts:  \(z\)-intercepts \{ ans_rule(10) \}, \(h(z)\)-intercepts \{ ans_rule(10) \}.
+
+$BR
+$BR
+
+d. What is the maximum value of \(h(z)\)? \{ ans_rule(5) \}
+
+$BR
+$BR
+
+e. For what value(s) of \(z\) does \(h\) take on its maximum value? \{ ans_rule(10) \}
+
+$BR
+$BR
+
+f. On what intervals is the function increasing? \{ ans_rule(10) \} Decreasing? \{ ans_rule(10) \}
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($h_intercept_minus3->cmp());
+ANS($h_intercept_1->cmp());
+ANS($h_intercept_3->cmp());
+
+ANS($h_equal_3->cmp());
+
+ANS($z_intercept->cmp());
+ANS($h_intercept->cmp());
+
+ANS($hmax->cmp());
+
+ANS($zmax->cmp());
+
+ANS($h_increasing->cmp());
+ANS($h_decreasing->cmp());
+
+
+
+
+ENDDOCUMENT();        

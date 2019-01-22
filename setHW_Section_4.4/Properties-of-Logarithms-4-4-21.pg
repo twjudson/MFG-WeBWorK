@@ -1,0 +1,91 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--numerically evaluating log based on simpler logs
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/1/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('21')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+
+@nums = (2, 3, 5);
+@logs = (0.6931, 1.0986, 1.6094);
+
+@slice = NchooseK(3,3);
+@n = @nums[@slice];
+@logn = @logs[@slice];
+
+$a = $n[0]*$n[1];  # was 6;
+$loga =  $logn[0] + $logn[1];   # was log10($a);
+
+$f = "\dfrac{$n[0]}{$n[2]}";
+$logf = $logn[0] - $logn[2];
+
+
+Context()->functions->disable("log", "log10", "ln");
+
+Context()->texStrings;
+BEGIN_PGML
+Use the three logs below to find the value of each expression.  
+[``\log_b 2 = 0.6931,   \log_b 3 = 1.0986,   \log_b 5 = 1.6094``]
+
+
+(_Hint_: For example, [`\log_b 15 = \log_b 3 + \log_b 5`].)
+
+
+a. 
+[`   \log_b  [$a] = `][______]{$loga}
+
+
+
+b. 
+[`   \log_b  [$f] = `][______]{$logf}
+
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[` [$a] = [$n[0]] \cdot [$n[1]]`], so  
+[` \begin{aligned}
+    \log_b [$a]  & = \log_b ([$n[0]] \cdot [$n[1]] )\\
+    & = \log_b ([$n[0]] ) + \log_b ([$n[1]] ) \\
+    & = [$logn[0]] + [$logn[1]] \\
+    & = [$loga]
+    \end{aligned}
+`]
+
+
+
+b. 
+[` \begin{aligned}
+    \log_b [$f]  & = \log_b [$n[0]] -  \log_b [$n[2]] \\
+    & = [$logn[0]] - [$logn[2]] \\
+    & = [$logf]
+    \end{aligned}
+`]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: inverse of linear 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('9/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+"PGchoicemacros.pl",
+  "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Fraction");
+Context()->variables->are(t=>"Real",y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+do {$a =random(2,5);
+$b = random(2,6);
+} until (gcd($a,$b) == 1);
+$c = non_zero_random(-9,9);
+
+$f = Formula("  $a/$b * t + $c ")->reduce;
+$g = Formula(" (y - $c) * $b/$a")->reduce;
+$x0 = non_zero_random(-4,4) * $b;
+$y0 = $f->eval(t=>$x0);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+If [` F(t) = [$f] `], find [`F^{-1}([$y0])`].
+
+     [`F^{-1}([$y0])= `][__]{$x0}
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+We can solve [` [$y0] = [$f]`] to find [`t = F^{-1}([$y0])= [$x0]`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

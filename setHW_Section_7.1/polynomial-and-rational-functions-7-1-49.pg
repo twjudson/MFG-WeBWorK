@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Polynomial Functions')
+## Date('11/5/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('7.1')
+## Problem1('49')
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#
+#  Polynomial
+#
+Context("Numeric");
+Context()->variables->add(h=>"Real", r=>"Real");
+
+
+
+
+
+$volume_1 = Formula("pi*r^2*h + (2/3)*pi*r^3");
+
+
+#
+#  Expanded form
+#
+
+$volume_2 = Formula("(17/3)*pi*r^3");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+a. A grain silo is built in the shape of a cylinder with a hemisphere on top (see the figure). Write an expression for the volume of the silo in terms of the radius \(r\) and height \(h\) of the cylindrical portion of the silo.
+
+$BR
+$BR
+
+\(V = \) \{ ans_rule(30) \}
+
+
+$BR
+$BR
+
+b. If the total height of the silo is five times its radius, write a polynomial function 
+\(V(r)\) in one variable for its volume.  \(V(r) = \)\{ ans_rule(30) \}
+
+$BR
+$BR
+
+$BCENTER
+\{ image( "fig-7-1-49.png",  width=>200, height=>350  ) \}
+$ECENTER
+
+$BR
+$BR
+
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $volume_1->cmp() );
+
+ANS( $volume_2->cmp() );
+
+##############################################################
+#
+#  Solutions
+#
+#
+
+
+ENDDOCUMENT();   

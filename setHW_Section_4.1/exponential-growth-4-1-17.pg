@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--population decay
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/7/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('17')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$fraction = "\frac{3}{4}";
+$T = 2;
+$base = " \left(\frac{3}{4}\right)^{1/$T}" ; 
+$P0 = random(15,30,5) * 10000; #textbook had 250000;
+
+$f = Formula("$P0 * (3/4)**(t/$T) ");
+
+$t1 = random(3,5); #textbook had 3;
+$P1 = $f->eval(t=>$t1);
+
+$t2= random(7,12); #textbook had 8;
+$P2 = $f->eval(t=>$t2);
+
+
+Context()->{format}{number} = "%.0f";
+
+
+##################
+
+BEGIN_PGML
+
+During a vigorous spraying program, the mosquito population was reduced to [`[$fraction]`] of its previous size every [$T] weeks. If the mosquito population was originally estimated at [$P0], how many mosquitoes remained after [$t1] weeks of spraying? After [$t2] weeks?
+
+a. 
+Write a function that describes exponential decay.  
+[` P(t) =`][_____________]{$f}  (Use [`t=0`] to represent the year [$Year0], but do not enter any comma.)  
+Use a graphing utility to graph the function.  
+b. 
+How many mosquitoes remained after [$t1] weeks of spraying?   [________]{$P1->cmp(  tolType => 'relative',  tolerance => .005,)}  
+After [$t2] weeks? [________]{$P2->cmp(  tolType => 'relative',  tolerance => .005,)}
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+BEGIN_PGML_SOLUTION
+ 
+Because it takes [$T] weeks for the population to decrease by a factor of [`[$fraction]`], the decay factor is [`[$base]`].
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

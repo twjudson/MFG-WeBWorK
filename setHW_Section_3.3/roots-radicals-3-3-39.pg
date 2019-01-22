@@ -1,0 +1,99 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--solving for pendulum arm length
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('39')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Parser::Number::NoDecimals();
+Context()->variables->add(T=>'Real', L=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+
+
+$z = Formula(" pi*8^(-1/2) L^(1/2) ");
+$k = Formula(" pi*8^(-1/2) ");
+$given = " 2 \pi sqrt{\dfrac{L}{32}} ";
+$f = Formula("32(T/(2 pi))^2");
+$period = 10.54;
+$len = $f->eval(T=>$period);
+
+Context()->functions->disable("All");
+#Context()->{format}{number} = "%.0f";
+$length = Compute("$len");
+
+
+##################
+BEGIN_PGML
+  
+ 
+The period of a pendulum is the time it takes for the pendulum to complete one entire swing, from left to right and back again. The greater the length, [`L`], of the pendulum, the longer its period, [`T`]. In fact, if [`L`] is measured in feet, then the period is given in seconds by
+    [`` T=2\pi\sqrt{\frac{L}{32}} ``]
+  
+a.
+Write the formula for  [`T`] as a power function in the form [` f (x) = kx^p `].  
+[` T = `] [____________]{ $z } , so the coefficient [` k =`][____________]{ $k }  
+b.
+Suppose you are standing in the Convention Center in Portland, Oregon, and you time the period of its Foucault pendulum (the longest in the world). Its period is approximately [$period] seconds. How long is the pendulum?  
+    
+Length [`=`] [____]{ $length->cmp(tolType => 'absolute',  tolerance => .05) } feet  
+c.
+Choose a reasonable domain for the function [` T = f (L) `] and graph the function.
+
+  
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+
+a.  Rewrite the square root as a power with exponent \(1/2\). Then (using a property of exponents) rewrite the power as a fraction with a power of \(L\) in the numerator and a constant in the denominator. The coefficient \(k\) is  \(2 \pi\) over that constant denominator.
+$BR
+b. Substitute \( T=$period \) in either form of the given equation and solve for \(L\): Divide both sides of the equation by \(2\pi\), square both sides, then multiply both sides by 32.
+
+
+END_SOLUTION
+
+ENDDOCUMENT();     

@@ -1,0 +1,117 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--formula from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Graphs of exponential functions)
+## Date('2/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('23')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGgraphmacros.pl",
+"PGunion.pl",
+);
+
+
+TEXT(beginproblem());
+
+$refreshCachedImages=1;
+
+Context("Numeric");
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+###########################
+$a0 = random(2,3,1);
+do{$b = random(2,3,1);} until ($a0 != $b);
+$a = random(2,4) * $a0 * 50;
+
+$f= Formula(" $a ( $b^x)");
+
+$xmin = -.5;
+$xmax = 3;
+$ymin = -$b*$a;
+$ymax = $b**3 * $a;
+
+# make graphs for each
+    $gr = init_graph($xmin,$ymin, $xmax, $ymax,'axes'=>[0,0],'grid'=>[7,$b**3 + $b]);
+$gr -> lb('reset');
+
+  $gr -> lb(new Label ( .9,-0.5*$a, 1,'black','center','middle'));
+  $gr -> lb(new Label ( 1.9,-0.5*$a, 2,'black','center','middle'));
+  $gr -> lb(new Label ( 2.9,-0.5*$a, 3,'black','center','middle'));
+foreach my $i (1..8){
+  $gr-> lb(new Label ( -0.2, $b*$a*$i,$b*$a*$i,'black','center','middle'));
+#  $gr -> lb(new Label ( -0.2, $b*2*$a,$b*2*$a,'black','center','middle'));
+}
+add_functions( $gr,
+               "$f for x in [-2,3] using color:red and weight:2");
+foreach my $i (0..2) {
+   $y[$i] = $f->eval(x=>$i);
+   $gr->stamps( closed_circle($i,$y[$i],'red') );
+}
+
+
+
+###############
+BEGIN_TEXT
+
+\{
+ColumnTable(
+" $BR   The graph of \(f (x) = P_0 b^x\) is shown in the figure.
+$BR
+a. Read the value of \(P_0\) from the graph.".
+" \( P_0 = \) ".
+ans_rule(7).
+$BR.
+"b. Make a short table of values for the function by reading values from the graph. Does your table confirm that the function is exponential?
+$BR
+c. Use your table to calculate the growth factor, \(b\).".
+" \(b = \) ".
+ans_rule(7).
+$BR.
+"d. Using your answers to parts (a) and (c), write a formula for \(f (x)\).".
+$BR.
+" \(f(x) = \) ".
+ans_rule(10).
+$BR.
+$BR.
+$BR.
+$BR
+,
+$BCENTER.
+image(insertGraph($gr), width=>400, height=>400, tex_size=>700).
+$BR.
+"(Click on graph to enlarge)".
+$ECENTER
+,
+indent => 0, separation => 30, valign => "TOP"
+)
+\}
+
+END_TEXT
+
+
+#install_problem_grader(~~&std_problem_grader);
+#Context()->normalStrings;
+ANS(Compute( $a)->cmp() );
+ANS(Compute( $b)->cmp() );
+ANS( $f->cmp() );
+
+
+
+ENDDOCUMENT();     

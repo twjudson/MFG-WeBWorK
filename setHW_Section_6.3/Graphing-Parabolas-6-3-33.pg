@@ -1,0 +1,118 @@
+##DESCRIPTION
+##  Algebra problem: discriminant, solution type
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts', 'discriminant')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"AnswerFormatHelp.pl",
+"contextFraction.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+
+
+do {$p = random(112, 162);
+  $q = random(651, 799);
+  $r = random(31,59);
+  $d = $q**2 - 4 * $p*$q;
+}
+until ( $d>0 and floor(sqrt($d)) != sqrt($d));
+
+$a = $p/100;
+$b = $q/100;
+$c = $r/100;
+
+$f0 = Formula("$b * x ")->reduce;
+$f1 = Formula(" $a*x^2 + $c ")->reduce;
+
+$D = $b**2 - 4*$a *$c;
+
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"The equation has", 
+"two distinct solutions.", 
+"only real but not rational solutions."
+);
+
+$mc->extra(
+"one repeated solution.",
+"only rational solutions.",
+ "complex but not real solutions."
+);
+$mc->makeLast("none of the above");
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Use the discriminant to determine the nature of the solutions of the equation.
+
+[`` [$f0]=[$f1] ``]  
+    
+The discriminant is [___]{Compute("$D")->cmp(  tolType => 'relative',  tolerance => .1,)}. 
+    
+[@ ColumnMatchTable($mc) @]***
+
+ 
+
+END_PGML
+  
+
+Context()->normalStrings;
+
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`a = [$a]`], [`b = [$b]`], [`c = [$c]`], so the discriminant is [`D = ([$b])^2 - 4([$a])([$c])=[$D]`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

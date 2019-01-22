@@ -1,0 +1,117 @@
+##DESCRIPTION
+##  Algebra problem: find formulas for linear functions and identify graphs of inverses
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('43')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+"PGchoicemacros.pl",
+ "imageChoice.pl",
+"unionTables.pl",
+  "niceTables.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$fa = Formula("4+2x");
+$aPop = PopUp(["select", "I", "II", "III","IV"], "IV");
+$fb = Formula("2 - x/2");
+$bPop = PopUp(["select", "I", "II", "III","IV"], "III");
+$fc = Formula(" -4-2x");
+$cPop = PopUp(["select", "I", "II", "III","IV"], "I");
+$fd = Formula(" x/2");
+$dPop = PopUp(["select", "I", "II", "III","IV"], "II");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>>[@ image( "fig-5-1-43.svg", width=>534, height=>940,  
+tex_size=>700, extra_html_tags=>'alt="Graphs of 8 functions."' ) @]***<<
+
+
+
+Find a formula for each function shown in (a) - (d). Then match each function with its inverse from I - IV.
+
+a. 
+A formula for graph (a) is [` f(x) = `][______] and the graph of its inverse is [@ $aPop->menu() @]*
+
+b. 
+A formula for graph (b) is [` f(x) = `][______] and the graph of its inverse is [@ $bPop->menu() @]*
+
+c. 
+A formula for graph (c) is [` f(x) = `][______] and the graph of its inverse is [@ $cPop->menu() @]*
+
+d. 
+A formula for graph (d) is [` f(x) = `][______] and the graph of its inverse is [@ $dPop->menu() @]*
+
+
+END_PGML
+
+Context()->normalStrings;
+
+ANS($fa->cmp());
+ANS($aPop->cmp());
+ANS($fb->cmp());
+ANS($bPop->cmp());
+ANS($fc->cmp());
+ANS($cPop->cmp());
+ANS($fd->cmp());
+ANS($dPop->cmp());
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+a. 
+Graph (a) is a line with slope 2 and [`y`]-intercept [`(0,4)`], so the equation of the line is [`y = 2x +4`]. The line also passes through [`(-2,0)`], so the inverse function passes through [`(0,-2)`] and has [`x`]-intercept [`(4,0)`], like graph (IV).
+
+b. 
+Graph (b) is a line with slope [`-1/2`] and [`y`]-intercept [`(0,2)`], so the equation of the line is [`y = -x/2 +2`]. The line also passes through [`(4,0)`], so the inverse function passes through [`(0,4)`] and has [`x`]-intercept [`(2,0)`], like graph (IV).
+
+c. 
+Graph (c) is a line with slope [`-2`] and [`y`]-intercept [`(0,-4)`], so the equation of the line is [`y = -2x -4`]. The line also passes through [`(-2,0)`], so the inverse function passes through [`(0,-2)`] and has [`x`]-intercept [`(-4,0)`], like graph (I).
+
+d. 
+Graph (d) is a line with slope [`1/2`] and [`y`]-intercept [`(0,0)`], so the equation of the line is [`y = x /2`]. The line also passes through [`(2,1)`], so the inverse function passes through [`(1,2)`] and has [`x`]-intercept [`(0,0)`], like graph (II).
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

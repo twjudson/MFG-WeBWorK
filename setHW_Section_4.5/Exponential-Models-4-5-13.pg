@@ -1,0 +1,135 @@
+##DESCRIPTION
+##  Algebra problem: Finding formula for linear and exponential functions through 2 points
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.5')
+## Problem1('13')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"contextFraction.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Fraction");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$x0 =  0;
+$k = 1;
+$x1 = $x0 + $k;
+
+$b =  .5;
+
+do {$n = random(22,48,2) ;} until  ( ($n % 10) != 0);
+$a0 = $n/10 ;
+$a1 =$a0 * $b;
+$y0 = "$a0";
+
+$f = Formula(" $y0*$b**{x} ");
+
+#linear:
+$m = $a1 - $a0;
+
+$fl = Formula(" $y0 + $m x")->reduce;
+
+
+#  Graph canvas
+#
+$xmin = -1;
+$ymin = -2;
+$xmax=3;
+$ymax= ceil($a0) + 1; 
+$ygrid = $ymax - $ymin;
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[4,$ygrid],size=>[300,300]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label (0.94*$xmax,-.1*$ymin,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 0.05*$xmin,0.94*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..2) {
+ $xscale =$i;
+ $yscale =$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [-5, 15] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+add_functions( $gr,
+               "$fl for x in [-5, 15] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($x0,$a0,'blue') );
+$gr->stamps( closed_circle($x1,$a1,'blue') );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+[` ([$x0], [$a0]), ~([$x1], [$a1]) `]
+
+a. 
+Fit a linear function to the points: [` L(x) = `][________]{$fl}  
+b. 
+Fit an exponential function to the points. [` E(x) = `][________]{$f}  
+c. 
+Graph both functions in the same window.
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+The slope of the line through the points [` ([$x0], [$a0]) `] and  [` ([$x1], [$a1]) `] is [` m = \dfrac{[$a1] - [$a0]}{[$x1]-[$x0]} = [$m] `]. The [`y`]-intercept is given as [$a0].  
+b. 
+The exponential function has the form [` y = E(x) = E_0 \cdot b^x`]. The [`y`]-intercept is given [`E_0 = [$x0]`].  Because [`\dfrac{E([$x1])}{E([$x0])} =\dfrac{E_0 b^{[$x1]}}{E_0 b^{[$x0]}} =b`], and also [`\dfrac{P([$x1])}{P([$x0])} = \dfrac{[$a1]}{[$a0]}= [$b] `], we see that  [`b= [$b]`].  
+
+
+[@ image(insertGraph($gr), width=>210, height=>210, tex_size=>700) @]*
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

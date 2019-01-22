@@ -1,0 +1,131 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Graphs of Functions')
+## Date('8/18/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.3')
+## Problem1('19')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "AnswerFormatHelp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+
+
+$f1985 = Compute("40");
+$f70 = List(Compute("1943"), Compute("1955"));
+$f1960 = Compute("1996");
+$highest = Compute("68");
+
+
+Context("Interval");
+$decreasing = Compute("[1946,1974]");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+The graph shows the federal debt as a percentage of the gross domestic product (GDP), as a function of time, \(D = f(t) \). (Source: Office of Management and Budget)
+$BR
+$BR
+
+
+\{ image( "fig-ex-1-3-19.png",  width=>300, height=>300  ) \}
+
+$BR
+$BR
+
+a.  
+Evaluate \(f(1985)\). \{ ans_rule(5) \} What is its meaning?
+
+$BR
+$BR
+
+b. Solve \(f(t) = 70\).  \{ ans_rule(5) \} What is its meaning?
+
+$BR
+$BR
+
+c. When did the federal debt reach its highest level since 1960, and what was that level? Write your answer with function notation: \( f( \) \{ ans_rule(5) \} \( ) = \) \{ ans_rule(5) \}.
+
+$BR
+$BR
+
+d. What is the longest time interval over which the federal debt was decreasing? Write your answer in interval form. \{ ans_rule(5) \}
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($f1985->cmp());
+
+ANS($f70->cmp(
+  tolType => 'absolute',
+  tolerance => 1.0,
+));
+
+
+
+ANS($f1960->cmp(
+  tolType => 'absolute',
+  tolerance => 1.0,
+));
+
+
+ANS($highest->cmp(
+  tolType => 'absolute',
+  tolerance => 1.0,
+));
+
+ANS($decreasing->cmp(
+  tolType => 'absolute',
+  tolerance => 1.0,
+));
+
+
+ENDDOCUMENT();        

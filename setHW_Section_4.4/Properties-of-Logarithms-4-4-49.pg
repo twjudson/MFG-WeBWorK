@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--evaluating log10 expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/4/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('49')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context("Numeric");
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+
+do {$a0 = random(21,69);} until ( ($a0 % 10 != 0) );
+$ansa = Compute("log10($a0)");
+$a = 10* $a0;
+
+$loga = log10($a);
+
+$ansb = Compute("log10($a) /10");
+
+$a1 = $a - 10;
+$ansc = Compute("log10($a1)");
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Which are equal?",  "none of the above");
+
+$mc->extra(
+"(a) and (b).",
+"(b) and (c).",
+"(a) and (c)",
+);
+$mc->makeLast("all of the above", "none of the above");
+
+Context()->{format}{number} = "%.4f#"; 
+
+Context()->texStrings;
+BEGIN_PGML
+
+Evaluate each expression. Round to four decimal places. Which (if any) are equal?
+
+[$
+
+a. 
+[`` \log_{10} \left(\frac{[$a]}{10}\right) =``][______]{$ansa->cmp(  tolType => 'absolute',  tolerance => .00005,)}
+
+b. 
+[`` \frac{\log_{10} [$a] }{10} =``][______]{$ansb->cmp(  tolType => 'absolute',  tolerance => .00005,)}  
+  
+c. 
+[` \log_{10} ([$a]  - 10) =`][______]{$ansc->cmp(  tolType => 'absolute',  tolerance => .00005,)}  
+
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+ [` \log_{10} \left(\dfrac{[$a]}{10}\right) = \log_{10} [$a0] \approx [$ansa]  `]  
+b. 
+[` \dfrac{\log_{10} [$a] }{10} \approx \dfrac{[$loga]}{10} \approx [$ansb]`]  
+c. 
+[` \log_{10} ([$a]  - 10) =\log_{10} [$a1]   \approx  [$ansc] `]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

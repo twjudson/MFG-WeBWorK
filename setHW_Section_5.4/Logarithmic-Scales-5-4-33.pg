@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: logarithmic scale: pH
+##ENDDESCRIPTION
+      
+## DBsection(Logarithmic Scales)
+## Date('10/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.4')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->variables->are(R=>"Real");
+Context()->flags->set(useBaseTenLog=>1);
+ 
+$milk = 6.4;
+$soda =8.4;
+$diff = $soda- $milk;
+$ans = Compute(" 10**($diff )");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use the appropriate formula for logarithmic models.
+
+How much more acidic is milk (pH [$milk]) than baking soda (pH [$soda])?
+
+    Answer: [___________]{$ans->cmp(  tolType => 'absolute',  tolerance => .05,)} 
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+[`\text{pH}= -\log_{10} \left[ H^{+}\right]`], where [`\left[ H^{+}\right]`] denotes the concentration of hydrogen ions. 
+
+ A difference [` [$soda]- [$milk] = [$diff]`] in pH corresponds to acidity or hydrogen ion concentration having a ratio of  [`10^{[$diff]} =[$ans]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

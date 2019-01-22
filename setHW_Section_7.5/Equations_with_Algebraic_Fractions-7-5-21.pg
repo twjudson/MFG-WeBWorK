@@ -1,0 +1,179 @@
+##DESCRIPTION
+##  Algebra problem: minimize perimeter of rectangle with fixed area
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('21')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(w=>"Real",z=>"Real");
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$w = random(20,70,10); #was 40;
+$l = random($w+10,80, 10); #was 80;
+$A0 = $w*$l; #3200; 
+$twoA = 2*$A0;
+$P0= 2*($w + $l); #240
+$A1 = $A0/2; $P1 = $P0/2;
+
+$f = Formula(" $A0/w");
+$g = Formula("$twoA/w + 2*w")->reduce;
+
+$r = sqrt($A0);
+$yans=$g->eval(w=>$r);
+
+$ans =  List("$r");
+
+$xmin = -25;
+$xmax= 150;
+$ymin = -25;
+$ymax=500;
+$xgrid = ($xmax - $xmin)/10;
+$ygrid = ($ymax - $ymin)/25;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.5,'x','blue','left','bottom'));
+$gr -> lb(new Label (1.2,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..8) {
+$xscale =25*$i;
+$yscale =100*$i;
+$gr -> lb(new Label ( $xscale,-8.2, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-6,$yscale,$yscale,'black','center','middle'));
+}
+
+$end = $xmax+1;
+add_functions( $gr,
+"$g for w in [1, $end] using color:blue and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($r,$yans,'green') );
+$x1 = $r+1; $y1 = $yans-6;
+$gr -> lb(new Label ($x1, $y1,"($r, $yans)",'green','left','above'));
+
+$pop = PopUp(["select", 
+"The first coordinate is the minimum perimeter; the second coordinate is the minimum area.", 
+"The first coordinate is the width for the minimum perimeter; the second coordinate is the minimum perimeter.", 
+"The second coordinate is the width for the minimum perimeter; the first coordinate is the minimum perimeter."], 
+"The first coordinate is the width for the minimum perimeter; the second coordinate is the minimum perimeter.");
+ Context("Point");
+ $min = Point($r, $yans);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Francine wants to fence a rectangular area of [$A0] square feet to grow vegetables for her family of three.
+
+a. 
+Express the length of the garden as a function of its width, [`w`].
+
+    Length [`L=`][______]{$f} 
+
+b. 
+Express the perimeter, [`P`], of the garden as a function of its width, [`w`].
+
+    Perimeter [`P=`][__________]{$g} 
+
+c. 
+Graph your function for perimeter and find the coordinates of the lowest point on the graph. 
+
+    [____________________]{$min->cmp(  tolType => 'absolute',  tolerance => .05,)}  [@AnswerFormatHelp("points") @]*
+
+    Interpret those coordinates in the context of the problem.  [_______]{$pop}
+
+d. 
+Francine has [$P0] feet of chain link to make a fence for the garden, and she would like to know what the width of the garden should be. Write an equation that describes this situation.
+
+    [`` [$P0]=``][__________]{$g}
+
+e. 
+Solve your equation and find the dimensions of the garden.
+
+    The width is [____]{$w} ft, the length is [____]{$l} ft. (Note: The length should be greater than the width.)
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Because the area is the product of length and width, [`L = \dfrac{[$A0]}{w}`].
+
+b. 
+The perimeter is twice the sum of length and width, so [`P =  \dfrac{[$twoA]}{w} + 2w`]
+
+c. 
+[@image(insertGraph($gr), width=>240, height=>180, tex_size=>700)@]***
+
+    The lowest point is [`([$r], [$yans])`]; The minimum perimeter is [$yans] ft, for a width of [$r] ft.
+
+d. 
+We set the perimeter to [$P0]: [``[$P0] = [$g] ``]
+
+e.
+We solve the equation above for the one dimension [`w`] of the rectangle, and the other will be [`\frac{[$A0]}{w}`].
+
+    [``\begin{aligned}
+[$P0] &= [$g] \\
+[$P0]w &= [$A0] + 2w^2 \\
+0 &= 2w^2 - [$P0]w +  [$A0]   \\
+0 &= w^2 - [$P1]w +  [$A1]   \\
+0 &= (w-[$w])(w-[$l])  
+\end{aligned}``]
+
+So the width is [$w] ft (the shorter dimension) and the length is [$l] ft (the larger dimension.
+ 
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

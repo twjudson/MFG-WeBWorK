@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--rewriting in terms of simple logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('2/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('7')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"parserMultiAnswer.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", b=>"Real", r=>"Real", m=>"Real", P=>"Real");
+Context()->flags->set(limits=>[1,5]);
+@variables = ("x", "t", "r", "m", "P");
+$i = random(0, $#variables -1);
+$x = $variables[$i];
+
+$a = random(2,9);
+
+$fac1 = Formula("$a");
+$fac2 = Formula("($ x)");
+$multians = MultiAnswer($fac1, $fac2)->with(
+  singleResult => 0,
+  checker => sub {
+      my ( $correct, $student, $self ) = @_;
+      my ( $f1stu, $f2stu ) = @{$student};
+      my ( $f1, $f2 ) = @{$correct};
+      if ( ($f1 == $f1stu && $f2 == $f2stu) ||
+           ($f1 == $f2stu && $f2 == $f1stu) ) {
+          return [1,1];
+      } else {
+          if ($f1 == $f1stu || $f2 == $f1stu) {
+              return [1,0];
+          } elsif ($f1 == $f2stu || $f2 == $f2stu) {
+              return [0,1];
+          } else {
+              return [0,0];
+          }
+      }
+  }
+);
+
+
+
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Use the properties of logarithms to expand each expression in terms of simpler logarithms. Assume that all variable expressions denote positive numbers.
+$PAR
+a. 
+\(\log_{b} $a$x= \log_b\big( \)
+\{$multians->ans_rule(2)\}
+\( \big) + \log_b\big( \) 
+\{$multians->ans_rule(2)\}
+\( \big) \)
+
+$PAR
+
+b. 
+\(\log_{b} \dfrac{$x}{$a}= \log_b\big( \)
+\{ans_rule(2)\}
+\( \big) - \log_b\big( \) 
+\{ans_rule(2)\}
+\( \big) \)
+
+
+
+
+
+
+END_TEXT
+
+ANS( $multians->cmp() ); 
+ANS(Compute("$x")->cmp() ); 
+ANS( Compute("$a")->cmp() ); 
+
+
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

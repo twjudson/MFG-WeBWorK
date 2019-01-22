@@ -1,0 +1,64 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--approximate logarithms, solving exponential equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('43')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+#"PGchoicemacros.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", s=>"Real", u=>"Real", v=>"Real" );
+Context()->{format}{number} = "%.2f#"; 
+@variables = ("x", "t", "s", "u", "v");
+$i = random(0, $#variables - 1);
+$x = $variables[$i];
+do{$a0 = random(2, 19)} until ($a0 != 10);
+$a = $a0 / (-10);
+$temp = random(3,5);
+$c = 5* 2**$temp;
+$temp2 = random(2,2**$temp-1);
+$p1 = 5* $temp2;
+$power0 = 1 - $p1/$c;
+
+$log = Formula("$a $x");
+
+$b = 10 ; #Note that this textbook uses "log" for common log, not for "ln"
+
+$y = Formula("log10($power0) / $a")->reduce;
+
+BEGIN_PGML
+
+Solve for [` [$x] `]. Round your answers to hundredths.  
+>>[``  [$c] \left( 1- [$b]^{[$log]} \right) = [$p1]   ``]<<
+
+[` [$x] =`][_____]{$y->cmp(  tolType => 'absolute',  tolerance => .005,)}  
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+We first solve for the power: We can divide both sides of the equation by [$c], subtract 1 from both sides, and then we divide both sides of the equation by [`-1`], to get [`    [$b]^{[$log]} = [$power0]   `]. The logarithmic form of this equation is [` [$log] = \log_{10} [$power0] `]. Dividing both sides by [$a], we have that [` [$x] = \dfrac{\log_{10} [$power0]}{ [$a]} `].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Linear Functions')
+## Date('8/10/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.5')
+## Problem1('29')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "contextFraction.pl",
+   "niceTables.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context("Numeric");
+
+
+$slope = Compute("25");
+
+$ans_y_intercept = Compute("250");
+
+Context()->variables->add(G=>"Real");
+
+$ans_equation=Formula("25G + 250");
+
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+In England, oven cooking temperatures are often given as Gas Marks rather than degrees Fahrenheit. The table shows the equivalent oven temperatures for various Gas Marks.
+
+$BR
+$BR
+
+\{
+DataTable(
+  [
+    ['Gas Mark','\(3\)', '\(5\)', '\(7\)', '\(9\)' ],
+    ['Degrees \(F\)', '\(325\)', '\(375\)', '\(425\)', '\(475\)']
+  ],
+  align => '| c | c | c | c | c |',
+  midrules=>1,
+);
+\}
+
+$BR
+$BR
+
+a.  Plot the data and draw a line through the data points.
+
+$BR
+$BR
+
+b.  Calculate the slope of your line. \{ ans_rule(30) \} Estimate the \(y\)-intercept from the graph. \{ ans_rule(30) \}
+
+$BR
+$BR
+
+c.  Find an equation that gives the temperature in degrees Fahrenheit. \(F\), in terms of the Gas Mark \(G\). 
+\(F = \) \{ ans_rule(30) \}.  
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($slope->cmp());
+
+ANS($ans_y_intercept->cmp());
+
+ANS($ans_equation->cmp());
+
+ENDDOCUMENT();        

@@ -1,0 +1,87 @@
+##DESCRIPTION
+##  Algebra problem: quadratic formula; literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('4/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.2')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(t=>"Real", h=>"Real");
+Context()->variables->set(h=>{limits=>[-1,0]}); #don't want negative radicand
+
+$linear = random(4,12); #was 4;
+$quad = 16;
+$f = Formula(" $linear * t - $quad * t**2");
+$a = $quad;
+$b = Formula(" -$linear");
+$c = Formula("h");
+
+$w0 = Formula(" (-($b) + sqrt(($b)**2 - 4*$a*$c  ) )/( 2*$a  )");
+$w1 = Formula(" (-($b) - sqrt(($b)**2 - 4*$a*$c  ) )/( 2*$a  )");
+
+#no requirement to simplify radical expressions
+
+$g = Compute(" $w0, $w1");
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Use the quadratic formula to solve each equation for the indicated variable.
+  
+[`h = [$f]`], for [`t`]  
+
+[`t=`][_______________________________]{$g}  Enter a comma between solutions. [@AnswerFormatHelp("formulas") @]*
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+If we begin by subracting [`([$f])`] from both sides of the equation to get a quadratic equation in standard form, then [` a = [$a]`], [` b= [$b]`], and [` c= [$c]`], so
+
+>>[`` t=  \frac{ -([$b]) \pm \sqrt{ ([$b])^2 - 4([$a])([$c]) }  }{ 2([$a]) }  ``]<<
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

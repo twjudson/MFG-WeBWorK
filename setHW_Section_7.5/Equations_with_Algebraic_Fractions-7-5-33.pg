@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Algebra problem: proportion
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context("Fraction");
+
+$x0 = random(160, 200, 20); #was 200;
+do {$x1 = random(16, 21)} until ($x1 !=20);
+$c1 = random(50, 80, 20); #was 80;
+$y1 = $c1 - $x1;
+
+$ans = Compute("$x0 * $y1/$x1");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The Forest Service tags [$x0] perch and releases them into Spirit Lake. One month later, it captures [$c1] perch and finds that [$x1] of them are tagged. What is the Forest Service's estimate of the original perch population of the lake?
+
+    [________]{$ans->cmp(  tolType => 'absolute',  tolerance => 1,)} perch
+
+
+END_PGML
+
+BEGIN_PGML_HINT 
+Notice that the [$x0] tagged perch were not part of the original population. So if [`x`] is the original population, then [``\frac{x}{[$x0]}``] is the ratio of the original (untagged) population to the tagged perch. Or another way to consider the situation, [``\frac{x+[$x0]}{[$x0]}``] is the ratio of the total population to the tagged perch.
+
+END_PGML_HINT 
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The [$x0] tagged perch were not part of the original population. Of the [$c1] captured perch, [$x1] were tagged and [`[$c1] - [$x1] = [$y1]`] were part of the original population. We write a proportion using the ratio of original population to tagged.
+
+
+[`` \begin{aligned}
+\frac{x}{[$x0]} &=  \frac{[$y1]}{[$x1]}\\
+x &=[$x0] \cdot \frac{[$y1]}{[$x1]} \\
+x &\approx [$ans] 
+\end{aligned}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

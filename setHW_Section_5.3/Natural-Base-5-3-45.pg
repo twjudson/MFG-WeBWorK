@@ -1,0 +1,119 @@
+##DESCRIPTION
+##  Algebra problem: writing exponential function in terms of e
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('45')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->flags->set(useBaseTenLog=>1);
+Context()->variables->are(t=>"Real");
+
+$y0 = random(8, 16, 2); #was 10
+$b = random(1.11,1.19,0.01); #was 1.15
+$k = Compute(" ln($b) ");
+
+$f = Formula("$y0 * $b**t");
+
+$xmin = -10;
+$ymin = -2;
+$xmax=10;
+$ymax=3*$y0;
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/2;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[500,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'t','blue','left','bottom'));
+$gr -> lb(new Label ( 0.2,0.96*$ymax,'N','blue','left','bottom'));
+
+foreach my $i (1..4) {
+$xscale =5*$i;
+$yscale =10*$i;
+$gr -> lb(new Label ( -$xscale,0.3*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.1*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for t in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+>>[``N(t) = [$f] ``]<<
+
+a. 
+Express the growth or decay law in the form [` N(t) = N_0 e^{kt}`].
+
+    That is, the given expression for [`N(t)`] is equivalent to [`N_0 e^{kt}`], where
+
+    [`N_0=`][____]{$y0},  and [` k = `][______]{$k}   [@AnswerFormatHelp("numbers") @]*
+
+b. 
+Check your answer by graphing both forms of the function on the same axes. Do they have the same graph?
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+
+[`N_0`] is the value [`N(0)`], and [` [$b] = e^k `], so [`k = \ln [$b] \approx [$k]`].
+
+b. 
+The graphs should be identical. 
+[@image(insertGraph($gr), width=>250, height=>250, tex_size=>700)@]***
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

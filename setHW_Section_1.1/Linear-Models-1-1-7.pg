@@ -1,0 +1,206 @@
+##DESCRIPTION
+##  Algebra problem: linear model; cost of automobile ownership/driving
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear model', 'line')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('7')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"niceTables.pl",
+"PGgraphmacros.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(C=>"Real", d=>"Real");
+
+$c0 = 5000; #fixed cost
+$rate = 12.5;
+$rate_dollar = $rate/100;
+$f = Formula(" $rate_dollar* d+ $c0 ");
+
+foreach my $i (0..4) {
+$h[$i] = 4000*$i;
+$T[$i] = $f->eval(d=>$h[$i] );
+} ;
+
+$d1 = random(4000, 8000, 2000); #was 8000;
+$d2= $d1 + 4000; # was 12000;
+$c1 =  $f->eval(d=>$d1);
+$c2 =  $f->eval(d=>$d2);
+$del0 = $d2 - $d1;
+$del= $c2 - $c1;
+#$c3 = 7000;
+#$d3 = ($c3 -$c0)/$rate_dollar;
+do {$d3 = random(12000, 16000, 4000);} until ($d3 > $d2);
+$c3 = $f->eval(d=>$d3);
+
+$xmin = -4000;
+$ymin = -1000;
+$xmax=20000;
+$ymax=8000;
+$xgrid = 6;
+$ygrid = 9;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.95*$xmax, .5,'d','blue','left','bottom'));
+$gr -> lb(new Label ( 40,0.95*$ymax,'C','blue','left','bottom'));
+
+foreach my $i (1..4) {
+$xscale =8000*$i;
+$yscale =2000*$i;
+$gr -> lb(new Label ( $xscale,-500, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-1000,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for d in [0, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($d1,$c1,'blue') );
+$gr->stamps( closed_circle($d2,$c2,'blue') );
+
+
+# a blue line
+$gr->moveTo($d1,$c1);
+$gr->lineTo(0.4*$d1,$c1,'blue',2,'dashed');
+$gr->moveTo($d2,$c2);
+$gr->lineTo(0.4*$d1,$c2,'blue',2,'dashed');
+$gr -> lb(new Label (0.7*$d1,($c1+$c2)/2,"(d)",'black','center','middle'));
+
+$gr->moveTo(0.7*$d1,$c1-500);
+$gr->arrowTo(0.7*$d1,$c1,'blue',2);
+$gr->moveTo(0.7*$d1,$c2+500);
+$gr->arrowTo(0.7*$d1,$c2,'blue',2);
+
+$gr->stamps( closed_circle($d3,$c3,'green') );
+$gr->moveTo(0,$c3);
+$gr->arrowTo($d3,$c3,'green',2);
+$gr->arrowTo($d3,0,'green',2);
+$gr -> lb(new Label ($d3+1000,$c3/2,"(e)",'black','center','middle'));
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+There are many formulas for estimating the annual cost of driving. The Automobile Club estimated that fixed costs for a small car -- including insurance, registration, depreciation, and financing -- total about $[$c0] per year. The operating costs for gasoline, oil, maintenance, tires, and so forth were about [$rate] cents per mile. (Source: Automobile Association of America)
+
+a. 
+Write an equation for the annual driving cost, [`C`],  in terms of [`d`],  the number of miles driven..
+    
+    [`T=`][__________] 
+    
+b. 
+Complete the table of values.
+    [@
+DataTable(
+  [
+    [ 'Miles Driven', "\\( $h[0] \\)",  "\\( $h[1] \\)",   "\\( $h[2] \\)", "\\( $h[3] \\)",   "\\( $h[4] \\)"  ]  ,
+    [ 'Cost ($)', ans_rule(3),  ans_rule(3), ans_rule(3),  ans_rule(3),  ans_rule(3)    ]
+  ], 
+  caption => 'Cost of driving a small car', 
+  align => '| c | c | c | c |c | c | ',
+  midrules=>1,
+ );
+@]***
+
+c. 
+Choose scales for the axes and graph the equation.
+    
+d. 
+How much does the annual cost of driving increase when the mileage increases from 
+[$d1] to [$d2] miles? Answer: $[_______]
+
+    lllustrate the answer on your graph. 
+    
+e. 
+How much mileage will cause the annual cost to exceed $[$c3]? 
+    Answer: Greater than [_______] miles
+
+    lllustrate the answer on your graph. 
+  
+
+
+
+
+END_PGML
+Context()->normalStrings;
+
+ANS(Compute("$f")->cmp( ) );
+foreach my $i (0..4) {
+ANS(Compute("$T[$i]")->cmp(  ) );
+} ;
+ANS(Compute("$del")->cmp( ) );
+ANS(Compute("$d3")->cmp( ) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[`T = [$f] `]
+
+b. 
+Evaluate [`[$f]`] for [`h = [$h[0]],[$h[1]],[$h[2]],[$h[3]],[$h[4]] `].  
+    [@
+DataTable(
+  [
+    [ '\(h\)', "\\( $h[0] \\)",  "\\( $h[1] \\)",   "\\( $h[2] \\)", "\\( $h[3] \\)",   "\\( $h[4] \\)"  ]  ,
+    [ '\(T\)',  "\\( $T[0] \\)", "\\( $T[1] \\)",  "\\( $T[2] \\)", "\\( $T[3] \\)",  "\\( $T[4] \\)"  ]
+  ], 
+  caption => 'Temperature vs hours after sunrise', 
+  align => '| c | c | c | c |c | c | ',
+  midrules=>1,
+ );
+@]*** 
+    
+c. 
+[@ image(insertGraph($gr), width=>280, height=>280, tex_size=>700) @]*
+d. 
+We could compute the costs for [$d1] and the [$d2] miles and then find the difference, or we can notice that an increase of [$del0] miles cause an increase in cost by 
+[`[$del0] \cdot [$rate_dollar]=[$del]`] dollars.  
+e. 
+Solve [`[$f] = [$c3]`] to determine the number of miles of driving, [`d=[$d3]`], to bring the costs to [$c3]. Any driving distance beyond [$d3] miles causes the annual cost to exceed $[$c3].  
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,71 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--approximate logarithms, properties
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('33')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->{format}{number} = "%.4f"; 
+
+$b = 10 ; #Note that this textbook uses "log" for common log, not for "ln"
+
+foreach my $i (0..3) {
+  $power[$i] = 2**($i + 1);  
+  $y[$i] = Formula("log10($power[$i])")->reduce;
+}
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Conjecture:",  "When the input to the common logarithm is doubled, the output is increased by about 0.3010.");
+
+$mc->extra(
+"When the input to the common logarithm is increased by about 0.3010, the output is doubled.",
+
+);
+$mc->makeLast("When the input to the common logarithm is doubled, the output is doubled.");
+
+BEGIN_PGML
+
+Use a calculator to approximate each logarithm to four decimal places. Make a conjecture about logarithms based on the results of each problem.
+
+a. 
+[`  \log [$power[0]] \approx `][_____]{$y[0]}  
+b. 
+[`  \log [$power[1]] \approx `][_____]{$y[1]}  
+c. 
+[`  \log [$power[2]] \approx `][_____]{$y[2]}  
+d. 
+[`  \log [$power[3]] \approx `][_____]{$y[3]}  
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

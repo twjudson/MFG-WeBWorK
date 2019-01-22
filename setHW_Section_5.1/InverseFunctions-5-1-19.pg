@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: inverse of simple linear fractional 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('9/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+"PGchoicemacros.pl",
+  "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Fraction");
+Context()->variables->are(v=>"Real",y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$a =random(2,9);
+do {
+$b = non_zero_random(-9,9);
+$y0 = non_zero_random(-5,5) ;
+} until (gcd(($y0-$a),$b) == 1);
+
+$f = Formula("  $a - $b/v ")->reduce;
+$g = Formula(" -$b/(y - $a) ")->reduce;
+$x0 = Fraction($g->eval(y=>$y0));
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+If [`` m(v) = [$f] ``], find [`m^{-1}([$y0])`].
+
+     [`m^{-1}([$y0])= `][___]{$x0}
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+We can solve [` [$y0] = [$f]`] to find [`v = m^{-1}([$y0])= [$x0]`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

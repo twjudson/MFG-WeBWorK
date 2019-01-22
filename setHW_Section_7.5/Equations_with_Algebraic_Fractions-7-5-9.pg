@@ -1,0 +1,89 @@
+##DESCRIPTION
+##  Algebra problem: equations with rational expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(w=>"Real", h=>"Real", l=>"Real", S=>"Real");
+$c = 182.6;;
+
+$f = Formula(" $c*w*h**2/l ")->reduce;
+
+$w0 = 4;
+$h0 = 9;
+$S0 = random(1200,1800, 100); #was 1600
+
+$ans = $f->eval(l=>$S0, w=>$w0, h=>$h0);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The total weight, [`S`], that a beam can support is given in pounds by
+
+>>[`` S =  [$f]``]<<
+
+where [`w`] is the width of the beam in inches, [`h`] is its height in inches, and 
+[`l`] is the length of the beam in feet. A beam over the doorway in an interior wall of a house must support [$S0]  pounds. If the beam is [$w0] inches wide and [$h] inches tall, how long can it be?
+
+[_______]{$ans->cmp(  tolType => 'absolute',  tolerance => .5,)} ft
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We solve [` [$S0] = \dfrac{[$c] ([$w0])([$h0]^2)}{l}`] for [`l`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

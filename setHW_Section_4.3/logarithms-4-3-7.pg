@@ -1,0 +1,59 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--evaluate by definition
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('7')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros("PG.pl",
+           "PGbasicmacros.pl",
+           "PGchoicemacros.pl",
+           "PGanswermacros.pl",
+           "PGauxiliaryFunctions.pl",
+           "extraAnswerEvaluators.pl",
+"PGML.pl",
+);
+  Context()->flags->set(     reduceConstants => 0,
+     reduceConstantFunctions => 0,
+  );
+
+$b1 = random(2,8,2);
+do{$ans1 = random(2,12);} until ($ans1 != $b1);
+
+$b2 = random(3,9,2);
+do{$ans2 = random(2,12);} until ($ans2 != $b2);
+
+
+BEGIN_PGML
+Find the exact value for each expression:
+  
+a. 
+[` \log_{[$b1]} [$b1]^{[$ans1]} =`][___]{$ans1}  
+b. 
+[` \log_{[$b2]} [$b2]^{[$ans2]}  =`] [___]{$ans2}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+By the definition of logarithms, [` \log_{[$b1]} [$b1]^{[$ans1]}=[$ans1]`].  
+b. 
+By the definition of logarithms, [` \log_{[$b2]} [$b2]^{[$ans2]}=[$ans2]`].  
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

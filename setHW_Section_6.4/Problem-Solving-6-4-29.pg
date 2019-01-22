@@ -1,0 +1,129 @@
+##DESCRIPTION
+##  Algebra problem: parabolas, vertex form of equation to standard form
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('10/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do {
+$h = non_zero_random(-3,3);
+$k = non_zero_random(-5,5);}
+until ($h != $k);
+$a = random(-3,-2);
+
+$b = -2*$a*$h;
+$c = $a * $h**2 + $k;
+Context()->noreduce('(-x)-y'); #so that -x-y does not become -(x+y)
+$f = Formula("$a*x**2 +$b*x +$c")->reduce;
+
+$xmin =min( $h-6,-2);
+$ymin = -20;
+$xmax=max($h+6,2);
+$ymax= max($k+2,2);
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/1;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,480]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .5,0.96*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..6) {
+$xscale =2*$i;
+$yscale =5*$i;
+$gr -> lb(new Label ( -$xscale,-0.3, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.3,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,-0.3, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.3,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2",
+);
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($h,$k,'red') );
+$k1 = $k+1.;
+$gr -> lb(new Label ( $h,$k1, "($h,$k)",'black','center','above'));
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+>>[``y=[$f]``]<<
+
+a. 
+Write the equation in the form [`y=a(x-p)^2+q`] by completing the square.
+
+    [`a=`][___]{$a}
+
+    [`p=`][___]{$h}
+
+    [`q=`][___]{$k}
+
+b. 
+Use transformations to sketch the graph.
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We find by completing the square that [` ax^2 +bx+c = a(x-p)^2 + q`] when [`p=-\dfrac{b}{2a}`] and [`q=c-ap^2`]
+
+b. 
+[@ image(insertGraph($gr), width=>250, height=>300, tex_size=>700) @]***
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

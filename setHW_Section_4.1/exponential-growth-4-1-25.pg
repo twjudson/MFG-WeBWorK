@@ -1,0 +1,150 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--laws of exponents
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('25')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"bizarroArithmetic.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+Context()->operators->set(
+'*' => {class => 'bizarro::BOP::multiply', isCommand => 1},
+' *' => {class => 'bizarro::BOP::multiply', isCommand => 1},
+'* ' => {class => 'bizarro::BOP::multiply', isCommand => 1},
+'**' => {class => 'bizarro::BOP::power', isCommand => 1, perl=>undef},
+'^' => {class => 'bizarro::BOP::power', isCommand => 1, perl=>undef},
+);
+#Context()->flags->set(bizarroPow=>1);
+Context()->flags->set(reduceConstants=>0);
+
+Context()->variables->add(t=>"Real", n=>"Real", p=>"Real", r=>"Real", a=>"Real", b=>"Real");
+@variables = ("x", "t", "n", "p", "r");
+$i = random(0, $#variables - 1);
+$x = $variables[$i];
+@base = ("a", "b");
+$j = random(0, $#base -1);
+$B = $base[$j];
+
+$a = random(2, 5);
+do {$b = random(2,5)} until (gcd($a, $b) == 1);
+$c = $a * $b;
+$d = $c - $a;
+
+$f[0] = Formula(" $B^(-$c * $x) * $B^($a $x) ");
+$answer[0] = Formula(" $B**(-$d $x )");
+
+$f[1] = Formula(" ($B^$x )^(1/$a) ");
+$answer[1] = Formula(" $B**($x / $a)");
+
+$f[2] = Formula(" $B^($x-$b) * $B^($b-$x) ");
+$answer[2] = Formula(" 1");
+
+
+##################
+
+BEGIN_PGML
+
+
+Use the laws of exponents to simplify. Assume that the base is a positive number.
+
+a. 
+[` [$f[0]] = `][_________]
+b. 
+[` [$f[1]] = `][_________]
+c. 
+[` [$f[2]] = `][_________]
+
+
+END_PGML
+
+##############################################################
+#
+
+ 
+ANS($answer[0] -> cmp(
+checker=>sub{
+my ( $correct, $student, $ansHash ) = @_;
+return 0 if $ansHash->{isPreview} || $correct != $student;
+$student = $ansHash->{student_formula};
+$correct = $correct->{original_formula} if defined $correct->{original_formula};
+$student = Formula("$student"); $correct = Formula("$correct");
+return 0 unless ($correct == $student);
+Context()->flags->set(bizarroMul=>1);
+delete $correct->{test_values};
+delete $student->{test_values};
+my $OK = (($correct == $student) or ($student == $correct));
+Context()->flags->set(bizarroMul=>0);
+Value::Error("Your answer is equivalent but not in the proper format") unless $OK;
+return $OK;
+}));
+
+ANS($answer[1] -> cmp(
+checker=>sub{
+my ( $correct, $student, $ansHash ) = @_;
+return 0 if $ansHash->{isPreview} || $correct != $student;
+$student = $ansHash->{student_formula};
+$correct = $correct->{original_formula} if defined $correct->{original_formula};
+$student = Formula("$student"); $correct = Formula("$correct");
+return 0 unless ($correct == $student);
+Context()->flags->set(bizarroMul=>1,bizarroPow=>1);
+delete $correct->{test_values};
+delete $student->{test_values};
+my $OK = (($correct == $student) or ($student == $correct));
+Context()->flags->set(bizarroMul=>0,bizarroPow=>0);
+Value::Error("Your answer is equivalent but not in the proper format") unless $OK;
+return $OK;
+}));
+
+ANS($answer[2] -> cmp(
+checker=>sub{
+my ( $correct, $student, $ansHash ) = @_;
+return 0 if $ansHash->{isPreview} || $correct != $student;
+$student = $ansHash->{student_formula};
+$correct = $correct->{original_formula} if defined $correct->{original_formula};
+$student = Formula("$student"); $correct = Formula("$correct");
+return 0 unless ($correct == $student);
+Context()->flags->set(bizarroPow=>1);
+delete $correct->{test_values};
+delete $student->{test_values};
+my $OK = (($correct == $student) or ($student == $correct));
+Context()->flags->set(bizarroPow=>0);
+Value::Error("Your answer is equivalent but not in the proper format") unless $OK;
+return $OK;
+}));
+
+ENDDOCUMENT(); 

@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: quadratic (with square already completed); literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('4/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.2')
+## Problem1('57')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(y=>"Real");
+Context()->variables->set(x=>{limits=>[100,200]} ); #don't want negative radicand
+
+do {$a= random(2,6); #was 2;
+$b = random(2,6); #was 3
+$c = random(3,12); # was 6
+} until (gcd ($a, $b) == 1 and abs($b)!=1  and $c != $a and $c !=$b ) ;
+$k = $c**2;
+$as = $a**2;
+$bs = $b**2;
+$f = Formula(" $as * x**2 - $bs * y**2 ")->reduce;
+
+$w0 = Formula(" sqrt($as*x**2 - $k) /($b) ")->reduce;
+$w1 = Formula(" - sqrt($as*x**2 - $k) /($b) ")->reduce;
+
+$g = Compute(" $w0, $w1");
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Solve for [`y`] in terms of [`x`]. Use whichever method of solution seems easiest.
+  
+[` [$f] = [$k]`]
+
+[`y=`][_______________________________________]{$g}   Enter a comma between solutions. [@AnswerFormatHelp("formulas") @]*
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We can first solve for [`[$bs]y^2`], then take square roots of both sides,
+
+[` \begin{aligned}
+    [$as]x^2 - [$k]  &= [$bs]y^2 &&\text{Take square roots. }  \\
+    \pm \sqrt{   [$as]x^2 - [$k] } &= [$b]y &&\text{Divide by [$b].}\\
+    \frac{  \pm \sqrt{   [$as]x^2 - [$k] }}{[$b]} &= y 
+    \end{aligned}
+`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

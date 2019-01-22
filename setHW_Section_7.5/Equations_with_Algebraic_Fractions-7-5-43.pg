@@ -1,0 +1,82 @@
+##DESCRIPTION
+##  Algebra problem: rational functions, literal
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('43')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(F=>"Real", G=>"Real", d=>"Real", m1 => ['Real',TeX=>"m_1"], m2 => ['Real',TeX=>"m_2"]);
+
+$g = Formula("sqrt( (G*m1*m2)/d**2)");
+$f = Formula("sqrt( (G*m1*m2) /F)");
+$ans = List("$f, -$f");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Solve [`` F= [$g] ``] for [`d`]. Use "m1" for [`m_1`] and "m2" for [`m_2`]. (And use a blank space or an asterisk to indicate multiplication.)
+
+    [`d=`][_________________________]{$ans}  [@AnswerFormatHelp("formulas") @]* (Separate multiple correct answers using a comma.)
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`` \begin{aligned}
+F &= [$g]  \\
+F d^2  &= G m_1 m_2 \\
+d^2  &= \frac{G m_1 m_2}{F} \\
+d &= \pm\sqrt{\frac{G m_1 m_2}{F}}
+\end{aligned}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

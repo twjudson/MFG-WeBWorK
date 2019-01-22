@@ -1,0 +1,126 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+  "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#$x0 = 3/4; $y0 = -1/2; $z0 = 0;
+$den =2;
+$m = random(2,3);
+do{
+$num = non_zero_random(-7,7);
+$num2 = non_zero_random(-7,7);
+ $den2 = $m*$den;
+} until (gcd($num,$den)==1 && gcd($num2,$den2)==1);
+
+do{
+$a11 = $den2; #random(2,5);
+$a12 = 0; #non_zero_random(-3,3);
+$a13 = non_zero_random(-3,3); 
+
+$a21 = random($m,3*$m, 2*$m); 
+$a22 = non_zero_random(-5,5,2);  
+$a23 = 0; #non_zero_random(-6,6); #was 2;
+
+$a31 = random($m,3*$m,2*$m);
+$a32 =  non_zero_random(1,5,2); 
+$a33 = 0;
+} until ($a11*$a22*$a33 +  $a12*$a23*$a31+$a13*$a21*$a32 
+- $a31*$a22*$a13 - $a32*$a23*$a11 - $a33*$a21*$a12 != 0);
+
+Context("Fraction");
+Context()->variables->add(y=>'Real', z=>'Real');
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+Context()->{precedence}{Fraction} = 2.5;
+Context()->parens->set('(' => {type => "Point"} );
+
+$x0 =Compute("$num2/$den2");
+$y0 = Compute("$num/$den");
+$z0 = random(-5,-5);
+
+
+$f1 = Formula(" $a11*x + $a12*y + $a13*z")->reduce;
+$f2 = Formula(" $a21*x + $a22*y + $a23*z")->reduce;
+$f3 = Formula(" $a32*y +$a31*x +  $a33*z")->reduce;
+
+$k1 = $f1->eval(x=>$x0, y=>$y0, z=>$z0);
+$k2 = $f2->eval(x=>$x0, y=>$y0, z=>$z0);
+$k3 = $f3->eval(x=>$x0, y=>$y0, z=>$z0);
+
+#Context("Point");
+$P = Compute("($x0, $y0, $z0)");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Use Gaussian reduction to solve the system of equations.
+
+>>[``\begin{align}
+ [$f1] &= [$k1] \\
+ [$f2] &= [$k2] \\
+ [$f3] &= [$k3]
+\end{align}``]<<
+
+
+Solution: [__________]{$P}  [@AnswerFormatHelp("points") @]*
+
+
+
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`[$P]`]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

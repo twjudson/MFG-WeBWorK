@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Some Basic Functions')
+## Date('9/7/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.1')
+## Problem1('37')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$a = random(2,5,1);
+
+$roots = List(1/$a + sqrt(3/4),1/$a - sqrt(3/4) );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Solve
+\[
+\left(x - \frac{1}{$a}\right)^2 = \frac{3}{4}
+\]
+by extraction roots.  
+Give an exact value(s) for your answer(s). 
+
+Solutions (separate by commas): 
+$BR
+\(x =\) \{ ans_rule(20) \}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS( $roots->cmp() );
+
+
+
+ENDDOCUMENT();        

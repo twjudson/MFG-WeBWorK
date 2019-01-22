@@ -1,0 +1,191 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--evaluating
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('3')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl"
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+# code essentially from Davide Cervone 4/25/10
+###########################
+#
+# Subclass the numeric functions
+#
+package my::Function::numeric;
+our @ISA = ('Parser::Function::numeric');
+#
+# Override sqrt() to return a special value (usually 1) when evaluated
+# effectively eliminating it from the product.
+#
+sub sqrt {
+      my $self = shift;
+      my $value = $self->context->flag("setSqrt");
+      return $value+1 if $value && $_[0] == 1; # force sqrt(1) to be incorrect
+      return $value if $value;
+      return $self->SUPER::sqrt(@_);
+}
+
+#
+# end of subclass
+#
+package main;
+
+###########################
+
+Context("Numeric")->variables->are(
+  x => ["Real", limits => [0,2]],    # only needed if x is used in the square roots
+);
+#
+# make sqrt() use our subclass
+#
+Context()->functions->set(sqrt=>{class=>'my::Function::numeric'});
+Context()->flags->set(reduceConstantFunctions=>0);
+#
+# Don't allow fractional powers (avoids 1/2 power)
+# [Could subclass exponentiation to handle that as well]
+#
+
+$a = random(2,5);
+$r[0] = Compute("$a**5");
+do { $b =random(2,5);} until ( $b != $a );
+$r[1] = Compute("$b**4");
+do { $c = random(2, 9); } until ( ($c != $a) and ($c != $b) );
+$r[2] = Compute("$c**3");
+
+LimitedPowers::OnlyPositiveIntegers();
+
+$f[0] = Compute("$a");
+$f[1] = Compute("$b");
+$f[2] = Compute("$c");
+
+##############################################################
+#
+#  Text
+#
+#
+BEGIN_TEXT
+$BR
+Find the indicated root without using a calculator; then check your answers.
+$BR
+a. \( \sqrt[5]{$r[0]} \): $SPACE \{ans_rule(5)\}
+$BR
+$BR
+Find the indicated root without using a calculator; then check your answers.
+$BR
+b. \( \sqrt[4]{$r[1]} \): $SPACE \{ans_rule(5)\}
+$BR
+$BR
+Find the indicated root without using a calculator; then check your answers.
+$BR
+c. \( \sqrt[3]{$r[2]} \): $SPACE \{ans_rule(5)\}
+$BR
+
+
+END_TEXT
+
+#
+# Use a custom checker to check that the answers are equivalent
+# and that they are still equivalent when sqrt() is replaced by 1
+# (so the stuff outside the sqrt() is equal in both)
+#
+ANS($f[0]->cmp(checker => sub {
+  my ($correct,$student,$ans) = @_;
+  return 0 if $ans->{isPreview} || $correct != $student;
+#
+#  Get parsed formula for student and correct answers
+#
+$student = $ans->{student_formula};
+$correct = $correct->{original_formula} if defined $correct->{original_formula};
+#
+# check if equal when sqrt's are replaced by 1
+#
+Context()->flags->set(setSqrt => 1);
+delete $correct->{test_values}, $student->{test_values};
+my $OK = ($correct == $student);
+Context()->flags->set(setSqrt => 0);
+#
+Value::Error("Check to see if your answer is simplified.") unless $OK;
+return $OK;
+},formatStudentAnswer=>"reduced"));
+
+ANS($f[1]->cmp(checker => sub {
+  my ($correct,$student,$ans) = @_;
+  return 0 if $ans->{isPreview} || $correct != $student;
+#
+#  Get parsed formula for student and correct answers
+#
+$student = $ans->{student_formula};
+$correct = $correct->{original_formula} if defined $correct->{original_formula};
+#
+# check if equal when sqrt's are replaced by 1
+#
+Context()->flags->set(setSqrt => 1);
+delete $correct->{test_values}, $student->{test_values};
+my $OK = ($correct == $student);
+Context()->flags->set(setSqrt => 0);
+#
+Value::Error("Check to see if your answer is simplified.") unless $OK;
+return $OK;
+},formatStudentAnswer=>"reduced"));
+
+ANS($f[2]->cmp(checker => sub {
+  my ($correct,$student,$ans) = @_;
+  return 0 if $ans->{isPreview} || $correct != $student;
+#
+#  Get parsed formula for student and correct answers
+#
+$student = $ans->{student_formula};
+$correct = $correct->{original_formula} if defined $correct->{original_formula};
+#
+# check if equal when sqrt's are replaced by 1
+#
+Context()->flags->set(setSqrt => 1);
+delete $correct->{test_values}, $student->{test_values};
+my $OK = ($correct == $student);
+Context()->flags->set(setSqrt => 0);
+#
+Value::Error("Check to see if your answer is simplified.") unless $OK;
+return $OK;
+},formatStudentAnswer=>"reduced"));
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+a. Find a real number \(x\) that satisfies \( x^5 = $r[0] \).
+$BR
+b. Find a positive number \(y\) that satisfies \( y^4 = $r[1] \).
+$BR
+c. Find a real number \(z\) that satisfies \( z^3 = $r[2] \).
+
+END_SOLUTION
+
+ENDDOCUMENT();     

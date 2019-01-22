@@ -1,0 +1,144 @@
+##DESCRIPTION
+##  Algebra problem: compute slope from graph and interpret
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+$m =random(750, 1500, 250); #was 1250;
+$yintercept = random(1000,2000,1000);
+
+$f = Formula(" $yintercept + $m*x ");
+$x0 = 4;
+$y0 = $f->eval(x=>$x0);
+
+
+$xmin = -2;
+$xmax = 10;
+$xgrid = 12;
+$ymin = -1000;
+$ymax = 10000;
+$ygrid = 11;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label (0.94*$xmax, 0.05,'t','blue','left','bottom'));
+$gr -> lb(new Label (.2, 0.94*$ymax,'B','blue','left','bottom'));
+foreach my $i (1..20) {
+$xscale =2*$i;
+$yscale =2000*$i;
+$gr -> lb(new Label ( $xscale,0.4*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.25*$xmin,$yscale,$yscale,'black','center','middle'));
+};
+
+add_functions( $gr,
+"$f for x in [0, $xmax] using color:red and weight:2");
+$gr->stamps( closed_circle($x0,$y0,'red') );
+
+$mc = new_multiple_choice();
+$mc->qa(
+"What are the units of the slope?",  "barrels / day");
+$mc->extra(
+"days / barrel",
+"days",
+"barrels",
+);
+$mc->makeLast("none of the above");
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Explain what the slope measures in the context of the problem.",  "The slope indicates that oil is pumped at a rate of $m barrels per day.");
+$mc1->extra(
+"The slope indicates it takes $m days to pump one barrel of oil.",
+"The slope indicates that oil costs $m dollars per barrel.",
+"The slope indicates that $m barrels of oil cost a dollar.",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The graph shows the number of barrels of oil, [`B`], that has been pumped at a drill site [`t`] days after a new drill is installed.
+
+[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*
+
+a. 
+Choose two points and compute the slope of the graph: [`m=`][____] 
+    
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+d. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+ANS(Compute("$m")->cmp());
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We can use the vertical intercept and one other point. [`m = \frac{[$y0]-[$yintercept]}{[$x0]} = [$m]`]. The units of the numerator are barrels of oil, and the units of the denominator are days. 
+    
+b. 
+The slope indicates that oil is pumped at a rate of [$m] barrels per day.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

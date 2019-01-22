@@ -1,0 +1,90 @@
+##DESCRIPTION
+##  Algebra problem: leaning ladder
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle', 'Pythagorean Theorem')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('41')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+# this exercise has no variations. Would need to generate figure dynamically
+# 10^2 + h^2 = (h+2)^2
+# 100 = 4h + 4; 
+$h = 24;
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Use the Pythagorean theorem to solve. (See [@htmlLink( "https://byoshiwara.github.io/MFG-online/appendix-a.html#appendix-Facts-from-Geometry", "Algebra Skills Refresher", "TARGET=~~"text~~"" )@]*  to review the Pythagorean theorem.)</p>
+
+One end of a ladder is 10 feet from the base of a wall, and the other end reaches a window in the wall. The ladder is 2 feet longer than the height of the window.  
+[@ image( "fig-6-1-41.png", width=>150, height=>150,  tex_size=>700, extra_html_tags=>'alt="ladder leaning against wall"' ) @]*
+
+a. 
+Write a quadratic equation about the height of the window.  
+b. 
+Solve your equation to find the height of the window: Height[`=`][___]{$h} feet
+
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+The ladder is the hypotenuse of a right triangle. If we let [` h `] represent the height of the window, then the length of the ladder is [`h+2`], so [` 10^2 + h^2 = (h+2)^2 `].  
+b.
+
+[` \begin{aligned}
+    10^2 + h^2 &=(h+2)^2 &&\text{Subtract }h^2 \text{ from both sides.}\\
+    100 &=4h + 4 &&\text{Subtract 4 from both sides.}\\
+    96 &=4h &&\text{divide by 4 on both sides.}\\
+    24 &=h  
+    \end{aligned}
+`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

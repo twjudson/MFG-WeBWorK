@@ -1,0 +1,159 @@
+##DESCRIPTION
+##  Algebra problem: factor quartic from graph with double zero
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quartic polynomial', 'turning point', 'inflection point', 'intercepts', 'multiplicity')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Polynomial Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.2')
+## Problem1('27')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextPolynomialFactors.pl",
+"contextLimitedPowers.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+
+$pos=random(-1,1,2); 
+$a = 1;
+$h =  random(-1,1); #was 0;
+$r0 = $h -2*$pos;
+$r1 = $r0;
+$r2 = $h+2*$pos;
+$r3 = $h+3*$pos;
+$s = $r0+$r1+$r2+$r3;
+$pp = $r0*$r1 + $r0*$r2 + $r0*$r3 + $r1*$r2 + $r1*$r3 + $r2*$r3;
+$cs = $r0*$r1*$r2 + $r0*$r2*$r3 + $r0*$r1*$r3 + $r1*$r2*$r3  ;
+$p = $r0*$r1*$r2*$r3;
+
+$b = -$a*$s;
+$c = $a * $pp;
+$d = -$a * $cs;
+$e = $p;
+
+$f = Formula("$a*x**4 + $b*x**3 + $c*x**2 + $d*x +$e")->reduce;
+$ans = "Yes";
+ $pop = PopUp(["select",
+"Yes", 
+"No"], 
+"$ans");
+
+Context("PolynomialFactors-Strict");
+Context()->flags->set(singleFactors=>0);
+LimitedPowers::OnlyIntegers(
+minPower => 0, maxPower => 1,
+message => "either 0 or 1",
+);
+$factoredform = Compute("(x-$r0)(x-$r1)(x-$r2)(x-$r3)")->reduce;
+
+
+Context("Point");
+$xints = List(Point("($r0,0)"),Point("($r2,0)"),Point("($r3,0)"));
+
+
+$xmin = -5;
+$ymin = -10;
+$xmax=5;
+$ymax= 30;
+$xgrid = ($xmax - $xmin);
+$ygrid = ($ymax - $ymin)/5;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[450,450]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .4,0.9*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (-2,-1,1,2, -3,3) {
+ $xscale =4*$i;
+ $yscale =10*$i;
+  $gr -> lb(new Label ( $xscale,-.4, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-0.3,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+>>[``r(x) = [$f]``]<<
+
+a. Use your calculator to graph the polynomial and locate the [`x`]-intercepts. Set [`\text{Xmin}=-4.7`] [`\text{Xmax}=4.7`] and adjust [`\text{Ymin}`] and  [`\text{Ymax}`] to get a good graph.
+
+    [`x`]-intercepts: [__________________]{$xints}  [@AnswerFormatHelp("points") @]*
+
+
+b. 
+Write the polynomial in factored form, using only linear factors.
+
+    [`r(x)=`][____________________]{$factoredform}
+
+c. 
+Expand the factored form of the polynomial (that is, multiply the factors together). Do you get the original polynomial? 
+ 
+    [_______]{$pop}
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@ image( insertGraph($gr) ) @]***  
+
+    The graph intersects the [`x`]-axis at [`[$xints]`].
+
+b. 
+Each  [`x`]-intercept [`(r,0)`] corresponds to a linear factor [`(x-r)`]. The factor [` x-[$r0]`] occurs twice because there is a zero of multiplicity two at [`x=[$r0]`].
+
+c. 
+[$ans]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

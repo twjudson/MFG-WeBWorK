@@ -1,0 +1,102 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents--incubation time vs mass of egg
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent', 'allometry')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('2/4/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('43')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"PGunion.pl",
+"imageChoice.pl",
+"PGML.pl",
+"parserPopUp.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context()->variables->add(m => 'Real', I=>'Real', W=>'Real');
+$f = Formula("12*m^(0.217)");
+$f_display = " 12.0 m^{0.217} ";
+
+$wren = 2.5;
+$grey = 46;
+
+### can add randomness by finding other types of birds and drawing names from one list and
+### the mass in a properly matched list
+
+$i_wren = $f->eval(m=>$wren);
+$i_grey = $f->eval(m=>$grey);
+
+$g = Formula("0.015*m^(0.742)");
+$g_display = " 0.015 m^{0.742} ";
+
+$h = Compute("$f * $g / m");
+
+
+Context()->{format}{number} = "%.0f";   
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Explain why your result shows that most eggs lose about 18% of their mass during incubation.", 
+"The function for the fraction of mass lost has the form \(k m ^p\), where \(k=0.18\) and \(p\approx 0\), so that \(m^p\approx m^0 = 1\)"
+);
+$mc->extra(
+"The original mass is approximately 18 times the mass at incubation.",
+"About 18 out of 100 eggs do not incubate.",
+);
+$mc->makeLast("None of the above");
+
+##############################################################
+BEGIN_PGML
+
+
+The incubation time for a bird's egg is a function of the mass, [`m`], of the egg, and has been experimentally determined as
+>>[`` I(m) = [$f_display] ``]<<  
+where [`m`] is measured in grams and [`I`] is in days. (Source: Burton, 1998)
+
+
+a. 
+Calculate the incubation time (to the nearest day) for the wren, whose eggs weigh about [$wren] grams, and the greylag goose, whose eggs weigh [$grey] grams.  
+Wren incubation: [___]{$i_wren->cmp(  tolType => 'absolute',  tolerance => .5,)} days; Greylag incubation: [___]{$i_grey->cmp(  tolType => 'absolute',  tolerance => .5,)} days
+b. 
+During incubation, birds' eggs lose water vapor through their porous shells. The rate of water loss from the egg is also a function of its mass, and it appears to follow the rule  
+>>[`` W(m) = [$g_display] ``]<<  
+in grams per day. Combine the functions [`I(m)`] and [`W(m)`] to calculate the fraction of the initial egg mass that is lost during the entire incubation period.  [____________]{$h}
+ 
+[@ $mc->print_q() @]*
+[@ $mc->print_a() @]*
+
+END_PGML
+
+
+##############################################################
+#
+#ANS( str_cmp( $ml->ra_correct_ans() ) );
+#ANS( str_cmp( $ml2->ra_correct_ans() ) );
+#ANS($f_inverse1->eval(L=>200, d=>4)->cmp(tolType => 'relative', tolerance => .05,));
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+ENDDOCUMENT();     

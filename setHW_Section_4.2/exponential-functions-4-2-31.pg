@@ -1,0 +1,78 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--solve equation of exponential=exponential
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('31')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGgraphmacros.pl",
+"PGunion.pl",
+"PGML.pl",
+);
+
+
+TEXT(beginproblem());
+
+$refreshCachedImages=1;
+
+Context("Numeric");
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+###########################
+Context()->flags->set(     reduceConstants => 0 );
+Context()->variables->add(t=>"Real",p=>"Real", q=>"Real");
+
+@variables = ("x", "t", "p", "q", "r");
+$i = random(0,$#variables-1);
+$x = $variables[$i];
+
+$b = random(2,5);
+$b2 = $b**2;
+$b3 = $b**3;
+
+$a = random(2,5);
+$three_a = 3 * $a;
+$d = $three_a + 1;
+do {$c = random(1, 5);} until (gcd($d, $c) == 1);
+$r = $c + 2;
+
+$f = Formula(" $b2*$b^{ $x - $r}  ");
+$g = "$b3^{-$a $x  }";
+
+$answer = Compute("$c/$d");
+###############
+BEGIN_PGML
+
+
+Solve the equation algebraically.
+>>[`` [$f] = [$g] ``]<<
+[` [$x] = `][______]{$answer}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+We could begin be rewriting the left side as [` [$b]^2 \cdot [$b]^{[$x] - [$r]}`]  and the right side as [`[$b] ^{3 (-[$a][$x])}`], then using the law of exponents to get [` [$b]^{[$x] - [$c]} =  [$b]^{
+ - [$three_a][$x]}`]. We equate the exponents on the base [$b], and solve for [`[$x]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();     

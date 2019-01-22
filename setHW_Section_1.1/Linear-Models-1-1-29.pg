@@ -1,0 +1,180 @@
+##DESCRIPTION
+##  Algebra problem: linear equation; intercept form of line
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear equation', 'line', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  "AnswerFormatHelp.pl",
+  "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real",u=>"Real",v=>"Real",c=>"Real",d=>"Real",m=>"Real" ,n=>"Real",p=>"Real",q=>"Real",r=>"Real",s=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$c = 1;
+do { $a = random(2,25);
+       $b = random(2,25);}
+       until ($a != $b);
+$fa = Formula(" x/$a + y/$b");
+$xia = $a;
+$yia = $b;
+
+#part (b)
+do { $a = non_zero_random(2,12);
+       $b = non_zero_random(-12,12);}
+       until (abs($a) >1 && abs($b) >1 && $a != $b);
+$fb = Formula(" $a x+ $b y")->reduce;
+$xib = Compute("1/ $a");
+$yib = Compute("1/$b");
+
+
+#part (c)
+
+do { $n1 = random(2,9);
+       $d1 = random(2,9);
+       $n2 = random(2,9);
+       $d2 = random(2,9);}
+       until (gcd($n1,$d1) ==1 && gcd($n2,$d2) ==1 &&  $d1 != $d2);
+$fc = Formula(" ($n1* x)/$d1 - ($n2* y)/$d2");
+$xic = Compute("$d1/ $n1");
+$yic = Compute("-$d2/$n2");
+
+
+#part (d)
+@variables=("p","q","m","n","u","v","c","d","r","s");
+$k=random(0,4);
+$p =$variables[2*$k];
+$q = $variables[2*$k+1]; 
+$fd = Formula(" x/$p + y / $q");
+$xid = Formula("$p");
+$yid = Formula("$q");
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Why is the equation `\frac{x}{a} + \frac{y}{b}=1` called the `\mbox{intercept form}` of a line?",  "One can read directly the values of both `x`-intercept and the `y`-intercept from this form.");
+
+$mc->extra(
+"`\mbox{Xenon Intercept}` is the name of a famous mathematician.",
+"The word `\mbox{intercept}` means `\mbox{secondary}` in Portuguese.",
+);
+$mc->makeLast("none of the above");
+  
+
+Context("Point");
+Context()->variables->add(u=>"Real",v=>"Real",c=>"Real",d=>"Real",m=>"Real" ,n=>"Real",p=>"Real",q=>"Real",r=>"Real",s=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+$xinta = Point($xia,0);
+$yinta = Point(0,$yia);
+$xintb = Point($xib,0);
+$yintb = Point(0,$yib);
+$xintc = Point($xic,0);
+$yintc = Point(0,$yic);
+$xintd = Point(Formula("$p"),0);
+$yintd = Point(0,$q);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+ Find the intercepts of the graph for each equation.
+
+
+a. 
+[`` [$fa] = [$c]``]
+    
+    The [`x`]-intercept is [_______]{$xinta}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yinta}.  [@AnswerFormatHelp("points") @]*
+
+b. 
+[`` [$fb] = [$c]``]
+    
+    The [`x`]-intercept is [_______]{$xintb}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yintb}.  [@AnswerFormatHelp("points") @]*
+
+c. 
+[`` [$fc] = [$c]``]
+    
+    The [`x`]-intercept is [_______]{$xintc}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yintc}.  [@AnswerFormatHelp("points") @]*
+
+d. 
+[`` [$fd] = [$d]``]
+    
+    The [`x`]-intercept is [_______]{"($xid,0)"}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{"(0,$yid)"}.  [@AnswerFormatHelp("points") @]*
+
+c. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The [`x`]-intercept occurs when [`y=0`], and the [`y`]-intercept occurs when [`x=0`].
+
+
+a. 
+[`[$xinta]`] and [`[$yinta]`]
+b. 
+[`[$xintb]`] and [`[$yintb]`]
+c. 
+[`[$xintc]`] and [`[$yintc]`]
+d. 
+[`[$xintd]`] and [`[$yintd]`]
+c. 
+One can read directly the values of both [`x`]-intercept and the [`y`]-intercept from this form.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

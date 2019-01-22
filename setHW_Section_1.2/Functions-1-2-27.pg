@@ -1,0 +1,117 @@
+##DESCRIPTION
+##  Algebra problem: functions; evaluating functions defined via table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'table')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem1('27')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#remove randomness
+
+$N =1500;
+foreach my $i ( 0..7 ) {
+$x[$i] = 5*($i+3);
+$v=  $N/$x[$i];
+$y[$i]  = sprintf("%0.1f", $v );
+};
+$y3 = round($y[3]);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+[@
+DataTable(
+  [
+    [ 'Pressure (\(p\))', 'Volume (\(v\))' ]  ,
+    [ "\\( $x[0] \\) ", "\\( $y[0] \\) " ],
+    [ "\\( $x[1] \\) ", "\\( $y[1] \\) " ],
+    [ "\\( $x[2] \\) ", "\\( $y[2] \\) " ],
+    [ "\\( $x[3] \\) ", "\\( $y[3] \\) " ],
+    [ "\\( $x[4] \\) ", "\\( $y[4] \\) " ],
+    [ "\\( $x[5] \\) ", "\\( $y[5] \\) " ],
+    [ "\\( $x[6] \\) ", "\\( $y[6] \\) " ],
+    [ "\\( $x[7] \\) ", "\\( $y[7] \\) " ]
+  ], 
+  caption => 'Table of values for two variables', 
+  align => '| c | c |  ',
+  midrules=>1,
+ );
+@]***
+
+
+
+The function described by the table above is called [`g`],  so that [`v=g(p)`].  Find the following:
+
+a. 
+[` g([$x[2]]) =`][_____]{$y[2]}
+
+b. 
+[`g([$x[5]])=`][_____]{$y[5]}
+
+c. 
+[`x`] so that [`g(x)=[$y3]`]:  [`x=`][_____]{$x[3]}
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The first column of the table lists the inputs, the second column lists the outputs, that is, the second column corresponds to values of the form [`g(x)`] when [`x`] is an input value.
+
+a. 
+We find [$x[2]] in the first column, and the value of [`g([$x[2]])`] is in the second column of the same row: [$y[2]].
+
+b. 
+We find [$x[5]] in the first column, and the value of [`g([$x[5]])`] is in the second column of the same row: [$y[5]].
+
+c. 
+We find [$y3] in the *second* column, and the value we want is in the *first* column of the same row: [$x[3]].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

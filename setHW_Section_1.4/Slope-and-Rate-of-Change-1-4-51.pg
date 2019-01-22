@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: average rate of change from non-linear graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/29/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('51')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+  "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+$d0 = 18;
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Over what depths does the temperature change most rapidly?",  
+"0.3 km to 0.4 km");
+$mc->extra(
+"0 km to 0.2 km ",
+"0.5 km to 2 km ",
+);
+
+$r = -28;
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The graph shows the temperature of the ocean as a function of depth.
+
+>>[@ image( "fig-ex-1-2-57.png", width=>267, height=>365,  
+tex_size=>700, extra_html_tags=>'alt="Graph of temperature vs depth"' ) @]***<<
+
+a. 
+What is the difference in temperature between the surface of the ocean and the deepest level shown? Answer: About [__]  [` ^\circ`]C
+
+b. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+c. 
+What is the average rate of change of temperature with respect to depth in the region called the thermocline? Answer: About [___] [` ^\circ`]C per kilometer.
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+ANS(Compute("$d0")->cmp(   tolType => 'absolute',  tolerance => .6));
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS(Compute("$r")->cmp(   tolType => 'absolute',  tolerance => 1.));
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The temperature at the surface is approximately 20[`^\circ`] C, and the temperature at 2.0 km  is approximately 2[`^\circ`] C
+b. 
+The independent variable, Depth, does not increase to the right as is customary, but rather increases downwards. The most rapid change in temperature occurs where the curve is closest to being horizontal.
+c. 
+The Thermocline extends from approximately 0.2 km to 0.8 km in depth, which corresponds to a change in temperature from 20[`^\circ`] C to about 3[`^\circ`] C. This gives an average change of [`\frac{3-20}{0.8 - 0.2} \approx -28^\circ`]C per km. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

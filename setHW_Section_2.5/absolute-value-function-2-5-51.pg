@@ -1,0 +1,152 @@
+##DESCRIPTION
+##  Algebra problem: absolute value inequalities
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/16/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('51')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context("Inequalities");
+Context()->variables->are(x=>"Real");
+#Context()->constants->add(EmptySet => Set());
+#Context()->constants->add(none => Set());
+Context()->texStrings; # adds tex string capability to the context
+
+$a = 2;
+do {$b = non_zero_random(-9,9,2);} until (abs($b) > 1);
+$h = $b / $a;
+$k = random(1,11,2);
+$k0 = $k / $a;
+
+$f = Formula("  $a * x - $b")->reduce;
+$nf = -$f;
+$left = -$k0 + $h;
+$right = $k0 + $h;
+
+
+#$ans = "none";
+#$ans = "R";
+$ans = Compute(" x < $left  or x > $right ");
+
+
+
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"The two inequalities that together are equivalent to \( \left| $f \right| \lt $k \) are",  
+"\( $f < -$k  \)",
+"\( $f > $k  \)");
+$mc -> extra(
+"\( $nf < $k  \)",
+"\( $f > $k  \)", 
+"\( $nf > -$k  \)",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+>>
+<<
+a. 
+Write the piecewise definition for [` \left| [$f] \right| `].
+
+    [`\hphantom{000000000}`]  [__________]{$nf}  if [`x \lt`][__]{ $h}
+
+    [` \left| [$f] \right| =`]
+
+    [`\hphantom{000000000}`]  [__________]{$f}   if [`x \ge `][__]{ $h}
+
+b. 
+Use your answer to part (a) to write two inequalities that together are equivalent to 
+[` \left| [$f] \right| \gt [$k] `].
+
+    [@ $mc -> print_q() @]***
+
+    [@ $mc -> print_a() @]***
+
+c. 
+Solve the inequalities in part (b) and check that the solutions agree with the solutions of 
+[` \left| [$f] \right| \gt [$k] `].
+
+    Solution: [_________]  [@AnswerFormatHelp("inequalities") @]*
+
+d. 
+Show that [` \left| [$f] \right| \gt [$k] `] is equivalent to the compound inequality 
+[` [$f] \lt -[$k] \text{ or } [$f] \gt [$k] `].
+
+    The solution to the compound inequality [`  [$f] \lt -[$k] \text{ or } [$f] \gt [$k] `] is 
+
+    [_________]  [@AnswerFormatHelp("inequalities") @]*
+
+
+END_PGML
+
+$showPartialCorrectAnswers = 1;
+ANS(checkbox_cmp( $mc->correct_ans() ) );
+ANS( $ans->cmp()  );
+ANS( $ans->cmp()  );
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[`  [$f]  = 0 `] when [` x = [$h]`].
+
+    [`  | [$f] | = [$f] `] when [` [$f] \ge 0`], namely when [` x \ge [$h]`].
+
+    Otherwise [`  | [$f] | = -([$f]) `]
+
+b. 
+One inequality is obtained by simply dropping the absolute value from around [`[$f]`] to obtain [` [$f] \gt [$k] `]. The other inequality is obtained by replacing [`[$f]`]  with its opposite: [` -([$f])  \gt [$k] `], and then multiplying both sides by [` -1`] and correspondingly reversing the inequality we get [` [$f] \lt -[$k]`].
+
+c. 
+There are two solutions to [` [$f] = [$k] `], namely [`[$left] `] and [` [$right] `]. All value of [`x`] outside these two are solutions to one of the inequalities from part (b): [` [$ans] `].
+
+d. 
+We could solve the compound inequality [` [$f] \lt -[$k] \text{ or } [$f] \gt [$k] `] by adding [`[$b]`] and then dividing by [`[$a]`] on all four parts to get [` [$ans] `], which is equivalent to the solution of the inequality 
+[` \left| [$f] \right| \lt [$k] `].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

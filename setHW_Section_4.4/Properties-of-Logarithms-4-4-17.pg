@@ -1,0 +1,67 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--combining log terms into one logarithm
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('2/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('17')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add( t=>"Real", b=>"Real", r=>"Real", m=>"Real", P=>"Real");
+Context()->flags->set(limits=>[1,5]);
+@variables = ("x", "t", "r", "m", "P");
+
+$a = random(2,9);
+$b = random(2,9);
+$c = 2*$b + 1;
+
+
+do{$i = random(0, $#variables -1);
+  $j = random(0, $#variables -1);} until ($j != $i);
+$x = $variables[$i];
+$y = $variables[$j];
+
+do{$m = non_zero_random(-9,9);} until ( abs($m) !=1);
+$msq = $m**2;
+
+$f = Formula("$y - $m ")->reduce;
+
+Context()->functions->disable("log");
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Combine into one logarithm and simplify. Assume all expressions are defined.
+$PAR
+a. 
+\(\log$a$x +  $b \log $x - \log \sqrt{$x} =\log\big( \)\{ans_rule(7)\}\(\big)\)
+
+$PAR
+
+b. 
+\( \log \left( $y^2 - $msq \right) - \log ($y + $m)  =\log\big( \)\{ans_rule(5)\}\(\big)\)
+
+END_TEXT
+
+ANS(Compute("$a $x^($c/2)")->cmp() ); 
+ANS($f->cmp() ); 
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

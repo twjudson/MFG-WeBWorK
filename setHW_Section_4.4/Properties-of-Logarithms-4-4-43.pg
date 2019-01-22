@@ -1,0 +1,82 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--exponential decay word problem
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('43')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add(   S => "Real" , t=>"Real");
+
+$rate = 4.73; 
+$left = 100 - $rate;
+$b = $left/100;
+$decay = random(60,80,5);
+$a1 = 100 - $decay;
+$remain = $a1/100;
+
+$f = Formula(" S * $b^t ");
+$t = Compute("log($remain)/log($b)");
+$tdisplay = "\dfrac{\log($remain)}{\log($b)}";
+
+#for solution
+
+
+Context()->texStrings;
+BEGIN_PGML
+
+Sodium-24 is a radioactive isotope that is used in diagnosing circulatory disease. It decays into stable isotopes of sodium at a rate of [$rate]% per hour.
+
+
+a. 
+Technicians inject a quantity of sodium-24 into a patient's bloodstream. Write a formula for the amount of sodium-24 present in the bloodstream as a function of time Use [`S`] for the initial amount of sodium-24.
+
+[` A(t) =`][__________]{$f}  
+b. 
+How long will it take for [$decay]% of the isotope to decay? Round your answer to the nearest hundredth of an hour.  
+[_______]{$t->cmp(  tolType => 'absolute',  tolerance => .05,)} hours  
+
+
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+If the amount decreases by [$rate]% each hour, then what remains is [$left]%, and the decay factor is [$b].  
+b. 
+When  [$decay]% has decayed, [$a1]% remains. We solve for when amount is [`[$remain] S`]:
+
+>>[` \begin{aligned}
+  S \cdot [$b]^t  & =  [$remain]S   \\
+  [$b]^t  & =  [$remain]   \\
+  \log [$b]^t  & =  \log [$remain]   \\
+   t \log[$b]  & =   \log [$remain] \\
+    t  & = [$tdisplay] \approx [$t]
+    \end{aligned}
+`]<<
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

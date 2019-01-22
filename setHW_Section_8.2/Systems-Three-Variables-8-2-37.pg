@@ -1,0 +1,140 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('37')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+  "contextFraction.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>'Real', z=>'Real');
+
+#$scan = 7; 
+#$k1 = $scan*60;
+#$analyze = 8;
+#$k2 = $analyze*60;
+#$print = 12;
+#$k3 = $print * 60;
+
+
+$a11 = 3; #score-only scanner time
+$a12 = 3; #evaluation scanner time
+$a13 = 3; #narrative report scanner time
+
+$a21 = 0;  #score-only analyze time
+$a22 = 4; #evaluation analyze time
+$a23 = 5; #narrative report analyze time
+
+$a31 = 1; #score-only print time
+$a32 = 2; #evaluation print time
+$a33 = 8; #narrative report print time
+
+
+$f1 = Formula(" $a11*x + $a12 *y + $a13*z")->reduce;
+$f2 = Formula(" $a21*x + $a22*y + $a23*z")->reduce;
+$f3 = Formula(" $a31*x + $a32*y + $a33*z")->reduce;
+
+# could choose (x0, y0, z0) so that the f's give in time whole hours
+$x0 = 40;
+$y0 = 20;
+$z0 = 80;
+
+$P = Point($x0, $y0, $z0);
+
+$k1 = $f1->eval(x=>$x0, y=>$y0, z=>$z0);
+$k2 = $f2->eval(x=>$x0, y=>$y0, z=>$z0);
+$k3 = $f3->eval(x=>$x0, y=>$y0, z=>$z0);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+
+Solve by using a system of equations.
+
+The ABC Psychological Testing Service offers three types of reports on test results: score only, evaluation, and narrative report. Each score-only test takes [$a11] minutes to score using an optical scanner and [$a31] minute to print the interpretation. Each evaluation takes [$a12] minutes to score, [$a22] minutes to analyze, and [$a32] minutes to print. Each narrative report takes [$a13] minutes to score, [$a23] minutes to analyze, and [$a33] minutes to print. If ABC Services uses its optical scanner [$scan] hours per day, has [$analyze] hours in which to analyze results, and has 
+[$print] hours of printer time available per day, how many of each type of report can it complete each day when it is using all its resources?
+
+a. 
+Identify three unknown quantities and choose variables to represent them.
+
+b. 
+If appropriate, make a table organizing the information in the problem.
+
+c. 
+Write three equations about the variables in the problem.
+
+d. 
+Solve the system and answer the question in the problem.
+
+    ABC can complete [__]{$x0} score only reports,  [__]{$y0} evaluations, and  [__]{$z0} narrative reports.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+If we choose [`x`], [`y`], and [`z`] to represent respectively the number of reports for respectively score only, evaluation, and narrative reports, then we can set up the following system.
+
+From the fact that ABC has [$scan] hours (or [$k1] minutes) of time for its optical scanner each day we get:
+
+>>[`` [$f1] = [$k1] ``]<<
+
+Considering the [$analyze] hours (or [$k2] minutes) for analyzing results:
+
+>>[`` [$f2] = [$k2] ``]<<
+
+And considering the [$print] hours (or [$k3] minutes) for printing results:
+
+>>[`` [$f3] = [$k3] ``]<<
+
+
+The solution to the system is [`[$P]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

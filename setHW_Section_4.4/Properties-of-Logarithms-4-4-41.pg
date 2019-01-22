@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--exponential growth word problem
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('41')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add(   t=>"Real");
+
+$y0 = 2004;  #No randomness in this exercise, but could vary $big below
+$rate = 1.82;
+$p0 = 1041000;
+$big = random(1500000,2500000, 500000);
+$b = 1+ $rate/100;
+
+$f = Formula(" $p0 * $b^t ");
+$t = Compute("log($big/$p0)/log($b)");
+$tdisplay = "\dfrac{\log($big/$p0}{\log($b)}";
+$y = ceil($t + $y0);
+
+#Context()->functions->disable("log", "log10", "ln");
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+According to the National Council of Churches, the fastest growing denomination in the United States in [$y0] was the Jehovah's Witnesses, with an annual growth rate of [$rate]%.
+
+a. 
+The Jehovah's Witnesses had [$p0] members in [$y0]. Write a formula for the membership in the Jehovah's Witnesses as a function of time, assuming that the church continues to grow at the same rate.  
+[` A(t) =`][________________]{$f} (Use [`t=0`] to represent the year [$y0].)  
+b. 
+According to this model, when should the Jehovah's Witnesses have [$big] members?  
+In the year [____]{Compute($y)->cmp(  tolType => 'absolute',  tolerance => .5,)} 
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+If the population increases by [$rate]% each year, then the growth factor is [$b].  
+b. 
+We will solve first for [`t`], then add [$y0] and round up to obtain the appropriate year.
+
+>>[` \begin{aligned}
+  [$p0]\cdot [$b]^t  & =  [$big]   \\
+  [$b]^t  & =  [$big]/[$p0]   \\
+  \log [$b]^t  & =  \log ([$big]/[$p0])   \\
+   t \log[$b]  & =   \log ([$big]/[$p0]) \\
+    t  & = [$tdisplay] \approx [$t]
+    \end{aligned}
+`]<<
+So the population should reach [$big] during the year is [$y].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

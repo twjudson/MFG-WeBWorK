@@ -1,0 +1,80 @@
+##DESCRIPTION
+##  Algebra problem: logarithmic scale: Richter scale
+##ENDDESCRIPTION
+      
+## DBsection(Logarithmic Scales)
+## Date('10/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.4')
+## Problem1('35')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->variables->are(R=>"Real");
+Context()->flags->set(useBaseTenLog=>1);
+ 
+$s = 4.0;
+$weak = sprintf("%0.1f", $s );
+$alaska =8.4;
+$diff = $alaska- $s;
+$ans = Compute(" 10**($diff )");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use the appropriate formula for logarithmic models.
+
+In 1964, an earthquake in Alaska measured [$alaska]  on the Richter scale. An earthquake measuring [$weak]  is considered small and causes little damage. How many times stronger was the Alaska quake than one measuring [$weak]?
+
+    Answer: [___________]{$ans->cmp(  tolType => 'relative',  tolerance => .05,)} 
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+[`M= \log_{10} \left( \dfrac{A}{A_0}   \right)`], where [`A`] denotes the earthquake's amplitude on the seismograph and [`A_0`] denotes the smallest detectable earthquake. 
+
+A difference [` [$alaska]- [$small] = [$diff]`] on the Richter scale corresponds to earthquake strengths having a ratio of  [`10^{[$diff]}\approx [$ans]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

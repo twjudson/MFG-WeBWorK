@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Graphs of Functions')
+## Date('8/18/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.3')
+## Problem1('17')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "AnswerFormatHelp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+
+
+$f1000 = Compute("1495");
+$d1500 = Compute("1545");
+$d_slowest = Compute("800");
+$d_slowest_speed = Compute("1487.5");
+
+
+
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+The graph shows the speed of sound in the ocean as a function of depth, \(S = f(d)\).  The speed of sound is affected both by increasing water pressure and by dropping temperature. (Source: Scientific American)
+$BR
+$BR
+
+
+\{ image( "fig-ex-1-3-17.png",  width=>300, height=>300  ) \}
+
+$BR
+$BR
+
+a.  
+Evaluate \(f(1000)\). \{ ans_rule(5) \} What is its meaning?
+
+$BR
+$BR
+
+b. Solve \(f(d) = 1500\).  \{ ans_rule(5) \} What is its meaning?
+
+$BR
+$BR
+
+c. At what depth is the speed of sound the slowest, and what is the speed? Write your answer with function notation: \( f( \) \{ ans_rule(5) \} \( ) = \) \{ ans_rule(5) \}.
+
+$BR
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($f1000->cmp());
+ANS($d1500->cmp());
+ANS($d_slowest->cmp());
+
+
+ANS($d_slowest_speed->cmp(
+  tolType => 'absolute',
+  tolerance => 1.0,
+));
+
+
+
+ENDDOCUMENT();        

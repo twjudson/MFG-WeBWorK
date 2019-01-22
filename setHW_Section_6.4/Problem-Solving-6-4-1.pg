@@ -1,0 +1,243 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/17/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"contextFraction.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(t=>"Real", y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+#no variability so far
+
+$rooms = 60;
+$nite = 20;
+$delc = 2;
+$delr = 3;
+
+$price = Formula("$nite + $delc*x");
+$nrooms = Formula("$rooms - $delr *x");
+$revenue = Formula("$price * $nrooms");
+$a = -$delc*$delr; $b = $rooms*$delc - $nite*$delr; $c = $nite*$rooms;
+$poly = Formula("$c + $b*x + $a * x^2")->reduce;
+
+foreach my $i (0..20) {
+  $x[$i] = $i;
+  $p[$i] = $price->eval(x=>$i);
+  $n[$i] = $nrooms->eval(x=>$i);
+  $r[$i] = $revenue->eval(x=>$i);
+}
+
+$rmin = 1296;
+$xmi = 2;
+$xma = 8;
+$pmi = $price->eval(x=>$xmi);
+$pma = $price->eval(x=>$xma);
+$xend = Compute("20"); 
+
+$xv = ($xmi + $xma)/2;
+$rmax = $revenue->eval(x=>$xv);
+$pmax = $price->eval(x=>$xv);
+$nmax = $nrooms->eval(x=>$xv);
+
+$xmin = -2;
+$ymin = -100;
+$xmax=20;
+$ymax=1500;
+$xgrid = ($xmax - $xmin)/2;
+$ygrid = ($ymax - $ymin)/100;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 50,0.94*$ymax,'R','blue','left','bottom'));
+
+foreach my $i (1..4) {
+ $xscale =10*$i;
+ $yscale =500*$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$revenue for x in [0, $xend] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($xmi,$rmin,'red') );
+$gr->stamps( closed_circle($xma,$rmin,'red') );
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+
+
+The owner of a motel has [$rooms] rooms to rent. She finds that if she charges $[$nite] per room per night, all the rooms will be rented. For every $[$delc] that she increases the price of a room, [$delr] rooms will stand vacant.
+
+a. 
+Complete the table. The first two rows are filled in for you.  
+[@
+DataTable(
+  [
+    [ 'No. of price increases', 'Price of room', 'No. of rooms rented', 'Total revenue' ]  ,
+    [ "\\($x[0]\\)" ,"\\($p[0]\\)" , "\\($n[0]\\)" ,  "\\($r[0]\\)"  ],
+    [ "\\($x[1]\\)" ,"\\($p[1]\\)" , "\\($n[1]\\)" ,  "\\($r[1]\\)"  ],
+    [ "\\($x[2]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)   ],
+    [ "\\($x[3]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[4]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)   ],
+    [ "\\($x[5]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[6]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[7]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[8]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[10]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[12]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4) ],
+    [ "\\($x[16]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+    [ "\\($x[20]\\)" ,ans_rule(4) , ans_rule(4), ans_rule(4)  ],
+  ], 
+  caption => 'Room revenue and price changes', 
+  align => '| c |c | c | c |',
+  midrules=>1,
+ );
+@]***  
+b. 
+Let [`x`] stand for the number of  $[$delc]  price increases the owner makes. Write algebraic expressions for the price of a room, the number of rooms that will be rented, and the total revenue earned at that price.  
+Price:  $[_____], number of rooms: [_____], total revenue: $[____________]
+c. 
+Use your calculator to make a table of values for your algebraic expressions. Let [`Y_1`] stand for the price of a room, [`Y_2`] for the number of rooms rented, and [`Y_3`] for the total revenue. Verify the values you calculated in part (a).  
+d. 
+Use your table to find a value of [`x`] that causes the total revenue to be zero. [`x=`][___]  
+e. 
+Use your graphing utility to graph your formula for total revenue.  
+f. 
+What is the lowest price that the owner can charge for a room if she wants her revenue to exceed $[$rmin] per night? $[___]  
+What is the highest price she can charge to obtain this revenue? $[___]  
+g. 
+What is the maximum revenue the owner can earn in one night? $[____] How much should she charge for a room to maximize her revenue? $[___] How many rooms will she rent at that price? [___]
+
+ 
+
+END_PGML
+  
+Context()->normalStrings;
+
+foreach my $i (2..8) {
+ ANS($p[$i] ->cmp() );
+ ANS($n[$i] ->cmp() );
+ ANS($r[$i] ->cmp() );
+}
+
+ ANS($p[10] ->cmp() );
+ ANS($n[10] ->cmp() );
+ ANS($r[10] ->cmp() );
+
+ ANS($p[12] ->cmp() );
+ ANS($n[12] ->cmp() );
+ ANS($r[12] ->cmp() );
+
+ ANS($p[16] ->cmp() );
+ ANS($n[16] ->cmp() );
+ ANS($r[16] ->cmp() );
+
+ ANS($p[20] ->cmp() );
+ ANS($n[20] ->cmp() );
+ ANS($r[20] ->cmp() );
+
+ ANS($price ->cmp() );
+ ANS($nrooms ->cmp() );
+ ANS($revenue->cmp() );
+ ANS($xend->cmp() );
+ ANS($pmi->cmp() );
+ ANS($pma->cmp() );
+ ANS($rmax->cmp() );
+ ANS($pmax->cmp() );
+ ANS($nmax->cmp() );
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@
+DataTable(
+  [
+    [ 'No. of price increases', 'Price of room', 'No. of rooms rented', 'Total revenue' ]  ,
+    [ "\\($x[0]\\)" ,"\\($p[0]\\)" , "\\($n[0]\\)" ,  "\\($r[0]\\)"  ],
+    [ "\\($x[1]\\)" ,"\\($p[1]\\)" , "\\($n[1]\\)" ,  "\\($r[1]\\)"  ],
+    [ "\\($x[2]\\)" ,"\\($p[2]\\)" , "\\($n[2]\\)" ,  "\\($r[2]\\)"  ],
+    [ "\\($x[3]\\)" ,"\\($p[3]\\)" , "\\($n[3]\\)" ,  "\\($r[3]\\)"  ],
+    [ "\\($x[4]\\)" ,"\\($p[4]\\)" , "\\($n[4]\\)" ,  "\\($r[4]\\)"  ],
+    [ "\\($x[5]\\)" ,"\\($p[5]\\)" , "\\($n[5]\\)" ,  "\\($r[5]\\)"  ],
+    [ "\\($x[6]\\)" ,"\\($p[6]\\)" , "\\($n[6]\\)" ,  "\\($r[6]\\)"  ],
+    [ "\\($x[7]\\)" ,"\\($p[7]\\)" , "\\($n[7]\\)" ,  "\\($r[7]\\)"  ],
+    [ "\\($x[8]\\)" ,"\\($p[8]\\)" , "\\($n[8]\\)" ,  "\\($r[8]\\)"  ],
+    [ "\\($x[10]\\)" ,"\\($p[9]\\)" , "\\($n[9]\\)" ,  "\\($r[9]\\)"  ],
+    [ "\\($x[12]\\)" ,"\\($p[10]\\)" , "\\($n[10]\\)" ,  "\\($r[10]\\)"  ],
+    [ "\\($x[16]\\)" ,"\\($p[16]\\)" , "\\($n[16]\\)" ,  "\\($r[16]\\)"  ],
+    [ "\\($x[20]\\)" ,"\\($p[20]\\)" , "\\($n[20]\\)" ,  "\\($r[20]\\)"  ],
+  ], 
+  caption => 'Room revenue and price changes', 
+  align => '| c |c | c | c |',
+  midrules=>1,
+ );
+@]***  
+b. 
+With [`x`] increases in price, the price per room will have increased from $[$nite] to [`[$price]`] dollars, but the number of rooms rented drops from [$rooms] to [`[$nrooms]`], and the total revenue is the product [`[$revenue]`] dollars.  
+c. 
+Values should match the table in part (a).  
+d. 
+The last column in the table is 0 for [`x= [$xend]`].  
+e. 
+[@ image( insertGraph($gr) ) @]***  
+f. 
+The last column in the table is [$rmin] for [`x= [$xmi]`] and for [`x=[$xma]`], which corresponds to prices of $[$pmi] and $[$pma].  
+g. 
+The maximum revenue is found at the vertex of the parabola [`R=[$revenue] = [$poly]`], which is the point [`([$xv], [$rmax])`]. So the maximum revenue is $[$rmax], which occurs with [$xv] prices increases, so the price at the maximum revenue is $[$pmax] and there will be [$nmax] rooms rented.
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

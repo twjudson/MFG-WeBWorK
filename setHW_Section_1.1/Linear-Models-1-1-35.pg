@@ -1,0 +1,127 @@
+##DESCRIPTION
+##  Algebra problem: linear equation; equation of line from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear model', 'line', 'intercepts')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('35')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGgraphmacros.pl",
+  "PGchoicemacros.pl",
+  "AnswerFormatHelp.pl",
+  "parserImplicitEquation.pl",
+  "PGauxiliaryFunctions.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("ImplicitEquation");
+Context()->variables->set(y=>{limits=>[-1600,1600]}
+);
+do{
+$xi = non_zero_random(-1200, 1200, 400);
+$yi = non_zero_random(-1200, 1200, 400);} until ($xi != $yi);
+
+
+$total = $xi * $yi;
+
+
+$eqn = ImplicitEquation(
+  " $total = $yi*x + $xi*y ",
+  solutions=>[ 
+     [$xi,0],
+     [0,$yi],
+  ]
+);
+
+$f = Formula(" ($total - $yi*x)/$xi ");
+
+
+$xmin = -1600;
+$ymin = -1600;
+$xmax= 1600;
+$ymax= 1600;
+$xgrid = 8;
+$ygrid = 8;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[700,700]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.95*$xmax, 50,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 50,0.95*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..4) {
+$yscale =400*$i;
+$gr -> lb(new Label (-100,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label (-100,-$yscale,-$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $yscale,-50, $yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$yscale,-50, -$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+Write an equation in general form for each line.
+
+[@ image(insertGraph($gr), width=>300, height=>300, tex_size=>800) @]*
+
+
+Answer: [_________________]{$eqn}
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We can read off the intercepts and use, for example, either the intercept form [`` \frac{x}{a} + \frac{y}{b}=1 ``] or, by multiplying this form by the common denominator [`ab`], use the form [` b x + a y = ab`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

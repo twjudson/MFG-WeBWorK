@@ -1,0 +1,102 @@
+##DESCRIPTION
+##  Algebra problem: read function values and solve equations from calculator graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('33')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#Context()->variables->add(t=>"Real",);
+# a little randomness:
+$shift = non_zero_random(-9,9); #was 6
+
+$f = Formula("24 -0.25 (x-$shift)**2");
+$g = Formula("  $shift + sqrt( 4*(24-x)  )  ");
+$gn = Formula("  $shift - sqrt( 4*(24-x)  )  ");
+
+$y1 = -6.25;
+
+$x1 = $g->eval(x=>$y1);
+$x1b = $gn->eval(x=>$y1);
+$ans1 = List("$x1, $x1b");
+
+$y2 =11.75;
+$x2 =  $g->eval(x=>$y2);
+$x2b =  $gn->eval(x=>$y2);
+
+
+Context("Inequalities");
+#Context()->variables->are(t=>"Real",);
+$int1 = Compute("  $x2b < x and x < $x2");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Graph the function [`H(x) = [$f]`] with the *ZInteger* setting. Use the graph to solve each equation or inequality. Check your solutions algebraically.
+
+
+a. 
+[` [$f] = [$y1]`]:  [`x=`][____]{$ans1} [@AnswerFormatHelp("numbers") @]* (More than one solution?)
+
+b. 
+[` [$f] > [$y2]`]: [________]{$int1} [@AnswerFormatHelp("inequalities") @]*
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We find the value of [`x`] for the point on the curve where [`y=[$y1]`]: [`x = [$ans1]`].
+
+b. 
+We find values of [`x`] for the points on the curve where [`y \gt  [$y2]`]: [`[$int1]`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

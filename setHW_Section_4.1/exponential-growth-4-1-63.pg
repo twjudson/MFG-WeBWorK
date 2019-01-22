@@ -1,0 +1,100 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--exponential decay via percent loss
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/13/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('63')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+#"contextFraction.pl"
+ "PGML.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+#Context("Fraction");
+Context()->variables->add(t=>"Real", r=>"Real");
+
+$P0 = 16986335;
+$Year0 = 1990;
+$f = Formula("$P0*(1+r)^t");
+$P1 = 20851820;
+$Year1 = 2000;
+$t1 = $Year1 - $Year0;
+$b = ($P1/$P0)**(1/$t1);
+$r = $b - 1;
+$r_percent = 100*$r;
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Assume that population grows exponentially with constant annual percent increase, [`r`].
+
+a. 
+The population of the state of Texas was [$P0] in [$Year0]. Write a formula in terms of [`r`] for the population of Texas [`t`] years later.  
+[`P(t) =`][______________]{$f}
+b. 
+In [$Year1], the population was [$P1]. Write an equation and solve for [`r`]. What was the annual percent increase to the nearest hundredth of a percent? [____]{Compute("$r_percent")->cmp(  tolType => 'absolute',  tolerance => .005,)}%
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+When [`r`] is expressed as a decimal, the growth factor is [` 1+r `], so [`P(t) = P_0 (1+r)^t `]. We can find the growth factor [` b= 1+r `] by noticing that [` \dfrac{P_0 b^{[$t1]} }{P_0 }  = b^{[$t1]}`], so we find that [` b^{[$t1]} = [$P1]/[$P0]`], then by raising to the exponent 1/[$t1], we find that [`b \approx [$b]`]. Subtracting 1 from [`b`] gives the decimal form of [`r`], and multiplying that value by 100 gives us the percent form of the annual percent growth rate.
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

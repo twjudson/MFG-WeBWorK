@@ -1,0 +1,89 @@
+##DESCRIPTION
+##  Algebra problem: values of function and inverse from graph without formulas
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Inverse Functions)
+## Date('3/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.1')
+## Problem1('7')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+"PGchoicemacros.pl",
+"parserNumberWithUnits.pl"
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# No variation coded in this problem.
+#The curve was based on a particular model, but the input could vary.
+
+$t0 = NumberWithUnits(60,'hr');
+
+$m0 = NumberWithUnits(78, 'g');
+
+$t1 = 19;
+$m1 = 90;
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+After eating, the weight of a vampire bat drops steadily until its next meal. The graph shows the function [`W = f (t)`], which gives the weight, [`W`], of the bat in grams [`t`] hours since its last meal.
+
+[@image( "fig-5-1-7.png", width=>380, height=>244,  
+tex_size=>700, extra_html_tags=>'alt="bat weight vs time"' ) @]*
+
+a. 
+What are the coordinates of the point of starvation? Include units in your answer.  
+[`\big(`][______]{$t0->cmp(  tolType => 'absolute',  tolerance => 1,)}, [______]{$m0->cmp(  tolType => 'absolute',  tolerance => 1,)} [`\big)`][@ AnswerFormatHelp("units") @]*  
+b. 
+Use the graph to estimate [`f^{-1}([$m1]) \approx`][__]{Compute($t1)->cmp(  tolType => 'absolute',  tolerance => 1,)}, and explain its meaning in this context. 
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+The first coordinate is the time in hours at the point of starvation, [$t0]. The second coordinate is the mass in grams at the point of starvation, [$m0].
+
+b. 
+To find [` f^{-1}([$m1])`] is to find the value of [`t`] at which the second coordinate is [$m1], namely [`t \approx [$t1]`]. This means that the vampire bat's weight has dropped to [$m1] grams about [$t1] hours after its last meal.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

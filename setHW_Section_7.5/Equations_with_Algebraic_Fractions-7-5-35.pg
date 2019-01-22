@@ -1,0 +1,103 @@
+##DESCRIPTION
+##  Algebra problem: proportion
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('35')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#Context("Fraction");
+
+$x0 = 8848;
+$x1 = 11034;
+$v = $x0+$x1;
+$r = 6400;
+$p = Compute("$v/(1000*$r) * 100");
+$r1 = 4.75;
+$ans = Compute("$r1/(1000*$r) * $x0");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+ The highest point on Earth is Mount Everest in Tibet, with an elevation of [$x0] meters. The deepest part of the ocean is the Challenger Deep in the Mariana Trench, near Indonesia, 
+[$x1] meters below sea level.
+
+a. 
+What is the total height variation in the surface of the Earth?
+
+    [________]{$v} meters
+
+b. 
+What percentage of the Earth's radius, [$r] kilometers, is this variation?
+
+    [___]{$p->cmp(  tolType => 'absolute',  tolerance => .05,)}%
+
+c. 
+If the Earth were shrunk to the size of a basketball, with a radius of [$r1] inches, what would be the corresponding height of Mount Everest?
+
+    [______]{$ans->cmp(  tolType => 'relative',  tolerance => .05,)} in.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[`[$x0]+[$x1]=[$v]`]
+
+b. 
+[` \frac{[$v]}{[$r]\times 1000} \times 100 \approx [$p]`]
+
+c. 
+[` \frac{[$r1]}{[$r]\times 1000} \times [$x0]\approx [$ans]`]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

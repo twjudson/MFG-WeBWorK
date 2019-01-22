@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: discriminant, factoring
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts', 'discriminant')
+
+## DBsubject(Algebra)
+## DBchapter(Quadrati Functions)
+## DBsection(Graphing Parabolas)
+## Date('4/17/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('37')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"unionTables.pl",
+"AnswerFormatHelp.pl",
+"contextFraction.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+# (mx - r0)(nx - r1)
+
+do {$m = random(2,6);
+  $n = random(2,6);
+  $r0 = non_zero_random(-9,9);
+  $r1 = non_zero_random(-9,9);
+  $b = -($m*$r1 + $n*$r0);
+  $c = $r0*$r1;
+}
+until ( gcd($m,$r0) == 1 and gcd($n,$r1)==1  and $b != 0 and abs($c) > 30);
+$a = $m*$n;
+
+$f0 = Formula("$a*x^2 + $b * x +$c")->reduce;
+$f1 = Formula(" 0 ")->reduce;
+
+$D = $b**2 - 4*$a *$c;
+$r = sqrt($D);
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Can we solve the equation by factoring?", 
+"Yes"
+);
+
+$mc->extra(
+"No"
+);
+$mc->makeLast("No");
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Use the discriminant to decide if we can solve the equation by factoring.
+
+[`` [$f0]=[$f1] ``]  
+    
+The discriminant is [___]{Compute("$D")->cmp(  tolType => 'relative',  tolerance => .1,)}. 
+    
+[@ ColumnMatchTable($mc) @]***
+
+ 
+
+END_PGML
+  
+
+Context()->normalStrings;
+
+
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`a = [$a]`], [`b = [$b]`], [`c = [$c]`], so the discriminant is [`D = ([$b])^2 - 4([$a])([$c])=[$D] = [$r]^2`].
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

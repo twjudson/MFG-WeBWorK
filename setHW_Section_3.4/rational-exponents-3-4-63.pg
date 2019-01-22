@@ -1,0 +1,75 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents--write square of binomial as as sum of powers
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('2/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('63')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGchoicemacros.pl",
+"PGML.pl",
+"parserRoot.pl",
+"contextLimitedPolynomial.pl",
+"contextFraction.pl",
+);
+
+Context("Numeric");
+Context()->flags->set(reduceConstants=>0);
+Context()->flags->set(limits=>[1,2]);
+Context()->variables->add(y=>'Real', a=>'Real', b=>'Real', p=>'Real', q=>'Real', m=>'Real' , n=>'Real' );
+
+@variables = ("x","y", "a","b", "p","q", "m","n");
+
+$i = random(0,$#variables-1);
+$x = $variables[$i];
+
+$k = random(2,4);
+$d = 2*$k;
+$n = $d - 1;
+
+$a = non_zero_random(-9,9) ;
+
+$f = "($x^{ $n/$d    } +$a ) ^2 ";
+$b = 2*$a;
+$c = ($a)**2;
+
+$answer = Formula(" $x**($n/$k) + $b $x^($n/$d) + $c ") ;
+
+
+Context()->functions->disable("All");
+Context("LimitedPolynomial");
+
+##################
+BEGIN_PGML
+
+Use the distributive law to find the product.
+
+[`` [$f ] = ``][__________________________]{ $answer }
+
+END_PGML 
+
+########################
+#Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+Write [` [$f] `] as [` ([$x]^{ [$n]/[$d]    } +[$a] )  ([$x]^{ [$n]/[$d]    } +[$a] )   `]. The use the distributive law twice to get a sum of four terms, and in each term use the rule for multiplying powers of the same base.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();     

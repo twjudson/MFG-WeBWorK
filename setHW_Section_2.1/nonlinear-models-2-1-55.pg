@@ -1,0 +1,114 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Some Basic Functions')
+## Date('9/6/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.1')
+## Problem1('55')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "niceTables.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$amount = random(4000,5500,500);
+
+$after_two_years = random(5750,6500,250);
+
+
+
+Context()->variables->add(r=>"Real",B=>"Real");
+$ans_formula=Formula("$amount*(1 +r)^2");
+
+$ans1 = Compute("sqrt($after_two_years/$amount) - 1");
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Cyril plans to invest $$amount in a money market account that pays interest compounded annually.
+
+$BR
+$BR
+
+a. Write a formula for the balance, \(B\) in Cyril's account after two years as a function of the interest rate, \(r\).
+
+$BR
+$BR
+
+$BCENTER
+\(B =\) \{ ans_rule(30) \}
+$ECENTER
+
+$BR
+$BR
+
+b. If Cyril would like to have $$after_two_years in two years, what interest rate must the account pay? \(r =\) \{ ans_rule(30) \}
+
+$BR
+$BR
+
+
+c. Use your calculator to graph the formula for Cyril's account balance. Locate the point on the graph that corresponds to the amount in part (b).
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans_formula->cmp());
+
+ANS($ans1->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+
+
+
+
+ENDDOCUMENT();        

@@ -1,0 +1,161 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('29')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"unionTables.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", v=>"Real", n=>"Real", z=>"Real", r=>"Real",y=>"Real" );
+
+@variables = ("x", "t", "v", "n", "z", "r");
+@functions = ("f", "g", "h", "F", "G", "H", "h", "T", "Q", "P", "S");
+$i = random(0,$#variables-1);
+$x=@variables[$i];
+
+@slice = NchooseK($#functions,2);
+@f_name=@functions[@slice];
+
+$a = non_zero_random(-9,9);
+$b= Compute("-$a")->reduce;
+
+$basic[0] = Compute("sqrt($x-$a)")->reduce;
+$basic[1] = Compute("sqrt($x)-$a")->reduce;
+$basic[2] = Compute("$a-abs($x)");
+$basic[3] = Compute("abs($a-$x)");
+
+$dom[0] = Compute("[$a,inf)");
+$ran[0] = Compute("[0,inf)");
+
+$dom[1] = Compute("[0,inf)");
+$ran[1] = Compute("[$b,inf)");
+
+$dom[2] = Compute("(-inf,inf)");
+$ran[2] = Compute("(-inf,$a]");
+
+$dom[3] = Compute("(-inf,inf)");
+$ran[3] = Compute("[0,inf)");
+
+$n = random(0,1);
+$pair[0] = $basic[2*$n];
+$pair[1] = $basic[2*$n+1];
+$domain[0] = $dom[2*$n];
+$domain[1] = $dom[2*$n+1];
+$range[0] = $ran[2*$n];
+$range[1] = $ran[2*$n+1];
+
+@slice = NchooseK(2,2);
+
+@f = @pair[@slice];
+@Dom = @domain[@slice];
+@Ran = @range[@slice];
+
+
+
+Context("Inequalities")->variables->are(x=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+Context()->variables->add(t=>"Real", v=>"Real", n=>"Real", z=>"Real", r=>"Real",y=>"Real" );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+$BR
+
+Find the domain of each function algebraically. Then graph the function, and use the graph to help you find the range.
+$BR
+
+$BR
+(a) \(  $f_name[0]($x)=$f[0] \):  
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+$BR
+(b) \(  $f_name[1]($x)=$f[1]\):  
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $Dom[0]->cmp() );
+ANS( $Ran[0]->cmp() );
+ANS( $Dom[1]->cmp() );
+ANS( $Ran[1]->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the `$x`-values corresponding to points on the curve.
+The range includes all the `y`-values corresponding to points on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

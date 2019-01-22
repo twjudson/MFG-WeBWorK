@@ -1,0 +1,170 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/21/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('9')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"unionTables.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+@basic = ("x", "x^(1/3)",  "x^3", "x^2", "abs(x)", "1/x", "1/x^2", "sqrt(x)");
+
+foreach my $i ( 0..7 ) {
+
+  if ($i < 5) { 
+    $domain[$i] = Compute("(-inf,inf)");
+    if($i < 3) {
+      $range[$i] = Compute("(-inf,inf)");
+       }
+
+    else { 
+      $range[$i] = Compute("[0,inf)");
+       }
+   }
+  else { 
+    if($i < 7) { 
+      $domain[$i] = Compute("(-inf,0)U(0,inf)");
+      if ($i < 6) {
+        $range[$i] = Compute("(-inf,0)U(0,inf)");
+         }
+      else {
+        $range[$i] = Compute("(0,inf)");
+         }
+       }
+    else {
+        $domain[$i] = Compute("[0,inf)");
+        $range[$i] = Compute("[0,inf)");
+    }
+  }
+}; 
+
+
+@slice = NchooseK(8,2);
+
+if ($slice[0] != 1) {
+  $f = Compute( $basic[$slice[0]] );}
+else {
+  $f= "\sqrt[3]{x}";
+}
+
+if ($slice[1] != 1) {
+  $g = Compute( $basic[$slice[1]] );}
+else {
+  $g= "\sqrt[3]{x}";
+}
+
+
+
+Context("Inequalities")->variables->are(x=>"Real");
+Context()->variables->add(y=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+foreach my $i ( 0..1 ) {
+
+  $dom[$i]= Compute("$domain[$slice[$i]]");
+  $ran[$i] = Compute("$range[$slice[$i]]");
+
+};
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+$BR
+
+Find the domain and range of each basic function.
+$BR
+
+$BR
+(a) \( f(x)=$f \):  
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+$BR
+(b) \( g(x)=$g\):  
+$BR
+$BR
+Domain:
+\{ans_rule(12) \}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range:  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $dom[0]->cmp() );
+ANS( $ran[0]->cmp() );
+ANS( $dom[1]->cmp() );
+ANS( $ran[1]->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the `x`-values corresponding to points on the curve.
+The range includes all the `y`-values corresponding to points on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

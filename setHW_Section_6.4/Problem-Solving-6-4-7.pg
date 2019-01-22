@@ -1,0 +1,119 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model: orchard output
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('7')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(t=>"Real", C=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+#no variation
+
+$a = 0.01; $b = -2; $c = 120;
+
+$v0 = random(2,4) * 2 * $halfg; # was 96;
+$xv = -$b/(2*$a);
+$f = Formula("$a * x^2 + $b * x + $c")->reduce;
+$cmax = $f->eval(x=>$xv);
+
+$xmin = -20;
+$ymin = -20;
+$xmax= 200;
+$ymax= 160;
+$xgrid = ($xmax - $xmin)/20;
+$ygrid = ($ymax - $ymin)/20;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[500,500]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 2,0.94*$ymax,'C','blue','left','bottom'));
+
+foreach my $i (1..10) {
+ $xscale =20*$i;
+ $yscale =20*$i;
+  $gr -> lb(new Label ( $xscale,0.3*$ymin, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (0.3*$xmin,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [0, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($xv,$cmax,'red') );
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The owners of a small fruit orchard decide to produce gift baskets as a sideline. The cost per basket for producing [`x`] baskets is 
+>>[``C = 0.01x^2 - 2x + 120``]<<
+
+How many baskets should they produce in order to minimize the cost per basket? What will their total cost be at that production level?
+
+a. 
+Find the minimum value algebraically.  
+Minimum cost per basket attained when [____]{$xv} baskets produced, and that cost is $[_____]{$cmax}. 
+b. 
+Obtain a good graph on your calculator and verify your answer. (Use the coordinates of the vertex and the vertical intercept to help you choose an appropriate window for the graph.)
+
+ 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The minimum cost corresponds to the vertex of the parabola [`C = [$f]`]. The horizontal coordinate is [`x_v = \dfrac{-[$b]}{2([$a])} = [$xv]`] baskets. Using that value of [`x`] in [`[$f]`], we find that the minimum cost is $[$cmax].
+b. 
+[@ image( insertGraph($gr) ) @]***  
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

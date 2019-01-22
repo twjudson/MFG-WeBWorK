@@ -1,0 +1,60 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--evaluate by definition
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('9')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros("PG.pl",
+           "PGbasicmacros.pl",
+           "PGchoicemacros.pl",
+           "PGanswermacros.pl",
+           "PGauxiliaryFunctions.pl",
+           "extraAnswerEvaluators.pl",
+"PGML.pl",
+);
+
+$ans1 = random(-5,-1);
+$a1 = 10**$ans1;
+
+do{$ans2 = random(-5,-1);} until ($ans2 != $ans1);
+$a2 = 10**$ans2;
+
+$b1 = 10;
+$b2 = 10;
+
+
+BEGIN_PGML
+Find the exact value for each expression:
+  
+a. 
+[` \log_{[$b1]} [$a1] =`][___]{$ans1}  
+b. 
+[` \log_{[$b2]} [$a2]  =`] [___]{$ans2}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+If we rewrite [$a1] as [`[$b1]^{[$ans1]}`], then we see that by the definition of logarithms, [` \log_{[$b1]} [$b1]^{[$ans1]}=[$ans1]`].  
+b. 
+We rewrite [$a2] as [`[$b2]^{[$ans2]}`], and by the definition of logarithms, [` \log_{[$b2]} [$b2]^{[$ans2]}=[$ans2]`].  
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

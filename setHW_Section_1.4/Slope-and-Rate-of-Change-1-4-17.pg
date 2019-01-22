@@ -1,0 +1,159 @@
+##DESCRIPTION
+##  Algebra problem: compute delta x from slope and delta y or delta y from slope and delta x
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Fraction");
+
+$denom = random(3,5);
+do{$num = random(-9,-2);} until (gcd($denom,$num)==1);
+$m = Compute("$num/$denom");
+
+do{
+$delx1 = random(2,5) * $denom;
+$dely1 = $m*$delx1;
+$delx2 = random(-5,-2) * $denom;
+$dely2 = $m*$delx2;
+} until ( $delx1 != abs($delx2));
+
+do{
+$delx3 = random(1,10) ;
+$dely3 = $m*$delx3;
+$delx4 = random(-10,-1);
+$dely4 = $m*$delx4;
+} until ( $delx3 != abs($delx4) && $delx3 % $denom !=0 && $delx4 % $denom !=0 );
+
+
+do{
+$dely5 = random(1,5) * $num;
+$delx5 = $m/$dely5;
+$dely6 = -random(1,5) * $num;
+$delx6 = $m/$dely6;
+} until ( $dely5 != abs($dely6));
+
+
+$bit0 = random(0,1);
+$bit1 = 1-$bit0;
+
+$dely7 =-($bit0 + 1) ;
+$delx7 = $m/$dely7;
+$dely8 =$bit1 + 1;
+$delx8 =$m/$dely8;
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+A line has slope [`[$m]`];
+
+a. 
+Find the vertical change associated with each horizontal change.
+
+    i. 
+[`\Delta x = [$delx1]`];     Answer:  [___]{$dely1}
+
+    i. 
+[`\Delta x = [$delx2]`];     Answer:  [___]{$dely2}
+
+    i. 
+[`\Delta x = [$delx3]`];     Answer:  [___]{$dely3}
+
+    i. 
+[`\Delta x = [$delx4]`];     Answer:  [___]{$dely4}
+
+b. 
+Find the horizontal change associated with each vertical change.
+
+    i. 
+[`\Delta y = [$dely5]`];     Answer:  [___]{$delx5}
+
+    i. 
+[`\Delta y = [$dely6]`];     Answer:  [___]{$delx6}
+
+    i. 
+[`\Delta y = [$dely7]`];     Answer:  [___]{$delx7}
+
+    i. 
+[`\Delta y = [$dely8]`];     Answer:  [___]{$delx8}
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Because [`m = \frac{\Delta y}{\Delta x}`], [`\Delta y = m\Delta x`]
+
+    i. 
+[`\Delta y = [$m]\cdot [$delx1] = [$dely1]`]
+    i. 
+[`\Delta y = [$m]\cdot [$delx2] = [$dely2]`]
+    i. 
+[`\Delta y = [$m]\cdot [$delx3] = [$dely3]`]
+    i. 
+[`\Delta y = [$m]\cdot [$delx4] = [$dely4]`]
+    
+ 
+b. 
+Because [`m = \frac{\Delta y}{\Delta x}`], [`\Delta x = \frac{\Delta y}{m}`]
+
+    i. 
+[`\Delta x = \frac{\Delta y}{m}= [$dely5]\div [$m] = [$delx5]`]
+    i. 
+[`\Delta x = \frac{\Delta y}{m}= [$dely6]\div [$m] = [$delx6]`]
+    i. 
+[`\Delta x = \frac{\Delta y}{m}= [$dely7]\div [$m] = [$delx7]`]
+    i. 
+[`\Delta x = \frac{\Delta y}{m}= [$dely8]\div [$m] = [$delx8]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

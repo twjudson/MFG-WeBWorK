@@ -1,0 +1,152 @@
+##DESCRIPTION
+##  Algebra problem: compute slope: scales on axes differ
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+    "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Fraction");
+
+do{ $yi = non_zero_random(-4,4);
+     $xi = non_zero_random(-4,4);}
+until (gcd($xi,$yi)==1 );
+$flip = random(0,1);
+@scale=(5,10);
+$p = random(0,2);
+$delx = $scale[$flip]*10**($p);
+$dely = $scale[1-$flip]*10**($p);
+$xintercept = $xi*$delx;
+$yintercept = $yi*$dely;
+$m = Compute("  -$yintercept/$xintercept  ")->reduce;
+
+$f = Formula(" $yintercept + $m*x ");
+
+if ( $xi > 0 ) {
+    $xmin = -6*$delx;
+       if ( $xi > abs($yi) ) {
+           $xmax = 11*$delx;
+       } else {
+           $xmax = 6*$delx;
+       }
+
+} elsif ( abs($xi) > abs($yi) ) {
+    $xmin = -11*$delx;
+    $xmax = 6*$delx;
+
+} else {
+    $xmin = -6*$delx;
+    $xmax = 6*$delx;
+};
+
+
+if ( $yi > 0 ) {
+    $ymin = -6*$dely;
+       if ( $yi > abs($xi) ) {
+           $ymax = 11*$dely;
+       } else {
+           $ymax = 6*$dely;
+       }
+} elsif ( abs($yi) > abs($xi) ) {
+    $ymin = -11*$dely;
+    $ymax = 6*$dely;
+
+} else {
+    $ymin = -6*$dely;
+    $ymax = 6*$dely;
+};
+
+if (abs($xi) > abs($yi) ) {
+    $xgrid = 17;
+    $ygrid = 12;
+    $xpix = 850;
+    $ypix = 600;
+} else {
+    $xgrid = 12;
+    $ygrid = 17;
+    $xpix = 600;
+    $ypix = 850;
+};
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+foreach my $i (1..2) {
+$xscale =5*$delx*$i;
+$yscale =5*$dely*$i;
+$gr -> lb(new Label ( $xscale,0.08*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.08*$xmin,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,0.08*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (0.08*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:3");
+
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+
+Compute the slope of each line. Note the scales on the axes.
+
+>>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*<<
+
+Answer: [___]{$m}
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We can compute the slope based on the intercepts. The slope is [` m= \frac{-(y\text{-intercept})}{x\text{-intercept}} =\frac{-([$yintercept])}{[$xintercept]} = [$m]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

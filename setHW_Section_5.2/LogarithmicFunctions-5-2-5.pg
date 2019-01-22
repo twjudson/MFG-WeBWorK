@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: translate logarithmic equation to exponential form
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do {
+$y0 = random(3,7);
+$y1 = random (6,8); } until ($y0 < $y1);
+
+$x0 = Compute("10**($y0)");
+$x1 = Compute("10**($y1)");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+
+a. 
+How large must [`x`] be before the graph of [` y=\log_{10} x`] reaches a height of [$y0]?
+
+    Answer: [`x=`][______]{$x0}
+
+b. 
+How large must [`x`] be before the graph of [` y=\log_{10} x`] reaches a height of [$y1]?
+
+    Answer: [`x=`][_________]{$x1}
+
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+a. 
+[`\log_{10}(x) = [$y0]`] means that [` x = 10^{[$y0]}`].
+
+b. 
+[`\log_{10}(x) = [$y1]`] means that [` x = 10^{[$y1]}`].
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,87 @@
+##DESCRIPTION
+##  Algebra problem: logarithmic scale: Richter scale
+##ENDDESCRIPTION
+      
+## DBsection(Logarithmic Scales)
+## Date('10/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.4')
+## Problem1('37')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->variables->are(R=>"Real");
+Context()->flags->set(useBaseTenLog=>1);
+@multiplier = ("three", "four", "five","six","seven", "eight", "nine");
+@digit = (3,4,5,6,7,8,9);
+$i = random(0,$#digit);
+$factor0 = $multiplier[$i];
+$factor = $digit[$i];
+ 
+$small = random(4.1, 4.3, .1); #was 4.2;
+$weak = sprintf("%0.1f", $small );
+$ans = Compute(" log($factor) + $small");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use the appropriate formula for logarithmic models.
+
+A small earthquake measured [$weak] on the Richter scale. What is the magnitude of an earthquake [$factor0] times as strong?
+
+    Answer: [___________]{$ans->cmp(  tolType => 'relative',  tolerance => .05,)} 
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+[`M= \log_{10} \left( \dfrac{A}{A_0}   \right)`], where [`A`] denotes the earthquake's amplitude on the seismograph and [`A_0`] denotes the smallest detectable earthquake. 
+
+The Richter scale magnitude of an earthquake [$factor] times as strong as [`A`] would be  
+[` \begin{aligned}
+\log_{10} \left( \dfrac{ [$factor]A}{A_0}   \right) &= \log_{10}  [$factor]+ \log_{10} \left( \dfrac{A}{A_0}\right) \\
+&= \log_{10} [$factor] + M \approx [$ans] 
+\end{aligned}`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

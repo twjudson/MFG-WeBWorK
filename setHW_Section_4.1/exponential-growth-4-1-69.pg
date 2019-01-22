@@ -1,0 +1,144 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--compare linear and exponential growth
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/14/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('59')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+#"contextInequalities.pl",
+#"AnswerFormatHelp.pl",
+#"PGgraphmacros.pl",
+#"unionTables.pl",
+"contextFraction.pl",
+"niceTables.pl",
+ "PGML.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+# this exercise is static. We could randomly choose P0, t1, and P1, but then we'd probably want
+# to adjust the tables to show t at multiples of t1.
+
+$P0 =3;
+$t1 = 2;
+$P1= 6;
+Context("Fraction");
+$m = Fraction("($P1 - $P0)/$t1");
+$factor = Fraction("$P1/$P0");
+
+Context("Numeric");
+Context()->flags->set(reduceConstants=>0);
+Context()->variables->add(t=>"Real");
+$L = Formula("$P0 + $m t");
+$E = Formula("$P0 * $factor**(t/$t1)");
+
+foreach my $i ( 0..4 ) { 
+  $l[$i] = $L->eval(t=>2*$i);
+  $e[$i] = $E->eval(t=>2*$i);
+}
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+At a large university [$P0] students start a rumor that final exams have been canceled. After [$t1] hours, [$P1] students (including the first [$P0]) have heard the rumor.  
+a. 
+Assuming that the rumor grows linearly, complete the table below for [`L(t)`], the number of students who have heard the rumor after [`t`] hours. Then write a formula for the function [`L(t)`]. Graph the function.  
+
+[@
+DataTable(
+  [
+    [ '\(t\)', '0', '2', '4', '6', '8' ]  ,
+    [ '\(L(t)\)', ans_rule(2) , ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2)  ]
+  ], 
+  caption => 'Linear function', 
+  align => '| l | c | c | c | c | c |',
+  midrules=>1,
+ );
+@]***  
+[` L(t) =`][________]  
+
+b. 
+Complete the table below, assuming that the rumor grows exponentially. Write a formula for the function [`E(t)`] and graph it on the same set of axes with [`L(t)`].
+
+[@
+DataTable(
+  [
+    [ '\(t\)', '0', '2', '4', '6', '8' ]  ,
+    [ '\(E(t)\)', ans_rule(2) , ans_rule(2), ans_rule(2), ans_rule(2), ans_rule(2)  ]
+  ], 
+  caption => 'Exponential function', 
+  align => '| l | c | c | c | c | c |',
+  midrules=>1,
+ );
+@]***  
+[` E(t) =`][________]  
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+foreach my $i ( 0..4) {
+  ANS( Compute("$l[$i]")->cmp() );
+};
+ANS($L ->cmp() );
+foreach my $i ( 0..4) {
+  ANS( Compute("$e[$i]")->cmp() );
+};
+ANS($E ->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_PGML_SOLUTION
+
+The number of students who heard the rumor increased by [$P0] in the first [$t1] hours. Assuming linear growth, that number will increase by [$P0] every [$t1] hours, so we can fill in the linear table by adding [$P0] to the current column to find the value in the next column. Increasing by [$P0] in [$t1] hours is a rate (or slope) of [` [$P0]/[$t1] `] people per hour. So [` mx + b `] corresponds to [` \frac{[$P0]}{[$t1]} t + [$P0] `].  
+
+The number of students who heard the rumor grew by a factor of [$factor] in the first [$t1] hours. Assuming exponential growth, that number will continue to increase by a factor of [$factor] every [$t1] hours, so we can fill in the exponential table by multiplying the current column by [$factor] to find the value in the next column. A factor of [$factor] in [$t1] hours is an hourly growth factor of [` [$factor]^{1/[$t1]} `]. The exponential function is  [`  [$P0] \cdot [$factor]^{t/[$t1]} `].  
+
+
+
+END_PGML_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

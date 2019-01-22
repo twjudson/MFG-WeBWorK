@@ -1,0 +1,118 @@
+##DESCRIPTION
+##  Algebra problem: wildlife management and sustainable yields
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', "system")
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('10/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('45')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$h =300;
+$x0 =2500;
+$c0 = 300;
+$x1=3500;
+$Pop0 = PopUp(["select", "Larger", "Smaller", "The same"], "Larger");
+$Pop1 = PopUp(["select", "Larger", "Smaller", "The same"], "Smaller");
+$d0 = 75;
+$d1 = 125;
+$y0 = 1000;
+$y1 = 3000;
+$B = List("$y0, $y1");
+$Pop2 = PopUp(["select", "The fish population will decrease each year until it is completely depleted.", 
+"The fish population will increase each year until it reaches $y1 tons.", 
+"The fish population will fluctuate up and down."], 
+"The fish population will decrease each year until it is completely depleted.");
+
+
+
+##############################################################
+#
+#  Text
+#
+#4
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+This problem deals with wildlife management and sustainable yield.
+
+The annual growth rate of a population of fish, in tons per year, is modeled by the equation
+>>[``R=0.4x - 0.0001x^2``]<<
+where [`x`] is the current biomass of the population, in tons.
+
+a. 
+Suppose that fishermen harvest [$h] tons of fish each year. Sketch the graph of 
+[`H=[$h]`] on the same axes with your graph of [`y`].
+
+b. 
+If the biomass is currently [$x0]  tons and [$c0]  tons are harvested, will the population be larger or smaller next year? [_______]{$Pop0}  By how much? [_____]{$d0} tons
+
+    What if the biomass is currently [$x1] tons?
+    [_______]{$Pop1}  by [_____]{$d1} tons
+
+c. 
+What sizes of biomass will remain stable from year to year if [$c0] tons are harvested annually? [__________]{$B}  [@AnswerFormatHelp("numbers") @]* 
+
+d. 
+If the biomass ever falls below [$y0] tons, what will happen after several years of harvesting [$h]  tons annually? [_______]{$Pop2} 
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@ image( "fig-ans-6-4-45.svg", width=>250,  
+tex_size=>700, extra_html_tags=>'alt="Rate of growth"' )  @]***
+
+b. 
+For [$x0] tons of biomass, the growth rate is above [$c0] by [$d0] tons per year. For [$x1] tons of biomass, the growth rate is below [$c0] by [$d1] tons per year. 
+
+c. 
+The rate of growth matches the harvest when the total biomass is either [$y0] or [$y1] tons.
+
+d. 
+Because the rate of harvesting exceeds the rate of growth, the biomass will diminish each year until the population is depleted.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

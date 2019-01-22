@@ -1,0 +1,131 @@
+##DESCRIPTION
+##  Algebra problem: identify linear function from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('45')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# little RANDOMNESS!
+
+$m =  sprintf("%0.3f", 2*pi );
+
+$f = Formula(" 2*pi*x ");
+
+$x[0] = random(3,4);
+$x[1] = random(5,8);
+$x[2] = random(9,12);
+$x[3] = random(13,20);
+
+foreach my $i (0..3) {
+   $temp =  $f->eval(x=>$x[$i]);
+   $y[$i] =  sprintf("%0.3f", $temp );
+
+};
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"If you plot the data, will the points lie on a straight line? Why or why not?",  
+"Yes, the slope between any two points is approximately $m.");
+$mc->extra(
+"No, the slope varies depending on which points from the table are chosen.",
+);
+$mc->makeLast("none of the above");
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"What familiar number does the slope turn out to be? (Hint: Recall a formula from geometry.)",  
+"\(2\pi\)");
+$mc1->extra(
+"\(\sqrt{40}\)",
+);
+$mc1->makeLast("none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The table shows the amount of ammonium chloride salt, in grams, that can be dissolved in 100 grams of water at different temperatures.
+    
+[@
+DataTable(
+  [
+    [" \\( r \\)", " \\( C \\)"],
+    [ "\\( $x[0] \\) ",   "\\( $y[0] \\) " ],
+    [ "\\( $x[1] \\) ",   "\\( $y[1] \\) " ],
+    [ "\\( $x[2] \\) ",   "\\( $y[2] \\) " ],
+    [ "\\( $x[3] \\) ",   "\\( $y[3] \\) " ]
+  ], 
+  caption => 'Radius and Circumference', 
+  align => '| c | c | ',
+  midrules=>1,
+ );
+@]***  
+
+
+a. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+d. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+BEGIN_PGML_SOLUTION
+
+Computing the slope, i.e., the rate of change, between any pair of points from the table gives the same value of [$m], so the points lie on a straight line of slope [$m]. 
+
+A formula from geometry about the circumference of a circle is [` C = 2 \pi r`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

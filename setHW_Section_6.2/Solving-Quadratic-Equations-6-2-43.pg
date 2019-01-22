@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Algebra problem: quadratic formula; distance to horizon
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('4/1/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.2')
+## Problem1('41')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(l=>"Real", w=>"Real");
+
+Context()->{format}{number} = "%.1f#";  
+
+$h0 = 1483;
+$hm = $h0 /5280; #convert feet to miles
+$r = 3960;
+$d = Compute("sqrt( ($r + $hm)**2 - ($r)**2 )");
+
+$d1 = 100;
+$r1 = sqrt( ($d1)**2 + ($r)**2 );
+$h1 = Compute("$r1 - $r");
+
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+When you look down from a height, say a tall building or a mountain peak, your line of sight is tangent to the Earth at the horizon, as shown in the figure.
+  
+>>[@image( "fig-6-2-43.png", width=>154, height=>162,  
+tex_size=>700, extra_html_tags=>'alt="Tangent to earth"' ) @]*<<
+
+a. 
+Suppose you are standing on top of the Petronas Tower in Kuala Lumpur, [$h0] feet high. How far can you see on a clear day? (You will need to use the Pythagorean theorem and the fact that the radius of the Earth is [$r] miles. Do not forget to convert the height of the Petronas Tower to miles.) Round your answer to the nearest tenth mile.  
+[_____]{$d->cmp(  tolType => 'absolute',  tolerance => .05,)} mi.
+b. 
+How tall a building should you stand on in order to see [$d1] miles? [____]{$h1->cmp(  tolType => 'absolute',  tolerance => .05,)} mi.
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[$h0] feet is approximately [$hm] mi. So the distance you can see will be  
+[` \sqrt{ ([$r] + [$hm])^2 - [$r]^2 } \approx [$d] `]  
+b. 
+The distance from the center of the earth to the top of the tower would be  
+[` \sqrt{ [$d1]^2 + [$r]^2 } \approx [$r1] `], from which we subtract [$r], the radius of the earth.
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

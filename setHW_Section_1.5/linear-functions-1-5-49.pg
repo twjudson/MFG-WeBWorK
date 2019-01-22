@@ -1,0 +1,131 @@
+##DESCRIPTION
+##  Algebra problem: equation of line from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'point-slope', 'exponent', 'slope-intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('2/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.5')
+## Problem1('49')
+
+########################################################################
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+    "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context("Fraction");
+
+$sign = random(-1,1,2);
+$denom = random(2,5);
+
+$delx = 1/$denom;
+$dely = 1/$denom;
+#$xintercept = $xi*$delx;
+$yintercept = 0;
+$m = Compute("  $sign/$denom  ");
+
+Context("Numeric");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+$f = Formula("  $m *x ");
+
+if ( $sign > 0 ) {
+    $xmin = -$denom+1-$delx;
+    $xmax = $denom + $delx;
+} else {
+    $xmin = -($denom + $delx);
+    $xmax = $denom - 1 + $delx;
+};
+
+$ymin = -(1+$dely);
+$ymax = 1+$dely;
+$xgrid = (2*$denom -1) * $denom+2;
+$ygrid = 2*$denom+2;
+$xpix = 120*(2*$denom-1);
+$ypix = 240;
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label (0.96*$xmax, 0.05,"x",'blue','right','bottom'));
+$gr -> lb(new Label (.2, 0.96*$ymax,"y",'blue','left','top'));
+foreach my $i (1..5) {
+$xscale = $i;
+$yscale = $i;
+$gr -> lb(new Label ( $xscale, -.4*$dely, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.8*$delx,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale, -.4*$dely, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.8*$delx,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:3");
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+>>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*<<
+
+a. 
+Estimate the slope and vertical intercept of each line. (Hint: To calculate the slope, find two points on the graph that lie on the intersection of grid lines.)
+
+    [`m=`] [___]{$m}
+
+    [`b=`] [___]{$yintercept}
+
+b. 
+Using your estimates from (a), write an equation for the line.
+
+    [`y=`] [__________]{$f}
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The only intercepts is the origin. We can choose any other point [`(x_1,y_1)`] to compute a slope: [` m= \frac{y_1 - 0}{x_1 - 0} = [$m]`].
+
+b. 
+In slope-intercept form, [`y=0+[$f]`];
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

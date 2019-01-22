@@ -1,0 +1,104 @@
+##DESCRIPTION
+##  Algebra problem: Exponential functions--table to identify linear, power, exponential
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.2')
+## Problem1('63')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGgraphmacros.pl",
+"PGunion.pl",
+"PGML.pl",
+"niceTables.pl",
+"PGchoicemacros.pl",
+"contextFraction.pl",
+#"AnswerFormatHelp.pl",
+);
+
+
+TEXT(beginproblem());
+
+$refreshCachedImages=1;
+
+Context("Numeric");
+#Context("Fraction");
+Context()->variables->add(t=>"Real");
+$showPartialCorrectAnswers = 1;
+
+
+###########################
+#Context()->flags->set(     reduceConstants => 0 );
+
+$k = random(5,10);
+$f = Formula("$k-2^x");
+
+$xmin = -3;
+$xmax = 5;
+$ymin = -1;
+$ymax=10;
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[8,11],size=>[300,375]);
+$gr -> lb('reset'); #remove default label and tick marks
+#
+$gr -> lb(new Label (4.8,-.4,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 0.15,9.7,'y','blue','left','bottom'));
+
+foreach my $i (1..2) {
+  $gr -> lb(new Label ( 2*$i,-0.5, $i*2,'black','center','middle'));
+  $gr -> lb(new Label ( -2*$i,-0.5, -$i*2,'black','center','middle'));
+  $gr -> lb(new Label (-0.25,$i * 5-.2,$i*5,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [-4,6] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"The graph of \(y=2^x\) has been", "reflected about a horizontal axis", "shifted vertically");
+$mc->extra(
+"reflected about a vertical axis",
+"shifted horizontally",
+);
+$mc->makeLast("none of the above.");
+
+
+
+###############
+BEGIN_PGML
+
+
+>>[@image(insertGraph($gr), width=>200, height=>250, tex_size=>700)@]*<<
+a. [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***  
+b. 
+A formula is [`y=`][__________]
+
+END_PGML
+
+ANS(checkbox_cmp( $mc->correct_ans() ) );
+ANS( $f->cmp() );
+
+BEGIN_PGML_SOLUTION
+
+The graph approaches its horizontal asymptote on the left but decreases without bound on the right, so [`y=2^x`] has been reflected around the [`x`] axis and shifted vertically by [$k] units: [` y = [$k] - 2^{x}`]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();     

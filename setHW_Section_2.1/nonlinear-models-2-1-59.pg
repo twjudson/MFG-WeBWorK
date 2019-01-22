@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Some Basic Functions')
+## Date('8/6/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.1')
+## Problem1('59')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "niceTables.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$volume = random(8000,12000,1000);
+
+
+$ans = Real("sqrt($volume/(80*pi)) - 2");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+A machinist wants to make a metal section of pipe that is 80 millimeters long and has an interior volume of $volume cubic millimeters. If the pipe is 2 millimeters thick, its interior volume is given by the formula
+\[
+ V = \pi (r - 2)^2 h
+\]
+where \(h \) is the length of the pipe and \(r\) is its radius. What should the radius of the pipe be? \{ ans_rule(10) \} (Write your answer to the nearest thousandth.)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+
+ANS($ans->cmp(
+  tolType => 'absolute',
+  tolerance => .005,
+));
+
+
+
+ENDDOCUMENT();        

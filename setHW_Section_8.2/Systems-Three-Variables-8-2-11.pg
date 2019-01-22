@@ -1,0 +1,110 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>'Real', z=>'Real');
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$x0 = non_zero_random(-3,3);
+$y0 = non_zero_random(-3,3);
+$z0 = non_zero_random(-3,3);
+
+do{
+$a11 = non_zero_random(2,4);
+$a12 = non_zero_random(-3,3);
+$a13 = non_zero_random(-3,3); 
+
+$a21 = random(2,5); 
+$a22 = non_zero_random(-4,4);
+$a23 = non_zero_random(-6,6); 
+
+$a31 = random(2,6); 
+$a32 = non_zero_random(-3,3);;
+$a33 = non_zero_random(-3,3);;
+} until ($a11*$a22*$a33 +  $a12*$a23*$a31+$a13*$a21*$a32 
+- $a31*$a22*$a13 - $a32*$a23*$a11 - $a33*$a21*$a12 != 0);
+
+$f1 = Formula(" $a11*x + $a12*y + $a13*z")->reduce;
+$f2 = Formula(" $a21*x + $a22*y + $a23*z")->reduce;
+$f3 = Formula(" $a31*x + $a32*y + $a33*z")->reduce;
+
+$k1 = $f1->eval(x=>$x0, y=>$y0, z=>$z0);
+$k2 = $f2->eval(x=>$x0, y=>$y0, z=>$z0);
+$k3 = $f3->eval(x=>$x0, y=>$y0, z=>$z0);
+
+Context("Point");
+$P = Point("($x0, $y0, $z0)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Use Gaussian reduction to solve the system of equations.
+
+>>[``\begin{align}
+ [$f1] &= [$k1] \\
+ [$f2] &= [$k2] \\
+ [$f3] &= [$k3]
+\end{align}``]<<
+
+
+Solution: [________]{$P}  [@AnswerFormatHelp("points") @]*
+
+
+
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`[$P]`]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

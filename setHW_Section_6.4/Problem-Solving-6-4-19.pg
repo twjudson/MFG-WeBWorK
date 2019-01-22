@@ -1,0 +1,134 @@
+##DESCRIPTION
+##  Algebra problem: parabolas, vertex form of equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('10/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do {
+$h = non_zero_random(-8,8);
+$k = non_zero_random(-8,8);}
+until ($h != $k);
+$fa = Formula("(x-$h)^2")->reduce;
+$fb = Formula("1/2*(x-$h)^2")->reduce;
+$fc = Formula("$k+$fb ")->reduce;
+$fbdisplay = "\dfrac{1}{2}(x-$h)^2";
+$fcdisplay = "$k +\dfrac{1}{2}(x-$h)^2";
+Context("Point");
+$ansa = Compute("($h,0)");
+$ansb = Compute("($h,0)");
+$ansc = Compute("($h,$k)");
+
+
+$xmin =min( $h-6,-2);
+$ymin = -2;
+$xmax=max($h+6,2);
+$ymax=10;
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/2;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .5,0.9*$ymax,'y','blue','middle','center'));
+
+foreach my $i (1..6) {
+$xscale =2*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( -$xscale,-0.3, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.3,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,-0.3, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.3,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$fa for x in [$xmin, $xmax] using color:red and weight:2",
+"$fb for x in [$xmin, $xmax] using color:blue and weight:2",
+"$fc for x in [$xmin, $xmax] using color:green and weight:3",
+);
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($h,0,'red') );
+$gr->stamps( closed_circle($h,$k,'black') );
+$k1 = $k+.75;
+$gr -> lb(new Label ( $h,$k1, "($h,$k)",'black','center','below'));
+$k2 = -.75;
+$gr -> lb(new Label ( $h,$k2, "($h,0)",'black','center','below'));
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use transformations to graph each parabola. What is the vertex of each graph?
+
+a. 
+[`y=[$fa]`] has vertex at [______]{$ansa}  [@AnswerFormatHelp("points") @]*
+
+b. 
+[`y=[$fbdisplay]`] has vertex at [______]{$ansb}  [@AnswerFormatHelp("points") @]*
+
+c. 
+[`y=[$fcdisplay]`] has vertex at [______]{$ansc}  [@AnswerFormatHelp("points") @]*
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The parabola with equation [` y = a(x-h)^2 + k`] has its vertex as [`(h,k)`].
+
+[@ image(insertGraph($gr), width=>250, height=>250, tex_size=>800) @]***
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

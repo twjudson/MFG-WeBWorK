@@ -1,0 +1,133 @@
+##DESCRIPTION
+##  Algebra problem: linear equation; intercepts 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear equation', 'line','intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('13')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGgraphmacros.pl",
+"PGchoicemacros.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->are(x=>"Real", y=>"Real");
+
+$a=1;
+do {$b = non_zero_random(-4,4);
+  $yi = non_zero_random(-2,2);
+  $c = $b*$yi;} 
+  until (abs($c) < 10 && abs($b) > 1);
+
+$xi = $c/$a;
+
+$F = Formula(" $a x + $b  y ")->reduce;
+$f = Formula("($c - $a*x)/$b")->reduce;
+
+$xmin = -10;
+$ymin = -10;
+$xmax=10;
+$ymax=10;
+$xgrid = 20;
+$ygrid = 20;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.95*$xmax, .5,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .7,0.9*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..4) {
+$yscale =2*$i;
+$gr -> lb(new Label (-.4,-$yscale,-$yscale,'black','center','middle'));
+$gr -> lb(new Label (-.4,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $yscale,-.4, $yscale,'black','center','middle'));
+$gr -> lb(new Label (-$yscale,-.4,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+Context("Point");
+$yint = Point(0,$yi);
+$xint = Point($xi,0);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+
+>>[``[$F] = [$c]``]<<
+
+a. 
+Find the intercepts of the graph.
+
+    The [`x`]-intercept is [_______]{$xint}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yint}.  [@AnswerFormatHelp("points") @]*
+
+
+b. 
+Graph the equation by the intercept method.
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The [`x`]-intercept occurs when [`y=0`]: [`[$xint]`]; 
+    The [`y`]-intercept occurs when [`x=0`]: [`[$yint]`]
+    
+ 
+b. 
+   [@ image(insertGraph($gr), width=>280, height=>280, tex_size=>700) @]*
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

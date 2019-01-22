@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Algebra problem: function notation with log functions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inverse function', 'one-to-one')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(Logarithmic Functions)
+## Date('9/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.2')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+);
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->flags->set(useBaseTenLog=>1); 
+
+$a = random(-11,-2); # was -7;
+$b = random(2,8); #was 6;
+$p = random(20,40); #was 28;
+
+
+$y1 = Compute("log10($p)");
+
+#Context()->strings->add("DNE" => {}, "NONE" => {});
+$y0 =  Compute("dne");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+#Context()->texStrings;
+BEGIN_PGML
+
+>> <<
+
+[` f(x) = \log_{10} x`]. Evaluate, accurate to at least three decimal places. (Enter "DNE" if the expression is undefined.)
+
+a. 
+[` f([$a] )  = `] [______]{$y0}  
+
+b. 
+[` [$b] f([$p]) = `] [______]{$y1->cmp(  tolType => 'absolute',  tolerance => 0.0005,)} 
+
+
+
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+
+
+a. 
+The logarithm of a negative number is not defined, so [` \log_{10}([$a] ) `] does not exist.
+
+b. 
+[` [$b] f([$p])    \approx [$y1]`] 
+
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

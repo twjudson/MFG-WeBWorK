@@ -1,0 +1,60 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--approximate logarithms
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Solving exponential equations)
+## Date('2/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.3')
+## Problem1('27')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros("PG.pl",
+           "PGbasicmacros.pl",
+           "PGchoicemacros.pl",
+           "PGanswermacros.pl",
+           "PGauxiliaryFunctions.pl",
+           "extraAnswerEvaluators.pl",
+"PGML.pl",
+);
+
+#Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->{format}{number} = "%.2f#"; 
+
+$b = 10 ;
+
+$power = random(2,9); #could take common logs of other numbers
+$m = floor(log10($power)); #with current values of $power, this is always 0
+$n = $m + 1;
+
+$y = Formula("log10($power)")->reduce;
+
+BEGIN_PGML
+
+a. 
+By computing successive powers of the base, trap the logarithm between two consecutive integers:  
+[__]{$m}[` \lt \log_{10} [$power] \lt `][__]{$n}  
+b. 
+Use a graph to approximate the logarithm to the nearest hundredth. (_Hint_: Use the conversion equations to rewrite [`x = \log_b y`] as an appropriate exponential function.) 
+[` \log_{10} [$power] \approx`][_____]{$y->cmp(  tolType => 'absolute',  tolerance => .005,)}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We notice that [` 10^{[$m]} \lt [$power] \lt 10^{[$n]} `], so [` [$m] \lt  \log_{10} [$power] \lt [$n] `].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

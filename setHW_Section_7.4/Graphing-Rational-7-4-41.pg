@@ -1,0 +1,109 @@
+##DESCRIPTION
+##  Algebra problem: rational functions: flight travel time in wind
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote', 'polynomial division')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('41')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real",w=>"Real");
+#Context()->noreduce('(-x)-y','(-x)+y', '(-x)/y'); #so that -x-y does not become -(x+y)
+
+$d = 900; 
+$v0 = random(200,500,100); #was  400;
+$oneway = $d;
+$vs = $v0**2;
+$twod = 2*$d;
+
+$dt = Formula(" $oneway / ($v0+w)")->reduce;
+$ut = Formula(" $oneway / ($v0-w)")->reduce;
+$rt = Formula(" $twod*w / ($vs -w^2)")->reduce;
+
+$popup = PopUp(["select", "Orville", "Wilbur"], "Orville");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+
+Two pilots for the Flying Express parcel service receive packages simultaneously. Orville leaves Boston for Chicago at the same time Wilbur leaves Chicago for Boston. Each selects an airspeed of [$v0] miles per hour for the [$d]-mile trip. The prevailing winds blow from east to west.
+
+a. 
+Express Orville's flying time as a function of the windspeed, [`w`].
+
+    Orville's flying time: [_________]{$dt} 
+
+b. 
+Write a function for Wilbur's flying time.
+
+    Wilbur's flying time: [_________]{$ut} 
+
+c. 
+Who reaches his destination first? [_______]{$popup}
+
+    By how much time (in terms of windspeed)? [_______________]{$rt} hours
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The distance Orvill flies is [$oneway], and the wind assists his progress to increase his speed to [` [$v0]+w`], so [`\displaystyle{ \frac{\text{distance}}{\text{speed}} = [$dt] }`]
+
+b. 
+The distance Wilbur flies is also [$oneway], and the wind slows his progress to the speed to [` [$v0]-w`], so [`\displaystyle{ \frac{\text{distance}}{\text{speed}} = [$ut] }`]
+
+c. 
+Orville is flying with the wind and will arrive first, by a time difference of [``[$ut]-[$dt] = [$rt]``].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

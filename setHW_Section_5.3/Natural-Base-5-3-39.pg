@@ -1,0 +1,138 @@
+##DESCRIPTION
+##  Algebra problem: tables of exponential function
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('10/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('21')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"niceTables.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$b = random(2,3);
+
+$delx = ln(10);
+
+$f = Formula("ln(x)");
+
+foreach my $i (0..3) {
+$x[$i] = $b**($i +1);
+$y[$i] = $f->eval(x=>$x[$i]);
+$k[$i] = $i+1;
+};
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Dividing  \(\ln n\) by \( \ln $b \) gives the value \(k\) which satisfies",  
+"\(n = $b^k\)"
+);
+
+$mc->extra(
+"\(k = n^$b\)",
+"\($b = n^k\)"
+);
+$mc->makeLast("none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+a. 
+Fill in the table, rounding your answers to three decimal places.
+
+    [@
+DataTable(
+  [
+    [ '\(x\)', [$x[0]],[$x[1]], [$x[2]], [$x[3]]  ]  ,
+    [ '\( \ln x\)', ans_rule(4) , ans_rule(4), ans_rule(4), ans_rule(4)  ]
+  ], 
+  caption => 'The natural log', 
+  align => '| c | c | c | c | c  |  ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+Divide each natural logarithm in your table by [`\ln [$b]`].
+
+        [@
+DataTable(
+  [
+    [ '\(x\)', [$x[0]],[$x[1]], [$x[2]], [$x[3]]  ]  ,
+    [ "\\( \\dfrac{\\ln x}{\\ln $b }\\)", ans_rule(4) , ans_rule(4), ans_rule(4), ans_rule(4)  ]
+  ], 
+  caption => 'The natural log', 
+  align => '| c | c | c | c | c  |  ',
+  midrules=>1,
+ );
+@]***
+
+    Explain the result.
+
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+Context()->normalStrings;
+
+foreach my $i ( 0..3) {
+  ANS( Compute("$y[$i]")->cmp(  tolType => 'absolute',  tolerance => .0005, ) );
+};
+foreach my $i ( 0..3) {
+  ANS( Compute("$k[$i]")->cmp(  ));
+};
+ANS( radio_cmp( $mc->correct_ans() ) );
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+
+Evaluate [`[$f]`] for each [`x`] in the table.
+
+b. 
+Each quotient [` \dfrac{\ln n}{\ln [$b]}`] corresponds to the exponent [`k`], where [`n = [$b]^k`]. Because [` \ln n = \ln [$b]^k = k\cdot \ln [$b]`], [`k = \dfrac{\ln n}{\ln [$b]}`]. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

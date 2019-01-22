@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--linear vs exponential decay
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/7/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('7')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$b = random(18000, 36000, 2000);           #initial value
+$k = random(15, 25, 5);                             #percent decay
+$m = $b * $k / 100;                                    #slope for linear
+$L = Formula(" $b - $m t ");
+$t = random(3,5);
+$V_linear = $L->eval(t=>$t);
+
+$A = 1 - $k/100;                                          #decay factor
+$E = Formula(" $b $A**t ");
+Context()->{format}{number} = "%.2f#"; 
+$V_exp = $E->eval(t=>$t);
+
+
+##################
+
+
+BEGIN_PGML
+
+Francine's truck was worth $[$b ] when she bought it.  
+a. 
+Write a formula for the value of the truck if it depreciates by $[$m] per year.  
+[` V(t)=  `][____________]{$L} (Use [`t`] as the variable, but do not enter any comma.)  
+What is the value of the truck after [$t] years?  $[________]{$V_linear}
+b. 
+Write a formula for the value of the truck if it depreciates by [$k]% per year. 
+[` V(t)=  `][____________]{$E} (Use [`t`] as the variable, but do not enter any comma.)  
+What is the value of the truck after [$t] years?  $[________]{$V_exp->cmp(  tolType => 'absolute',  tolerance => .005,)}
+
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+ 
+a. With a constant rate of decrease, the truck's value is decreasing linearly. The slope is [`-[$m]`],   or [`m= -[$m]`]. The vertical intercept [` b `] is the initial value at [`t=0  `], namely [`b=[$b]`].  We evaluate this linear function at [` t=[$t] `].   
+
+b. 
+With a constant percent decrease, the value is decreasing exponentially. The decay factor is [$A] . The vertical intercept [` P_0 `] is the population at [`t=0  `], namely [`P_0=[$b]`]. We evaluate this exponential function at [` t=[$t] `].
+
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

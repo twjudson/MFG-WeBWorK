@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--linear vs exponential growth
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('5')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(t=>"Real");
+
+$p = random(8, 18, 2);
+$k = random(3,7, 2) /2;
+$b = 100*$p;
+$m = 100*$k;
+$L = Formula(" $b + $m t ");
+$t = 3;
+$P_linear = $L->eval(t=>$t);
+
+$E = Formula(" $b $k**t ");
+$P_exp = $E->eval(t=>$t);
+
+
+##################
+
+
+BEGIN_PGML
+
+
+The population of Summerville is currently [$p] hundred people.  
+a. 
+Write a formula for the population if it grows at a constant rate of [$k] hundred people per year.  
+[` P(t)=  `][____________]{$L} (Use [`t`] as the variable.)  
+What is the population after [$t] years?  [________]{$P_linear}
+b. 
+Write a formula for the population if it has a constant growth factor of [$k] per year.  
+[` P(t)=  `][____________]{$E} (Use [`t`] as the variable.)  
+What is the population after [$t] years?  [________]{$P_exp}
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+ 
+a. With a constant rate of growth, the population is growing linearly. The slope is [$k] hundred or [`m=[$m]`]. The vertical intercept [` b `] is the population at [`t=0  `], namely [$p] hundred or [`b=[$b]`].  We evaluate this linear function at [` t=[$t] `].   
+
+b. 
+With a constant growth factor, the population is growing exponentially. The growth factor is [$k] . The vertical intercept [` P_0 `] is the population at [`t=0  `], namely [$p] hundred or [`P_0=[$b]`]. We evaluate this exponential function at [` t=[$t] `].
+
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

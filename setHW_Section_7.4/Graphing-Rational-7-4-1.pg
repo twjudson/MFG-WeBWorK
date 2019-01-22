@@ -1,0 +1,194 @@
+##DESCRIPTION
+##  Algebra problem: flying time for constant airspeed as function of headwind speed
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"parserImplicitEquation.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(v=>"Real", t=>"Real");
+#Context()->variables->add(v => "Real");
+#Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+
+$v0 =50;
+$d0 = 150;
+$horiz =0;
+ 
+$f = Formula("  $d0 / ($v0 - v) ");
+foreach my $i (0..9) {
+$x[$i] = 5*$i;
+$t[$i] = $f->eval(v=>$x[$i]);
+};
+$x[10] = 50;
+
+$xmin = -5;
+$ymin = -2;
+$xmax=50;
+$ymax= 20;
+$xgrid = ($xmax - $xmin)/5;
+$ygrid = ($ymax - $ymin)/1;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[250,250]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.05,'v','blue','left','bottom'));
+$gr -> lb(new Label ( 1,0.97*$ymax,'t','blue','left','top'));
+
+foreach my $i (1..10) {
+ $xscale =10*$i;
+ $yscale =5*$i;
+  $gr -> lb(new Label ( $xscale,-.9, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-0.9,$yscale,$yscale,'black','right','middle'));
+}
+
+add_functions( $gr,
+               "$f for v in [-6, 49] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+@choices = ("?","DNE", "NONE", "No solution");
+$popup = PopUp([@choices], $choices[0]);  
+Context($popup->context);  # use the pop-up's context (already has the choices as strings);
+
+$pop2 = PopUp(["select", 
+"The travel time increases as the headwind speed increases.", 
+"The travel time decreases as the headwind speed increases.", 
+"The travel time is unaffected by headwind speed increases.", 
+], 
+"The travel time increases as the headwind speed increases.");
+
+
+$pop3 = PopUp(["select", 
+"The duck would never reach its destination if the headwind speed matched the airspeed.", 
+"The duck's speed increases at the end of its journey.", 
+"The duck stops at its destination.", 
+], 
+"The duck would never reach its destination if the headwind speed matched the airspeed.");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+The eider duck, one of the world's fastest flying birds, can exceed an airspeed of 65 miles per hour. A flock of eider ducks is migrating south at an average airspeed of [$v0] miles per hour against a moderate headwind. Their next feeding grounds are [$d0] miles away.
+
+a. 
+Express the duck's travel time, [`t`], as a function of windspeed, [`v`].
+
+    [`t=`][________]{$f}
+
+b. 
+Complete the table showing the travel time for various windspeeds.
+
+    [@
+DataTable(
+  [
+    [ '\(v\)', [$x[0]], [$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]], [$x[7]] ,[$x[8]], [$x[9]], [$x[10]] ],
+    [ '\( t \)', ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3), ans_rule(3)  ]
+  ], 
+  caption => 'Travel time for different wind speeds', 
+  align => '| r | c | c | c | c  |c | c | c  |c  |c | c | c  |',
+  midrules=>1,
+ );
+@]***
+
+    What happens to the travel time as the headwind increases?[@ $pop2->menu() @]*
+
+c. 
+Use the table to choose an appropriate window and graph your function [`t(v)`]. 
+
+d. 
+Give the equations of any horizontal or vertical asymptotes. 
+
+    Equation of horizontal asymptotes: [`t=`][_____]
+
+    Equation of vertical asymptotes:  [`v =`][_____]
+
+    What does the vertical asymptote signify in the context of the problem?[@ $pop3->menu() @]*
+
+END_PGML
+  
+Context()->normalStrings;
+
+foreach my $i ( 0..9) {
+  ANS( $t[$i]->cmp(  tolType => 'absolute',  tolerance => .05, ) );
+};
+ANS(OneOf(@choices[1..3])->cmp());
+ANS($pop2->cmp());
+ANS(Compute("$horiz")->cmp());
+ANS(Compute("$v0")->cmp());
+ANS($pop3->cmp());
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Because the duck is flying into the wind, its speed is reduced by the speed of the wind. For a duck moving at constant speed, the distance traveled is the product of speed and time, so the time required is [` \displaystyle{\frac{\text{distance}}{\text{speed}} =[$f]}`].
+
+b. 
+[@
+DataTable(
+  [
+    [ '\(v\)', [$x[0]], [$x[1]], [$x[2]], [$x[3]] ,[$x[4]], [$x[5]], [$x[6]], [$x[7]] ,[$x[8]], [$x[9]], [$x[10]] ],
+    [ '\( t \)', [$t[0]], [$t[1]], [$t[2]], [$t[3]] ,[$t[4]], [$t[5]], [$t[6]], [$t[7]] ,[$t[8]], [$t[9]],'DNE' ]
+  ], 
+  caption => 'Travel time for different wind speeds', 
+  align => '| r | c | c | c | c  |c | c | c  |c  |c | c | c  |',
+  midrules=>1,
+ );
+@]***
+
+c. 
+[@ image( insertGraph($gr), width=>250, height=>250, ) @]***  
+
+d. 
+The horizontal axis is an asymptote, with equation [`t=0`]. There is a vertical asymptote at [`v=50`], corresponding to the fact that the duck would never reach its destination if the headwind speed matched the airspeed.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

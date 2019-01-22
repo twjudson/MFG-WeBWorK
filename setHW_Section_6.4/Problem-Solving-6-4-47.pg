@@ -1,0 +1,141 @@
+##DESCRIPTION
+##  Algebra problem: wildlife management and sustainable yields
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', "system")
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('10/30/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+  "parserPopUp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$x0 =1200;
+$x1=900;
+$PopK = PopUp(["select", "N", "K", "They are equal."], "K");
+$Pop0 = PopUp(["select", "Increase", "Decrease", "Stay the same"], "Decrease");
+$Pop1 = PopUp(["select", "Increase", "Decrease", "Stay the same"], "Increase");
+$d0 = 48;
+$d1 = 18;
+$y0 = 1000;
+$B = List("$y0");
+$Pop2 = PopUp(["select", "The fish population will decrease each year until it is completely depleted.", 
+"The fish population will increase each year until it reaches $y1 tons.", 
+"The fish population will fluctuate up and down."], 
+"The fish population will decrease each year until it is completely depleted.");
+$f1 = Formula("0.3*x")->reduce;
+$x2 = 500;
+
+Context("Inequalities");
+$increase = Compute("0< x < $y0 ");
+$decrease = Compute("x > $y0 ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+This problem deals with wildlife management and sustainable yield.
+
+The annual increase, [`N`], in a bear population of size [`x`] is given by
+
+>>[``N = 0.0002x(2000 - x)``]<<
+
+if the bears are not hunted. The number of bears killed each year by hunters is related to the bear population by the equation [`K = 0.2x`]. (Notice that in this model, hunting is adjusted to the size of the bear population.)
+
+a. 
+Sketch the graphs of [`N`] and [`K`] on the same axes.
+
+b. 
+When the bear population is [$x0], which is greater, [`N`] or [`K`]?  [_______]{$PopK}  Will the population increase or decrease in the next year?  [_______]{$Pop0} By how many bears?  [_____]{$d0} 
+
+c. 
+When the bear population is [$x1], will the population increase or decrease in the next year? [_______]{$Pop1} By how many bears?  [_____]{$d1}
+
+d. 
+What sizes of bear population will remain stable after hunting? [__________]{$B}  [@AnswerFormatHelp("numbers") @]* 
+
+e. 
+What sizes of bear populations will increase despite hunting? [________]{$increase}  [@AnswerFormatHelp("inequalities") @]* 
+
+    What sizes of populations will decrease? [_______]{$decrease} [@AnswerFormatHelp("inequalities") @]* 
+
+f. 
+Toward what size will the population tend over time?  [__________]{$B} 
+
+g. 
+Suppose hunting limits are raised so that [`K = [$f1]`]. Toward what size will the population tend over time?  [__________]{$x2} 
+
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+[@ image( "fig-ans-6-4-47.svg", width=>275,  
+tex_size=>700, extra_html_tags=>'alt="Rate of growth"' )  @]***
+
+b. 
+For a bear population of [$x0], the growth rate [`N`] is above [`K`] by [$d0] bears in a year. 
+
+c. 
+With a bear population of [$x1], the growth rate  [`N`] is below [`K`] by [$d1] bears per year
+
+d. 
+The bear rate of growth matches the rate killed by hunting when the population is  [$y0].
+
+e. 
+The bear population increases when its rate of growth exceeds the rate killed by hunting when the population is between 0 and  [$y0]. The bear decreases when the population is above  [$y0]. 
+
+f. 
+From parts (d) and (e), the bear population will either be stable at [$y0] or change towards that value (unless the population is zero).
+
+g. 
+With a hunting rate of [`K = [$f1]`], the growth and death by hunting rates match at a population of [$x2], and the population will tend towards [$x2] (unless the population is 0).
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

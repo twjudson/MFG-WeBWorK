@@ -1,0 +1,179 @@
+##DESCRIPTION
+##  Algebra problem: round trip flight in wind
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('57')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(s=>"Real",z=>"Real");
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$t0 = 3;
+$d = 144;
+$w = 20;
+$w2 = $w**2;
+$r0 = 100;
+$b = 2*$d/$t0;
+$r1 = -$w2/$r0;
+$wp = $w + 1;
+$f = Formula(" $d/(s-$w)");
+$g = Formula(" $d/(s+$w)")->reduce;
+$round = Formula("$f + $g")->with(limits=>[$wp, 200]);
+
+$ans =  List("$r0");
+
+$xmin = 20;
+$xmax= 150;
+$ymin = -2;
+$ymax=10;
+$xgrid = ($xmax - $xmin)/10;
+$ygrid = ($ymax - $ymin)/1;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.5,'s','blue','left','bottom'));
+$gr -> lb(new Label (1.2,0.94*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..8) {
+$xscale =20*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( $xscale+2,-.3, $xscale,'black','center','middle'));
+$gr -> lb(new Label (24,$yscale,$yscale,'black','center','middle'));
+}
+
+$end = $xmax+1;
+add_functions( $gr,
+"$round for s in [$wp, $end] using color:blue and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($r0,$t0,'red') );
+$x1 = $r0+1; $y1 = $t0+.5;
+$gr -> lb(new Label ($x1, $y1,"($r0, $t0)",'black','left','middle'));
+
+$pop = PopUp(["select", 
+"If the airspeed is $r0 mph, then the airplane will complete the round trip in $t0 hours.", 
+"The first coordinate is the maximum speed of the plane.", 
+"The second coordinate is the speed required to complete the trip in $t0 hours"], 
+"If the airspeed is $r0 mph, then the airplane will complete the round trip in $t0 hours.");
+
+ Context("Point");
+ $P = Point($r0, $t0);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+A chartered sightseeing flight over the Grand Canyon is scheduled to return to its departure point in [$t0] hours. The pilot would like to cover a distance of [$d] miles before turning around, and he hears on the Weather Service that there will be a headwind of [$w] miles per hour on the outward journey.
+
+a. 
+Express the time it takes for the outward journey as a function of the airspeed, [`s`], of the plane.
+
+    [`t_\text{out}=`][__________]{$f} hours
+
+b. 
+Express the time it takes for the return journey as a function of the speed, [`s`], of the plane
+
+    [`t_\text{return}`]=[__________]{$g} hours
+
+c. 
+Graph the sum of the two functions and find the point on the graph with [`y`]-coordinate [$t0].
+
+    The point is [______]{$P}  [@AnswerFormatHelp("points") @]*
+
+    Interpret the coordinates of the point in the context of the problem.  [_______]{$pop}
+
+d. 
+The pilot would like to know what airspeed to maintain in order to complete the tour in [$t0] hours. Write an equation to describe this situation.
+
+    [`` [$t0]=``][_________________]{$round}
+
+e. 
+Solve your equation to find the appropriate airspeed.
+
+    [`s=`][____]{$r0} mph
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The outward trip is against the wind, so the speed relative to the ground is [`s-[$w]`], and the time required is [`t_\text{out} = \dfrac{[$d]}{s-[$w]}`].
+
+b. 
+The return trip is with the wind, so the ground speed is [`s+[$w]`], and the time required is [`t_\text{return} = \dfrac{[$d]}{s+[$w]}`].
+
+c. 
+[@image(insertGraph($gr), width=>240, height=>180, tex_size=>700)@]***
+
+    The point on the curve with [`y`]-coordinate [$t0] is [`([$r0], [$t0])`]; If the airspeed is [$r0] mph, then the airplane will complete the round trip in [$t0] hours.
+
+d. 
+We set the total time to [$t0]: [``[$t0] = [$round] ``]
+
+e. 
+We solve the equation.
+
+    [``\begin{aligned}
+[$t0] &= [$round] \\
+[$t0](s-[$w])(s+[$w]) &= [$d](s+[$w]) + [$d](s - [$w])  \\
+[$t0] (s^2 - [$w2]) &= [$d](2s) \\
+s^2 - [$b] s - [$w2] &= 0\\
+(s- [$r0])(s-[$r]1) &= 0  \\
+s= [$r0] \qquad \text{ or } \qquad s &= [$r1]
+\end{aligned}``]
+
+    We discard the extraneous negative solution. 
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

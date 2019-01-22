@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: logarithmic scale: pH to [H+]
+##ENDDESCRIPTION
+      
+## DBsection(Logarithmic Scales)
+## Date('10/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.4')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#Context()->variables->are(R=>"Real");
+Context()->flags->set(useBaseTenLog=>1);
+ 
+
+$ans = Compute("10**(-(1.9))");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use the appropriate formula for logarithmic models.
+
+The pH of lime juice is 1.9. Calculate its hydrogen ion concentration.
+
+    Answer: [___________]{$ans->cmp(  tolType => 'absolute',  tolerance => .05,)}
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+[`\text{pH}= -\log_{10} \left[ H^{+}\right]`], where [`\left[ H^{+}\right]`] denotes the concentration of hydrogen ions. Solving for [`\left[ H^{+}\right]`],  [`\left[ H^{+}\right] =10^{-\text{pH}} =10^{-1.9} \approx [$ans]`]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

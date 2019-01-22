@@ -1,0 +1,118 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model: rectangle of constant perimeter
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/18/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(t=>"Real", y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$p0 = random(40, 120, 20); #was 60;
+$sp = $p0/2;
+$w = Formula("$sp - x");
+$f = Formula("x*$w");
+
+do {$a = random(1, floor($p0/2) - 1);
+$b = $p0 /2 - $a;
+$A = $a*$b;
+$a1 = random(1, floor($p0/2) - 1);
+$b1 = $p0 /2 - $a1;
+$A1 = $a1*$b1;}
+until ($a != $a1 and $a != $b1);
+
+$multians = MultiAnswer($a, $b, $A,$a1, $b1, $A1)->with(
+  singleResult => 1,
+  checker => sub {
+      my ( $correct, $student, $answerHash ) = @_;
+      my @s = @{$student};
+      $s0 = Compute("$s[0]"); 
+      $s1 = Compute("$s[1]");
+      $sA = Compute("$s[2]");
+      $s00 = Compute("$s[3]"); 
+      $s11 = Compute("$s[4]");
+      $sA1 = Compute("$s[5]");
+      return ($p0 = 2**($s0 + $s1) and $sA == $s0*$s1 and $p0 = 2**($s00 + $s11) and $sA1 == $s00*$s11 and $s0 > 0 and $s1 > 0 and $s00 > 0 and $s11 > 0);
+  }
+);
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+a. 
+Give the dimensions of two different rectangles with perimeter [$p0] meters. Compute the areas of the two rectangles.  
+First rectangle: [@$multians->ans_rule(3)@]*** m by [@$multians->ans_rule(3)@]*** m, with area [@$multians->ans_rule(3)@]*** sq m  
+Second rectangle: [@$multians->ans_rule(3)@]*** m by [@$multians->ans_rule(3)@]*** m, with area [@$multians->ans_rule(3)@]*** sq m  
+b. 
+A rectangle has a perimeter of [$p0]  meters. If the length of the rectangle is [`x`] meters, write an expression for its width.  
+Width: [______]
+c. 
+Write an expression for the area of the rectangle.  
+Area: [______]
+
+ 
+
+END_PGML
+
+Context()->normalStrings;
+
+ANS( $multians->cmp() );
+ANS( $w ->cmp() );
+ANS( $f ->cmp() );
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Any positive value [`x`] between 0 and [`[$p0]/2 = [$sp]`] can be one dimension, and the other will be [`[$sp] - x`].  
+b. 
+See part (a).  
+c. 
+The area is the product of length and width: [`[$f]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,102 @@
+##DESCRIPTION
+##  Algebra problem: identify linear function from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "AnswerFormatHelp.pl",
+   "PGchoicemacros.pl",
+  "parserNumberWithUnits.pl",
+  "parserFormulaWithUnits.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$m =  NumberWithUnits("1500 m / s" );
+
+$f = Formula(" 1500/2 * x  ");
+$k = random(2.5,4.5,0.5);
+
+$x = NumberWithUnits("$k s");
+$n = $f->eval(x=>$k);
+$y =   NumberWithUnits("$n m");
+
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Write the speed of sound as a ratio.",  
+"\(\frac{1500 \text{ meters}}{1\text{ second}} \)");
+$mc->extra(
+"\(\frac{1500 \text{ seconds}}{1\text{ meter}}\) ",
+);
+$mc->makeLast("none of the above");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Geologists can measure the depth of the ocean at different points using a technique called echo-sounding. Scientists on board a ship send a pulse of sound toward the ocean floor and measure the time interval until the echo returns to the ship. The speed of sound in seawater is about 
+1500 meters per second.
+
+a. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+b. 
+If the echo returns in [$k] seconds, what is the depth of the ocean at that point? [_____][@AnswerFormatHelp("units") @]*
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS($y->cmp(  tolType => 'relative',  tolerance => .001,));
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+Speed is the ratio of distance over time.
+b. 
+In the time for the echo to return, the pulse has traveled to the ocean floor and back. This means that the distance traveled in [$k] seconds is twice the distance in meters to the ocean floor. The distance to the ocean floor is [` 1500 \cdot [$k] / 2 = [$y]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

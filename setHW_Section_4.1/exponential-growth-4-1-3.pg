@@ -1,0 +1,77 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--percent decrease followed by increase
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('3')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+
+$percent = random(10, 50, 10);
+$factor = 1 - $percent/100;
+$factor2 = 1 + $percent/100;
+$factor3 = $factor * $factor2;
+$answer = $factor3 * 100;
+
+##################
+
+
+BEGIN_PGML
+
+
+The value of your stock portfolio fell [$percent]% last year, but this year it increased by [$percent]%. How does the current value of your portfolio compare to what it was two years ago?  
+It is [____]{$answer}% of what it was two years ago.
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+ 
+a. An decrease of [$percent]% is equivalent to multiplication by a factor of [$factor], and  an increase of [$percent]% is equivalent to multiplication by a factor of [$factor2], So we multiply the value of the portfolio by [` [$factor]\times [$factor2] = [$factor3] `], which represents [$answer]%.    
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

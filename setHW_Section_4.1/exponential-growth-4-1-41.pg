@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--city population growth
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('41')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(b=>"Real", t=>"Real");
+
+$year0 = 2000;
+$P0 = 1545387;
+$f = Formula("$P0 * b^t");
+
+$year1 = 2004;
+$P1 = 1871950;
+$T = $year1 - $year0;
+$b = ( $P1 / $P0 )**(1/$T);
+$R = 100*$b - 100;
+$r = Compute("$R");
+
+$year2 = 2010;
+$t2=$year2-$year0;
+$P2 = $f->eval(t=>$t2, b=>$b);
+
+
+#Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+
+a. 
+Riverside County is the fastest growing county in California. In [$year0], the population was [$P0]. Write a formula for the population of Riverside County. Use the letter [` b`] for the growth factor, which you do not yet know, and let [`t=0`] represent the year [$year0].  
+[` P(t) = `][____________]{$f}  
+b. 
+In [$year1], the population had grown to [$P1]. Find the growth factor and the percent rate of growth.
+  [`b = `][_____]{$b}, and the percent growth rate is [_____]{$r->cmp(  tolType => 'absolute',  tolerance => .5,)}.  
+c. 
+Predict the population of Riverside County in [$year2].  
+[______________]{$P2}
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+#ANS($r->cmp(  tolType => 'absolute',  tolerance => .5,));
+
+BEGIN_PGML_SOLUTION
+
+Exponential growth functions look like [` P = P_0 b^t `]. To find the value of the growth factor [`b`], we substitute the values we know for [`P`], [`P_0`], and [`t`] into the equation and solve for [`b`]. The percent growth rate is [` b-1`], but we would multiply this value by 100 to get it in percent form.
+
+To predict the population in [$year2], we see that [$t2] years have elapsed since [$year0], and we subsitute [`t=[$t2]`] into our formula for the population.
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

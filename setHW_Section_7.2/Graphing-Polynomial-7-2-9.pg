@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Algebra problem: identifying equivalent cubics
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'cubic polynomial', 'turning point', 'inflection point', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Polynomial Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.2')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+
+$r = non_zero_random(-4,4);
+
+$b = 3*$r;
+$c = 3*$r**2;
+$d = $r**3;
+
+$f0 = " x^3 + $r";
+$f1 = "(x+$r)^3";
+$f2 = "x^3 + $b x^2 + $c x + $d";
+
+$mc = new_checkbox_multiple_choice();
+$mc->qa(
+"Which graphs are the same?", 
+ "\($f1\)",
+"\($f2\)");
+
+$mc->extra(
+"\($f0\)"
+);
+#$mc->makeLast("none of the above");
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Use a calculator to graph each cubic polynomial.
+
+[@ $mc->print_q() @]***
+[@ $mc->print_a() @]***
+
+
+END_PGML
+ ANS( checkbox_cmp( $mc->correct_ans() ) );
+ 
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`[$f1]=[$f2]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

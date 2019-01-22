@@ -1,0 +1,144 @@
+##DESCRIPTION
+##  Algebra problem: system of linear and quadratic equation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts', "system")
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('10/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('33')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+do{
+$h = non_zero_random(-4,4); #was 2;
+$k = non_zero_random(-9,4); #was 3;
+};
+
+$x1 = $h - 3; #was -1;
+$x2 = $h + 2; #was 4;
+
+$a = 1;
+
+$b = -2*$h; #was -4;
+$c = $h**2 + $k; #was 7;
+Context()->noreduce('(-x)-y'); #so that -x-y does not become -(x+y)
+$f = Formula("$a*x**2 +$b*x +$c")->reduce;
+
+$y1 = $f->eval(x=>$x1);
+$y2 = $f->eval(x=>$x2);
+
+$d = $y1 + $x1; #was 11;
+$f2 = Formula("$d-x");
+
+Context("Point");
+$ans = List( Point("($x1,$y1)"), Point("($x2,$y2)") );
+
+
+$xmin =-10;
+$ymin = -10;
+$xmax=10;
+$ymax= 15;
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/1;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,400]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .5,0.96*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (1..6) {
+$xscale =5*$i;
+$yscale =5*$i;
+$gr -> lb(new Label ( -$xscale,-0.5, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.5,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,-0.5, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.5,-$yscale,-$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2",
+"$f2 for x in [$xmin, $xmax] using color:blue and weight:2",
+);
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($x1,$y1,'black') );
+$h1 = $x1-2;
+$gr -> lb(new Label ( $h1,$y1, "($x1,$y1)",'black','center','middle'));
+$gr->stamps( closed_circle($x2,$y2,'black') );
+$h2 = $x2 + 2;
+$gr -> lb(new Label ( $h2,$y2, "($x2,$y2)",'black','center','middle'));
+
+ 
+##############################################################
+#
+#  Text
+#
+#4
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+Solve the system algebraically. Use your calculator to graph both equations and verify your solutions.
+
+
+[`
+\begin{aligned}
+y &= [$f]\\
+y &= [$f2]\\
+\end{aligned}
+`] 
+
+[____________]{$ans}   [@AnswerFormatHelp("points") @]*
+
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+We could begin by setting [` [$f] = [$f2]`] and solving the resulting quadratic equation for [`x`]. Then for each of those values we find the corresponding value of [`y`] from the equation [`y=[$f2]`].
+
+[@ image(insertGraph($gr), width=>300, height=>300, tex_size=>700) @]***
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

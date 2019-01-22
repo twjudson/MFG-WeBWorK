@@ -1,0 +1,184 @@
+##DESCRIPTION
+##  Algebra problem: compute slope with units from table, fill in missing values, interpret
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+$m =random(8,14);
+
+$f = Formula(" $m*x ");
+$x[0] = random(2,5); 
+$x[1] = random(6,10); 
+$x[2] = random(15, 35,5); 
+$x[3] = 40;
+
+foreach my $i ( 0..3 ) { 
+  $y[$i] = $f->eval(x=>$x[$i]); 
+};
+
+
+$xmin = -5;
+$xmax = 45;
+$xgrid = ($xmax - $xmin)/5;
+$ymin = -20;
+$ymax = $m*40+20;
+$ygrid = 2*$m+2;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+foreach my $i (1..20) {
+$xscale =5*$i;
+$yscale =20*$i;
+$gr -> lb(new Label ( $xscale,0.4*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.42*$xmin,$yscale,$yscale,'black','center','middle'));
+};
+
+add_functions( $gr,
+"$f for x in [0, $xmax] using color:red and weight:2");
+
+$mc = new_multiple_choice();
+$mc->qa(
+"What are the units of the slope?",  "dollars / hour");
+$mc->extra(
+"hours / dollar",
+"dollars",
+"hours",
+);
+$mc->makeLast("none of the above");
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"What does the slope tell us about the typist's paycheck?",  "The typist is paid $m dollars per hour");
+$mc1->extra(
+"The typist works $m hours per week.",
+"The typist pays $m  % income tax.",
+"The typist work $m hours for each dollar earned.",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+A temporary typist's paycheck (before deductions) is given, in dollars, by [`S= [$m]t`], where [`t`] is the number of hours she worked.
+
+a. 
+Make a table of values for the function.
+    
+    [@
+DataTable(
+  [
+    [ '\(t\)' ,"\\( $x[0] \\) ",  "\\( $x[1] \\) ",  "\\( $x[2] \\) ",  "\\( $x[3] \\) "],
+    ['\(S\)',   ans_rule(3) ,  ans_rule(3) ,  ans_rule(3) ,  ans_rule(3)  ]
+  ], 
+  caption => 'Paycheck for hours worked', 
+  align => '| c | c |c | c | ',
+  midrules=>1,
+ );
+@]***
+    
+b. 
+Fill in the missing table entries.
+
+c. 
+Using two points on the graph, compute the slope [`\dfrac{\Delta S}{\Delta t}=`][__] 
+    
+    [@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+d. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+foreach my $i (0..3) {
+  ANS(Compute("$y[$i]")->cmp());
+};
+
+
+ANS(Compute("$m")->cmp());
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We multiply each value of [`t`] by [$m] to find the corresponding value of [`S`].
+    
+    [@
+DataTable(
+  [
+    [ '\(t\)' ,"\\( $x[0] \\) ",  "\\( $x[1] \\) ",  "\\( $x[2] \\) ",  "\\( $x[3] \\) "],
+    ['\(S\)', "\\( $y[0] \\) ",   "\\( $y[1] \\) " ,  "\\( $y[2] \\) " , "\\( $y[3] \\) "  ]
+  ], 
+  caption => 'Paycheck for hours worked', 
+  align => '| c | c |c | c | ',
+  midrules=>1,
+ );
+@]***  
+    
+b. 
+[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*
+
+c. 
+From any pair of points in the table, [`\dfrac{\Delta S}{\Delta t}=[$m]`]. The units in the numerator are the units of the paycheck, namely dollars, and the units of the denominator are units of [`t`], namely hours. So the units of the slope are dollars/hour. 
+
+d.
+The typist is paid $[$m] per hour: for each additional hour she works, her paycheck goes up by $[$m].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

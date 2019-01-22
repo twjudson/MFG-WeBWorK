@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: Finding formula for exponential based on two points, neither the y-intercept
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.5')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Fraction");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$x0 = random(4,7); #was 7
+$x1 = $x0 + 1;
+
+do{$num = random(2,4);
+     $den = random(2,4);} until (gcd($num,$den) == 1);
+
+$b = Formula("$num/$den");
+$num0 = $den**($x0 +1);
+$den0 = $num**($x0 -1);
+$y0 = Formula("($num0/$den0)");
+$a0 = $den * $num;
+$a1 =Compute("$a0 * $b");
+
+#$k = $x1 - $x0;
+
+$f = Formula(" $y0*$b**{x} ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Find an exponential function that has the given values.
+
+[` f([$x0]) = [$a0]`], [`\quad f([$x1]) = [$a1]`]  
+[` f(x) =`][_______________]{$f}
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+An exponential function has the form [` f(x) = A_0 \cdot b^x`].  Because [`\dfrac{f([$x1])}{f([$x0])} =\dfrac{A_0 b^[$x1]}{A_0 b^[$x0]} =b`], and also [`\dfrac{f([$x1])}{f([$x0])} = \dfrac{[$a1]}{[$a0]} = [$b]`], we see that  [`b= [$b]`]. We can find [`A_0`] using either of the [`f([$x0])`] or [`f([$x1])`]. If we choose [`x=[$x0]`], we have [` f([$x0]) =A_0\cdot ([$b])^{[$x0]} = [$a0]`], so [`A_0 = \dfrac{[$a0]}{([$b])^{[$x0]}} = [$y0]`]. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

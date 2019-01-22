@@ -1,0 +1,102 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Linear Functions')
+## Date('8/10/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.5')
+## Problem1('11')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "contextFraction.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context("Numeric");
+
+$m =random(1,5,1);
+
+
+$b = random(-4,-1,1);
+
+
+
+
+$ans=Formula("$m x + $b");
+
+$slope = Compute("$m");
+
+$x_intercept = Compute("-$b/$m");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Suppose that \(m = $m\) and \(b = $b\) for a straight line \(y = mx + b\).
+
+
+$BR
+$BR
+
+a.  Sketch by hand the graph of the line with the given slope and \(y\)-intercept.
+
+$BR
+$BR
+
+b.  Write an equation for the line.  \(y =\) \{ ans_rule(30) \}
+
+$BR
+$BR
+
+c.  What is the \(x\)-intercept of the line?  \(b =\) \{ ans_rule(30) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp());
+
+
+ANS( $x_intercept->cmp() );
+
+
+
+ENDDOCUMENT();        

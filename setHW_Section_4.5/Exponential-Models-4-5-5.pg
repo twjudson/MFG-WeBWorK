@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: Finding formula for exponential based on two points, neither the y-intercept
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.5')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Fraction");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$x0 = random(2,5); #was 4
+$k = random(2,3);
+$x1 = $x0 + $k;
+
+do{$num = random(1,4);} until ($num != 3);
+
+$b = Formula("$num/5");
+$a0 = 10**($k-1);
+$a1 =Compute("$a0 * $b**$k");
+$bk = Compute("$b**$k");
+$y0 = Compute("$a0/$b**$x0");
+
+
+$f = Formula(" $y0*$b**{x} ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Find an exponential function that has the given values.
+
+[` M([$x0]) = [$a0]`], [`\quad M([$x1]) = [$a1]`]  
+[` M(x) =`][_______________]{$f}
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+An exponential function has the form [` M(x) = M_0 \cdot b^x`].  Because [`\dfrac{M([$x1])}{M([$x0])} =\dfrac{M_0 b^[$x1]}{M_0 b^[$x0]} =b^{[$k]}`], and also [`\dfrac{M([$x1])}{M([$x0])} = \dfrac{[$a1]}{[$a0]}= [$bk] `], we see that  [`b^{[$k]}= [$bk]`] and  [`b = [$b]`]. We can find [`M_0`] using either of the [`M([$x0])`] or [`M([$x1])`]. If we choose [`x=[$x0]`], we have [` M([$x0]) =M_0\cdot ([$b])^{[$x0]} = [$a0]`], so [`M_0 = \dfrac{[$a0]}{([$b])^{[$x0]}} = [$y0]`]. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,97 @@
+##DESCRIPTION
+##  Algebra problem: rewrite exponential with base different than e
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('3/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "parserPopUp.pl",
+ "AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real");
+
+$var = Formula("t");
+$y0 = random(2500,9500,1000); #was 6500;
+$k = random(-2.9, -2.1, 0.1); #was -2.5
+
+$f = Formula(" $y0 * e**($k*t)");
+$b = Compute(" e**($k) ");
+
+ $popup = PopUp(["select", "increasing", "decreasing"], "decreasing");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+>>[`` P(t)=[$f]  ``]<<
+
+Express this exponential function in the form [`P(t)=P_0 b^t`]. 
+
+[`P_0=`][___]{$y0},  
+[` b =`][______]{$b->cmp(  tolType => 'absolute',  tolerance => .0005,)}  [@AnswerFormatHelp("numbers") @]*, and  
+[` t = `][__]{$var}
+
+
+Is the function increasing or decreasing? [_____]{$popup}
+
+
+What is its initial value?
+
+    Answer: [_____]{$y0}
+
+
+
+
+
+
+END_PGML
+Context()->normalStrings;
+##
+
+BEGIN_PGML_SOLUTION
+
+In either form  [`P(t)=P_0 e^{kt}`] or  [`P(t)=P_0 b^t`], the value of [`P_0`] is the value at [`t=0`], also called the initial value, and here [` P_0 = [$y0]`].
+
+The value of the base [`b`] is [` b= e^{k} = e^{[$k]} \approx [$b]`].
+
+Because the value of [`k`] is negative, the function is decreasing.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

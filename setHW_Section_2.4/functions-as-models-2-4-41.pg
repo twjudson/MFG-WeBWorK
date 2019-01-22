@@ -1,0 +1,195 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Functions as Mathematical Models')
+## Date('9/14/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.4')
+## Problem1('41')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"parserPopUp.pl",
+"niceTables.pl",
+);
+
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+# Create and use pop up lists 
+Context()->texStrings;
+
+# the arguments of PopUp are [list of answers], 
+#    correct answer
+$popup_1 = PopUp(["?", "a", "b", "c", "d"], "c");
+$popup_2 = PopUp(["?", "a", "b", "c", "d"], "d");
+$popup_3 = PopUp(["?", "a", "b", "c", "d"], "b");
+$popup_4 = PopUp(["?", "a", "b", "c", "d"], "a");
+
+$popup_A = PopUp(["?", "a", "b", "c", "d"], "a");
+$popup_B = PopUp(["?", "a", "b", "c", "d"], "b");
+$popup_C = PopUp(["?", "a", "b", "c", "d"], "a");
+$popup_D = PopUp(["?", "a", "b", "c", "d"], "d");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_TEXT
+Four different functions are described below.
+$BR
+a. As a chemical pollutant pours into a lake, its concentration is a function of time. The concentration of the pollutant initially increases quite rapidly, but due to the natural mixing and self-cleansing action of the lake, the concentration levels off and stabilizes at some saturation level.
+$BR
+b. An overnight express train travels at a constant speed across the Great Plains. The train's distance from its point of origin is a function of time.
+$BR
+c. The population of a small suburb of a Florida city is a function of time. The population began increasing rather slowly, but it has continued to grow at a faster and faster rate.
+$BR
+
+d. The level of production at a manufacturing plant is a function of capital outlay, that is, the amount of money invested in the plant. At first, small increases in capital outlay result in large increases in production, but eventually the investors begin to experience diminishing returns on their money, so that although production continues to increase, it is at a disappointingly slow rate.
+
+$BR
+$BR
+
+Match each description with the appropriate table of values.
+
+
+$BR
+$BR
+
+1. \{ $popup_1->menu() \}
+\{
+DataTable(
+  [
+    ['\(x\)','\(1\)', '\(2\)', '\(3\)', '\(4\)', '\(5\)', '\(6\)', '\(7\)', '\(8\)'],
+    ['\(y\)', '\(60\)', '\(72\)', '\(86\)', '\(104\)', '\(124\)', '\(149\)', '\(179\)', '\(215\)']
+  ],
+  align => '| c | c | c | c | c | c | c | c | c |',
+  midrules=>1,
+);
+\}
+
+$BR
+$BR
+
+2. \{ $popup_2->menu() \}
+\{
+DataTable(
+  [
+    ['\(x\)','\(1\)', '\(2\)', '\(3\)', '\(4\)', '\(5\)', '\(6\)', '\(7\)', '\(8\)'],
+    ['\(y\)', '\(60\)', '\(85\)', '\(103\)', '\(120\)', '\(134\)', '\(147\)', '\(159\)', '\(169\)']
+  ],
+  align => '| c | c | c | c | c | c | c | c | c |',
+  midrules=>1,
+);
+\}
+
+
+$BR
+$BR
+
+3. \{ $popup_3->menu() \}
+\{
+DataTable(
+  [
+    ['\(x\)','\(1\)', '\(2\)', '\(3\)', '\(4\)', '\(5\)', '\(6\)', '\(7\)', '\(8\)'],
+    ['\(y\)', '\(60\)', '\(120\)', '\(180\)', '\(240\)', '\(300\)', '\(360\)', '\(420\)', '\(480\)']
+  ],
+  align => '| c | c | c | c | c | c | c | c | c |',
+  midrules=>1,
+);
+\}
+
+
+$BR
+$BR
+
+4. \{ $popup_4->menu() \}
+\{
+DataTable(
+  [
+    ['\(x\)','\(1\)', '\(2\)', '\(3\)', '\(4\)', '\(5\)', '\(6\)', '\(7\)', '\(8\)'],
+    ['\(y\)', '\(60\)', '\(96\)', '\(118\)', '\(131\)', '\(138\)', '\(143\)', '\(146\)', '\(147\)']
+  ],
+  align => '| c | c | c | c | c | c | c | c | c |',
+  midrules=>1,
+);
+\}
+
+$BR
+$BR
+
+Match each description with the appropriate graph.
+
+$BR
+
+A. \{ $popup_A->menu() \}
+$BR
+\{ image( "fig-ex-2-4-41-a.png",  width=>200, height=>200  ) \}
+
+
+$BR
+
+B. \{ $popup_B->menu() \}
+$BR
+\{ image( "fig-ex-2-4-41-b.png",  width=>200, height=>200  ) \}
+
+$BR
+
+C. \{ $popup_C->menu() \}
+$BR
+\{ image( "fig-ex-2-4-41-c.png",  width=>200, height=>200  ) \}
+
+$BR
+
+D. \{ $popup_D->menu() \}
+$BR
+\{ image( "fig-ex-2-4-41-d.png",  width=>200, height=>200  ) \}
+
+
+
+
+END_TEXT
+
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ANS( $popup_1->cmp() );
+ANS( $popup_2->cmp() );
+ANS( $popup_3->cmp() );
+ANS( $popup_4->cmp() );
+
+ANS( $popup_A->cmp() );
+ANS( $popup_B->cmp() );
+ANS( $popup_C->cmp() );
+ANS( $popup_D->cmp() );
+
+ENDDOCUMENT();        

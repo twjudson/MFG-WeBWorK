@@ -1,0 +1,92 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--decay of robin population
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('43')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(b=>"Real", t=>"Real");
+
+$P1 = 130;
+$b = .356;
+$bp = 100 * $b;
+$p0 = round($P1/$b);
+$P0 = Compute("$p0");
+$f = Formula("$P0 * $b^t");
+$t2 = 9;
+$P2 = $f->eval(t=>$t2);
+
+#Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+In the 1940s, David Lack undertook a study of the European robin. He tagged [$P1] one-year-old robins and found that on average [$bp]% of the birds survived each year. (Source: Burton, 1998)
+a. 
+According to the data, how many robins would have originally hatched to produce [$P1] one-year-olds.  
+[` P_0 = `][____________]{$P0->cmp(  tolType => 'absolute',  tolerance => .5,) }  
+b. 
+Write a formula for the number of the original robins still alive after [`t`] years.  
+[`P(t) = `][__________]{$f}  
+c. 
+Graph your function.  
+d.  
+One of the original robins actually survived for [$t2] years. How many robins does the model predict will survive for [$t2] years? [___]{$P2->cmp(  tolType => 'absolute',  tolerance => .05,)}
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+#ANS($r->cmp(  tolType => 'absolute',  tolerance => .5,));
+
+BEGIN_PGML_SOLUTION
+
+Exponential decay functions look like [` P = P_0 b^t `]. We know the growth factor [`b= $b]`], and that [`P=[$P1]`] when [`t=1`]. We substitute these values we know into the equation and solve for [`P_0`]. The percent growth rate is [` b-1`], but we would multiply this value by 100 to get it in percent form.
+
+To predict the population in [$year2], we see that [$t2] years have elapsed since [$year0], and we subsitute [`t=[$t2]`] into our formula for the population.
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

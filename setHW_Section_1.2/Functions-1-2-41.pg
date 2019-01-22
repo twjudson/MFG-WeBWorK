@@ -1,0 +1,109 @@
+##DESCRIPTION
+##  Algebra problem: functions; evaluate linear function defined by formula
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('41')
+
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$a = random(1,9);
+do{$b = random(2,5);} until ($b %3 != 0);
+$f = Formula("$a -( $b* x)");
+$xa = random(2,5);
+$ansa = $f->eval(x=>$xa);
+
+$xb = random(-6,-2);
+$ansb = $f->eval(x=>$xb);
+
+$xc = random(10,15) + random(1,9)/10;
+$ansc = $f->eval(x=>$xc);
+
+Context("Fraction");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+do{$num = random(1,5);} until ($num !=3);
+$xd = Compute("$num/3");
+$ansd = $f->eval(x=>$xd);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Evaluate the function for the given values.
+
+[``f(x) = [$f]``]
+
+a. 
+[`f([$xa])=`][___]{$ansa}
+    
+b. 
+[`f([$xb])=`][___]{$ansb}
+
+c. 
+[`f([$xc])=`][___]{$ansc}
+
+d. 
+[`f([$xd])=`][___]{$ansd}
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+
+a. 
+[`f([$xa]) = [$a] - [$b] ([$xa]) = [$ansa]`]
+b. 
+[`f([$xb]) = [$a] - [$b] ([$xb]) = [$ansb]`]
+c. 
+[`f([$xc]) = [$a] - [$b] ([$xc]) = [$ansc]`]
+d. 
+[`f([$xd]) = [$a] - [$b] ([$xd]) = [$ansd]`]
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

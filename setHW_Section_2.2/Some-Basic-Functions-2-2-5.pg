@@ -1,0 +1,81 @@
+##DESCRIPTION
+##  Algebra problem: order of operations with absolute value
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'absolute value', 'order of operations')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('9/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.2')
+## Problem1('5')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+do {$a = random(2,8);
+  $b = random(2,9);} until ($a < $b );
+do {$c = random(1,9);
+  $d = random(6,10);} until ($c < $d );
+$ansa = $a - $b*abs($c - $d);
+$k1 = $c - $d;
+$k2 =abs($k1);
+$k3 = $b * $k2;
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+Simplify each expression according to the order of operations.
+
+[` [$a] - [$b] \, | [$c] - [$d] |   =`][___]{$ansa}
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`   \begin{aligned}
+    [$a] - [$b] \, | [$c] - [$d] |  &= [$a] - [$b] \, | [$k1] | \\
+&= [$a] - [$b] ([$k2])\\
+&= [$a] - [$k3]\\
+&= [$ansa]
+\end{aligned} 
+ `]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,109 @@
+##DESCRIPTION
+##  Algebra problem: ln an exponential as inverses
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'natural log')
+
+## DBsubject(Algebra)
+## DBchapter(Logarithmic Functions)
+## DBsection(The Natural Base)
+## Date('3/11/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('5.3')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(t=>"Real");
+
+do {
+$k = random(2,9);
+$n = random(2,9); 
+} until ($k != $n);
+$f = " \ln e^{$k} ";
+$g = "e^{\ln $n t}";
+$g0 = Formula("$n*t");
+$h = Formula("1/x");
+$r = random(2,8);
+$F = " \ln \sqrt[$r]{e} ";
+if ($r == 2) {$F = " \ln \sqrt{e} "};
+Context("Fraction");
+$d = Fraction("1/$r");
+Context()->operators->undefine("^","**");
+Context()->functions->disable("Numeric"); 
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+Simplify.
+
+a. 
+[``[$f]  =``][___]{$k}
+
+b. 
+[`` [$g]  =``][___]{$g0}
+
+c. 
+[``e^{-\ln x}  =``][___]{$h}
+
+d. 
+[``[$F]  =``][___]{$d}
+
+
+
+
+END_PGML
+Context()->normalStrings;
+##
+
+BEGIN_PGML_SOLUTION
+
+The natural logarithm function [` \ln x`] and the expoential function of [` e^x`] are inverses.
+
+a. 
+So [`\ln e^{x} = x`].
+
+b. 
+And [` e^{\ln x} = x`].
+
+c. 
+[`` e^{-\ln x} = e^{-1\cdot \ln x} = e^{\ln x^{-1}} = e^{\ln 1/x} = \dfrac{1}{x}``].
+
+d. 
+Because [` \sqrt[[$r]]{x} = x^{1/[$r]}`], [`[$F] = \ln e^{ 1/[$r]} =1/[$r]  `].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

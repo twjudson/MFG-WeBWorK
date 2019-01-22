@@ -1,0 +1,111 @@
+##DESCRIPTION
+##  Algebra problem: two linear equations in two variables: cost and revenue
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Two Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.1')
+## Problem1('25')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+$x0 = random(20,45,5); #was 25;
+#$c0= 200; $mc = 4; $p=12;
+$mc = random(4,8);
+$p = $mc + random(4, 12, 4);
+$c0 = $x0 * ($p - $mc);
+
+$C = Formula(" $c0+ $mc*x")->reduce;
+$R =  Formula("$p*x")->reduce;
+
+$x0 = ($c0) / ($p - $mc);
+$p0= $C->eval(x=>$x0);
+
+Context("Point");
+$P = Point("($x0,$p0)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Solve by graphing a system of equations.
+
+The Aquarius jewelry company determines that each production run to manufacture a pendant involves an initial set-up cost of $[$c0] and $[$mc] for each pendant produced. The pendants sell for $[$p] each.
+
+a. 
+Express the cost [`C`] of production in terms of the number [`x`] of pendants produced.
+
+    [`C=`][__________]{$C}
+
+b. 
+Express the revenue [`R`] in terms of the number [`x`] of pendants sold.
+
+    [`R=`][__________]{$R}
+
+c. 
+
+Graph the revenue and cost on the same set of axes. How many pendants must be sold for the Aquarius company to break even on a particular production run?
+
+    Number of pendants: [____]{$x0}
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The total cost of production is the sum of fixed costs $[$c0] and the marginal costs $[`[$mc]x`]: [`C = [$C]`].
+
+b. 
+The revenue is the product of price times pendants sold: [`R = [$R]`].
+
+c. 
+The two graphs intersect at [`[$P]`]. The [`x`]-coordinate, [$x0], is the number of pendants that must be sold for Aquarius to break even.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

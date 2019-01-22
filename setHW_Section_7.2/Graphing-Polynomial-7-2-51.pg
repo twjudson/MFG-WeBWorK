@@ -1,0 +1,119 @@
+##DESCRIPTION
+##  Algebra problem: formula of quartic from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quartic polynomial', 'turning point', 'inflection point', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Polynomial Functions')
+## Date('11/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.2')
+## Problem1('51')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextPolynomialFactors.pl",
+"contextLimitedPowers.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(t => ["Parameter",limits => [1,1000]]);
+Context()->noreduce('(-x)-y','(-x)+y'); #so that -x-y does not become -(x+y)
+
+$a =1;
+do{
+$r0 = non_zero_random(-3,3); #was 2;
+$r1 = non_zero_random(-3,3);
+} until ( $r0 != $r1  && abs($r0-$r1) > 1 && abs($r0-$r1) < 6 );
+
+$f = Formula("  $a* (x - $r0)*(x-$r1)**3 ")->reduce;
+$y0 = $r0*$r1**3;
+
+$xmin = -5;
+$ymin = min(-10, 10*floor($y0/7));
+$xmax=5;
+$ymax= max(10, 10*ceil($y0/7));;
+$xgrid = ($xmax - $xmin);
+$ygrid = ($ymax - $ymin)/5;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[250,250]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.05,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .4,0.9*$ymax,'y','blue','left','bottom'));
+
+foreach my $i (-2,-1,1,2, -3,3, -4,4, -5,5, -6,6) {
+ $xscale =4*$i;
+ $yscale =10*$i;
+  $gr -> lb(new Label ( $xscale,-1.5, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-0.3,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+[@ image( insertGraph($gr), width=>250, height=>250, ) @]***  
+
+
+
+Find a possible equation for the polynomial whose graph is shown.
+
+
+    [`P(x)=`] [_____________________]{$f} 
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The zeros occur when [`x`] is [`[$r0]`] or [`[$r1]`] (multiplicity three), so we expect the polynomial to have the form [` a(x-[$r0])(x-[$r1])^3`]. The [`y`]-intercept occurs when [`x=0`], so [`a(0-[$r0])(0-[$r1])^3=[$y0]a`] should be approximately [$y0], and we find that [`a=1`].
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

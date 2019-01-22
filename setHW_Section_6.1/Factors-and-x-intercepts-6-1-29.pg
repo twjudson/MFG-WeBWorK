@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: quadratic function based on x-intercepts
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "contextLimitedPolynomial.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context("LimitedPolynomial");
+do {$r0 = random(-9,-1);
+      $r1 = random(1,9);} until (abs($r0) != abs($r1)  );
+# was $r0 = -2; $r1 = 1;
+
+$b = -($r0 + $r1);
+$c = $r0 *  $r1;
+
+$f = Formula("x**2 + $b x + $c ")->reduce;
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Write a quadratic equation whose solutions are given. The equation should be in standard form with integer coefficients. The coefficient of [`x^2`] should be the smallest positive integer coefficient that will work.
+
+[` [$r0] `] and [` [$r1] `]    
+
+[_________________]{$f} [`=0`]
+
+
+
+END_PGML
+Context()->normalStrings;
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+In factored form, the left side of the equation would be [` (x - [$r0])(x - [$r1])`]. Expand the product of the binomials.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,121 @@
+##DESCRIPTION
+##  Algebra problem: compute slope from table and fill in missing values
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+#not much variation in first attempt at coding
+
+$yintercept = random(21,31); # was 27;
+$m = random(-4,-2); #was -3
+
+$f = Formula(" $yintercept + $m*x ");
+
+$x[0] = -3;
+$x[1] = -1;
+$x[2] = random(1,5); #was 5
+$x[3] = 6;
+$x[4] = 10;
+
+foreach my $i ( 0..4 ) { 
+  $y[$i] = $f->eval(x=>$x[$i]); 
+};
+
+$Delx = $x[1]-$x[0];
+$Dely = $y[1]-$y[0];
+
+$Delx2 = $x[2]-$x[0];
+$Dely2 = $y[2]-$y[0];
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The table in  gives the coordinates of points on a line.
+
+[@
+DataTable(
+  [
+    [ '\(x\)', '\(y\)', ]  ,
+    [ "\\( $x[0] \\) ",  "\\( $y[0] \\) " ],
+    [ "\\( $x[1] \\) ",  ans_rule(2) ],
+    [  ans_rule(2),  "\\( $y[2] \\) " ],
+    [ "\\( $x[3] \\) ",  "\\( $y[3] \\) " ],
+    [ "\\( $x[4] \\) ",  "\\( $y[4] \\) "]
+  ], 
+  caption => 'Points on a line', 
+  align => '| c | c | ',
+  midrules=>1,
+ );
+@]***
+
+
+a. 
+Find the slope of the line: [`m=`][____]
+
+b. 
+Fill in the missing table entries.
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+ANS(Compute("$y[1]")->cmp());
+ANS(Compute("$x[2]")->cmp());
+ANS(Compute("$m")->cmp());
+
+BEGIN_PGML_SOLUTION
+
+We can compute the slope based on any two [`(x,y)`] pairs. The slope is [` m= \frac{\Delta y}{\Delta x} = [$m]`].
+
+We could fill in the table without finding the equation of the line by using the slope and the given values in the table. To find a missing [`y`]-value, we can compute the [`\Delta x`] between the given [`x`]-value and any other [`x`]-value for which we know the [`y`]-value. 
+
+If we use [`x=[$x[0]]`] from the point [`([$x[0]],[$y[0]])`], we find that [`\Delta x = [$x[1]]-[$x[0]]=[$Delx]`]. Then we can compute the corresponding [`\Delta y = m  \Delta x = [$m]\cdot[$Delx] = [$Dely]`], and add that [`\Delta y`] to our known [`y=[$y[0]]`], so that [`y=[$y[0]]+\Delta y=[$y[0]]+([$Dely] )= [$y[1]]`].
+
+In a similar fashion, to compute the unknown [`x`]-value, we can compute an appropriate [`\Delta y`], then from that value and the slope we compute a [`\Delta x`], and finally add that [`\Delta x`] to a known value of [`x`]:
+
+[`x = [$x[0]] + \Delta x = [$x[0]] + \frac{\Delta y}{m} = [$x[0]] + \frac{[$Dely2]}{[$m]} =[$x[0]]  + [$Delx2]  = [$x[2]]`]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

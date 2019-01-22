@@ -1,0 +1,78 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--exponential growth word problem
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/2/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('37')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+Context()->variables->add(   S => "Real" , t=>"Real");
+
+$Temp = 50;  #No randomness in this exercise
+$rate = 9;
+$b = 1+ $rate/100;
+$percent = 50;
+$factor = 1 + $percent/100;
+
+$f = Formula(" S * $b^t ");
+$t = Compute("log($factor)/log($b)");
+$tdisplay = "\dfrac{\log($factor)}{\log($b)}";
+
+#Context()->functions->disable("log", "log10", "ln");
+
+Context()->texStrings;
+BEGIN_PGML
+
+If raw meat is allowed to thaw at [`[$Temp]^{\circ}`]F, Salmonella grows at a rate of [$rate]% per hour.  
+
+a. 
+Write a formula for the amount of Salmonella present after [`t`] hours, if the initial amount is [`S`].
+
+[` A(t) =`][__________]{$f}  
+b. 
+Health officials advise that the amount of Salmonella initially present in meat should not be allowed to increase by more than [$percent]%. How long can meat be left to thaw at [`[$Temp]^{\circ}`]F? Round your answer to the nearest tenth of an hour.  
+[_______]{$t->cmp(  tolType => 'absolute',  tolerance => .05,)} hours
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+a. 
+If the Salmona increases by [$rate]% each hour, then the growth factor is [$b].  
+b. 
+Increasing by [$percent]% corresponds to increasing by a factor of [$factor], that is, for changing from an initial amount of [`S`] to the amount [` [$factor]S`]. Solving for when the amount is [` [$factor]S`]:
+
+>>[` \begin{aligned}
+  S [$b]^t  & =  [$factor]S   \\
+  [$b]^t  & =  [$factor]   \\
+  \log [$b]^t  & =  \log [$factor]   \\
+   t \log[$b]  & =   \log [$factor] \\
+    t  & = [$tdisplay]
+    \end{aligned}
+`]<<
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

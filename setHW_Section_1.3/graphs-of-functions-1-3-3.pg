@@ -1,0 +1,149 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Graphs of Functions')
+## Date('8/18/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.3')
+## Problem1('3')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "AnswerFormatHelp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+
+
+$R1 = Compute("-1");
+$R3 = Compute("2");
+
+$Rp_equal2 = List(Compute("-1.3"), Compute("3"));
+
+
+$p_intercept = List(Compute("-2"), Compute("2"), Compute("4"),);
+$R_intercept = Compute("4");
+
+$Rmax = Compute("4");
+$Rmin = Compute("-5");
+
+$pmax = Compute("0");
+$pmin = Compute("5");
+
+Context("Interval");
+$R_increasing = List(Compute("[-3,0]"), Compute("[1,3]"));
+$R_decreasing = List(Compute("[0,1)"), Compute("[3,5]"));
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Use the graph below to answer the questions about the function \(R(p)\).
+$BR
+$BR
+
+
+\{ image( "fig-ex-1-3-3.png",  width=>300, height=>300  ) \}
+
+$BR
+$BR
+
+a.  Find \(R(1)\) \{ ans_rule(5) \} and \(R(3)\) \{ ans_rule(5) \}.
+
+$BR
+$BR
+
+b.  For what values of \(p\) is \(R(p) = 2\)? \{ ans_rule(5) \}
+
+$BR
+$BR
+
+c.  Find the intercepts of the graph. List the function values given by the intercepts:  \(p\)-intercepts \{ ans_rule(10) \}, \(R\)-intercepts \{ ans_rule(10) \}.
+
+$BR
+$BR
+
+d. What is the maximum value of \(R(p)\)? \{ ans_rule(5) \} What is the minimum value of \(R(p)\)? \{ ans_rule(5) \}
+
+$BR
+$BR
+
+e. For what value(s) of \(p\) does \(R\) take on its maximum value? \{ ans_rule(10) \} For what value(s) of \(p\) does \(R\) take on its minimum value? \{ ans_rule(10) \}
+
+$BR
+$BR
+
+f. On what intervals is the function increasing? \{ ans_rule(10) \} Decreasing? \{ ans_rule(10) \}
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($R1->cmp());
+ANS($R3->cmp());
+
+ANS($Rp_equal2->cmp(
+  tolType => 'absolute',
+  tolerance => 0.5,
+));
+
+
+ANS($p_intercept->cmp());
+ANS($R_intercept->cmp());
+
+ANS($Rmax->cmp());
+ANS($Rmin->cmp());
+
+ANS($pmax->cmp());
+ANS($pmin->cmp());
+
+ANS($R_increasing->cmp());
+ANS($R_decreasing->cmp());
+
+
+
+
+ENDDOCUMENT();        

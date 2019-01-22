@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/25/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('65')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+
+Context("Inequalities")->variables->are(x=>"Real");
+Context()->variables->add(y=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+$domain= Compute( "[0,90]" );
+$range = Compute( "[12,24]" );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+$BR
+The number of hours of daylight on the summer solstice is a function of latitude in the northern hemisphere. Give the domain and range of the function.
+$BR
+Domain (in degrees):  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+Range (in hours):  \{ans_rule(12)\}
+\{ AnswerFormatHelp("intervals") \}
+$BR
+$BR
+
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+Latitudes in the northern hemisphere run from 0 degrees at the equator to 90 degrees at the north pole. At the equator for the summer solstice, the sun is up for half the day; at the north pole the sun will be above the horizon the entire day.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

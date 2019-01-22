@@ -1,0 +1,122 @@
+##DESCRIPTION
+##  Algebra problem: absolute value for distances
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function', 'absolute value')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Absolute Value Function)
+## Date('9/16/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.5')
+## Problem1('59')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+"contextInequalities.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$x[0] = 10;
+$x[1] = -6;
+$x[2] = 2;
+$x[3] = 2;
+
+foreach my $i (0..2) {
+  $d[$i] = Formula(" abs(x - $x[$i])" )->reduce; };
+
+$f = Formula(" $d[0] + $d[1] + 2* $d[2] ");
+
+$xmin = -10;
+$ymin = -5;
+$xmax= 15;
+$ymax= 50;
+$xgrid =( $xmax-$xmin);
+$ygrid = ($ymax - $ymin)/5;
+$xpix = 500;
+$ypix = 500;
+
+$xp = round(.8*$xpix);
+$yp = round(.9*$ypix);
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix, $ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label ( .95*$xmax,0.05*$ymax, "x",'blue','center','middle'));
+$gr -> lb(new Label (.05*$xmax, 0.95*$ymax, "y" ,'blue','center','middle'));
+
+foreach my $i (1..10) {
+$xscale =2*$i;
+$yscale =5*$i;
+$gr -> lb(new Label ( $xscale,-2, $xscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,-2, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (-2,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin,$xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+ $Pop = PopUp(["select", "east", "west"], "east");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+>>
+<<
+Richard and Marian are moving to Parkville to take jobs after they graduate. The main road through Parkville runs east and west, crossing a river in the center of town. Richard's job is located 
+[$x[0]] miles east of the river on the main road, and Marian's job is 6 miles west of the river. There is a health club they both like located 2 miles east of the river. If they plan to visit the health club every workday, where should Richard and Marian look for an apartment to minimize their total daily driving distance?
+
+    Answer:  [__]{$x[3]} miles  [@ $Pop->menu() @]* of the river
+
+END_PGML
+ANS($Pop->cmp());
+
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+
+
+BEGIN_PGML_SOLUTION
+
+If we set the origin at the river, with positive values in the direction east, then their total driving distances is the sum of [` |x-10| + |x-2| + |x + 6| + |x-2| `]
+
+[@ image(insertGraph($gr), width=>210, height=>280, tex_size=>700) @]***
+
+
+From the graph, the smallest value of [`f(x)`] occurs at [`x = [$x[3]]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

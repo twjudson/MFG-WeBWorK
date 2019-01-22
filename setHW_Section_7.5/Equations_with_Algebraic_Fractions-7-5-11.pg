@@ -1,0 +1,132 @@
+##DESCRIPTION
+##  Algebra problem: equations with rational expressions
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(v=>"Real", t=>"Real");
+$d =random(100, 160, 10); #was 150;
+$r=random(40, 55, 5); #was 50;
+$t0 = 4;
+
+$f = Formula(" $d/($r - v)")->reduce;
+$fi = Formula(" $r - $d/t")->reduce;
+
+$ans = $fi->eval(t=>$t0);
+
+$xmin = -5;
+$xmax=$r;
+$ymin = -5;
+$ymax=20;
+$xgrid = ($xmax - $xmin)/5;
+$ygrid = ($ymax - $ymin)/5;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[400,300]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.94*$xmax, 0.5,'v','blue','left','bottom'));
+$gr -> lb(new Label (1.2,0.94*$ymax,'t','blue','left','bottom'));
+
+foreach my $i (1..5) {
+$xscale =10*$i;
+$yscale =5*$i;
+$gr -> lb(new Label ( $xscale,-.6, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-0.9,$yscale,$yscale,'black','center','middle'));
+}
+
+$begin=$xmin-1;
+$end = $r - .001;
+add_functions( $gr,
+"$f for v in [$begin, $end] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle($ans,$t0,'red') );
+$x1 = $ans+1; $y1 = $t0 - 1;
+$gr -> lb(new Label ($x1, $y1,"($ans, $t0)",'blue','left','top'));
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+A flock of eider ducks is making a [$d]-mile flight at an average airspeed of [$r] miles per hour against a moderate headwind.
+
+a. 
+Express the ducks' travel time, [`t`], as a function of the windspeed, [`v`].
+
+    [`t=`][________]{$f}
+
+    Graph the function in the window
+
+    >>[``\text{Xmin}=0\qquad\text{Xmax}=36``]<<
+
+    >>[``\text{Ymin}=0\qquad\text{Ymax}=[$r]``]<<
+
+b. 
+Write and solve an equation to find the windspeed if the flock makes its trip in 
+[$t0] hours. Label the corresponding point on your graph.
+
+    [`v = `][_____]{$ans} mph
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+ [`\dfrac{\text{distance}}{\text{time}}= \dfrac{[$d]}{[$r]-v}`].
+
+[@image(insertGraph($gr), width=>240, height=>180, tex_size=>700)@]***
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

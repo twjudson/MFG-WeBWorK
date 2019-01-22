@@ -1,0 +1,103 @@
+##DESCRIPTION
+##  Algebra problem: Rational exponents--evaluating
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.4')
+## Problem1('1')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+#"parserRoot.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+@denominators0 = (3, 6);
+@denominators1 = (4, 5);
+@denominators = (2, 3, 4, 5, 6);
+@big                  = (9, 6, 5, 4, 3);
+@slice = NchooseK($#denominators,3);
+@n = @denominators[@slice];
+@R = @big[@slice];
+
+#LimitedPowers::OnlyPositiveIntegers();
+
+$i = random(0,1);
+$n[0] = $denominators1[$i] ;
+$num[0] = $denominators1[$i] - 1;
+$m[0] = " $num[0]/ $denominators1[$i] ";
+$m[2] = Compute("$m[0]");
+$n[2] = $denominators1[$i] ;
+
+$i = random(0,1);
+$n[1] = $denominators0[$i] ;
+$num[1] = $denominators0[$i] - 1;
+$m[1] = " $num[1]/$denominators0[$i]  ";
+$m[2] = Compute("$m[0]");
+
+
+foreach my $i ( 0..2 ) { 
+  $base[$i] = random(2,5) **$n[$i];
+  $f[$i] =" $base[$i]^($m[$i]) ";
+  $b[$i] = Compute( "$f[$i]" );
+}
+
+Context()->operators->undefine("^","**");
+
+
+##############################################################
+BEGIN_PGML
+Evaluate each power.  
+  
+a. 
+[: [$f[0] ] = :][_______]{ $b[0]}  
+b. 
+[: [$f[1] ] = :][_______]{ $b[1] }  
+c. 
+[: [$f[2] ] = :][_______]{ $b[2] }  
+
+END_PGML
+
+
+
+##############################################################
+#
+#  Answers
+
+BEGIN_PGML_SOLUTION
+ 
+The denominator of the exponent corresponds to the index of the root involved.
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();     

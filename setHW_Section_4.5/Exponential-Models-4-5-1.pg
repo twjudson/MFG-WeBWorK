@@ -1,0 +1,80 @@
+##DESCRIPTION
+##  Algebra problem: Finding formula for exponential based on two points
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential Models)
+## Date('3/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.5')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$x0 = 0;
+$x1 = random(2,5); #was 3;
+$a0 = random(11, 19) /10; # was 0.14;
+$b = random(20,60,10); #was 50
+$a1 =$a0 * $b;
+$y0 = $a0;
+
+$k = $x1 - $x0;
+
+$f = Formula(" $y0*$b**{x/$k} ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Find an exponential function that has the given values.
+
+[` A([$x0]) = [$a0]`], [`\quad A([$x1]) = [$a1]`]  
+[` A(x) =`][____________]{$f}
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+An exponential function has the form [` A(x) = A_0 \cdot b^x`].  We are given the value of [` A_0 = A(0)=[$a0] `]. And because [`\dfrac{A([$x1])}{A([$x0])} =\dfrac{A_0 b^[$x1]}{A_0 b^[$x0]} =b^[$k]`], and also [`\dfrac{A([$x1])}{A([$x0])} = \dfrac{[$a1]}{[$a0]} = [$b]`], we see that  [`b^[$k] = [$b]`], and so [`b = [$b]^{1/[$k]}`]. 
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

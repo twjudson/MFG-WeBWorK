@@ -1,0 +1,131 @@
+##DESCRIPTION
+##  Algebra problem: identify linear function from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'slope', 'rate of change')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.4')
+## Problem1('43')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "niceTables.pl",
+   "PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+# little RANDOMNESS!
+
+$m = 0.5; 
+$yintercept = 28;
+
+$f = Formula(" $m*x + $yintercept ");
+
+$x[0] = 10;
+$x[1] = 12;
+$x[2] = 15;
+$x[3] = 21;
+$x[4] = 25;
+$x[5] = 40;
+$x[6] = 52;
+
+foreach my $i (0..6) {
+   $y[$i] = $f->eval(x=>$x[$i]);
+};
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"If you plot the data, will the points lie on a straight line? Why or why not?",  
+"Yes, the slope between any two points is \(\frac{1}{2}\)");
+$mc->extra(
+"No, the slope varies depending on which points from the table are chosen.",
+);
+$mc->makeLast("none of the above");
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"What are the units?",  "grams of salt per degree Celsius");
+$mc1->extra(
+"degrees Celsius per gram of salt",
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+The table shows the amount of ammonium chloride salt, in grams, that can be dissolved in 100 grams of water at different temperatures.
+    
+[@
+DataTable(
+  [
+    ["Temperature, \\( ^\\circ \\)C","\\( $x[0] \\) ",  "\\( $x[1] \\) ",  "\\( $x[2] \\) ",  "\\( $x[3] \\)" ,  "\\( $x[4] \\) ",  "\\( $x[5] \\) ",  "\\( $x[6] \\) "],
+    ['Grams of salt', "\\( $y[0] \\) ",   "\\( $y[1] \\) " ,  "\\( $y[2] \\) " , "\\( $y[3] \\) ",   "\\( $y[4] \\) " ,  "\\( $y[5] \\) " , "\\( $y[6] \\) "  ]
+  ], 
+  caption => 'Grams of salt dissolved in different temperatures', 
+  align => '| l | c |c | c | c | c|c | ',
+  midrules=>1,
+ );
+@]***  
+
+
+a. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+d. 
+Calculate the rate of change of salt dissolved with respect to temperature. 
+    
+    Answer: [____] 
+    
+    [@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]***
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS(Compute("$m")->cmp());
+ANS( radio_cmp( $mc1->correct_ans() ) );
+
+BEGIN_PGML_SOLUTION
+
+Computing the slope, i.e., the rate of change, between any pair of points from the table gives the same value of [$m], so the points lie on a straight line of slope [$m]. The units of the numerator of slope are grams of salt, and the units of the denominator are degrees Celsius.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

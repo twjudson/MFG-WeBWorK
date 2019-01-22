@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: solving equations that are quadratic in form via substitution
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'factor', 'zero-factor principle', 'substitution')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Factors and x-Intercepts)
+## Date('3/26/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.1')
+## Problem1('51')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(a=>"Real", b=>"Real", c=>"Real", m=>"Real", n=>"Real", r=>"Real", s=>"Real", t=>"Real", w=>"Real", y=>"Real");
+
+@variables = ("a", "b", "c", "m", "n", "r", "s", "t", "w", "x", "y");
+$i = random(0,$#variables);
+$x = $variables[$i];
+
+$f = Formula(" $x **4 + $x**2 - 2");
+$ans = Compute("-1, 1");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+  
+Use a substitution to solve the equation.
+
+
+[`[$f] = 0`]
+
+[`[$x]`]:  [________]{$ans}   [@AnswerFormatHelp("numbers") @]*
+
+
+END_PGML
+Context()->normalStrings;
+
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+We can set [` u = [$x]^2`] so that [`u^2 = ([$x]^2)^2 = [$x]^4`].
+
+[` \begin{aligned}
+   u^2 +u - 2 &=0 &&\text{Factor the left sides}\\
+    (u+1)(u-1) &=0 &&\text{Set each factor to 0.}\\
+    u+1 &=0 \quad \text{ or }\quad u-1 = 0 &&\text{Solve each linear equation.}\\
+    u &=-1   \quad \text{ or }\quad u=1 
+    \end{aligned}
+`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

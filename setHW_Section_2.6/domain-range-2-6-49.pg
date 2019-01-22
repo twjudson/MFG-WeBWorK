@@ -1,0 +1,119 @@
+##DESCRIPTION
+##  Algebra problem: identify range from graph, use interval notation
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/24/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('49')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"AnswerFormatHelp.pl",
+"PGchoicemacros.pl",
+"contextFraction.pl",
+);
+
+TEXT(beginproblem());
+
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", v=>"Real", n=>"Real", z=>"Real", r=>"Real",y=>"Real" , w=>"Real",u=>"Real" );
+
+@variables = ("x", "t", "v", "n", "z", "r","w", "u");
+@functions = ("f", "g", "h", "F", "G", "H", "h", "T", "Q", "P", "S");
+$i = random(0,$#variables-1);
+$x=@variables[$i];
+
+@slice = NchooseK($#functions,2);
+@f_name=@functions[@slice];
+
+$c = random(2,8);
+$x0 = random(5,1,5);
+$a = $c;
+$b = $c + $x0;
+
+$f = Formula("1/($c-$x)")->reduce;
+#$ymin  = $f->eval($x=>$a);
+$ymax = $f->eval($x=>$b);
+Context("Fraction");
+
+#$fraction_ymin = Fraction($ymin);
+$fraction_ymax = Fraction($ymax);
+
+
+Context("Interval");
+$domain = Compute("($a,$b]");
+$range = Compute( "(-inf,$fraction_ymax]");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$BR
+Use a graphing utility to graph the function on the given domain. Using the <em>TRACE</em> key, and adjust <em>Ymin</em> and <em>Ymax</em> until you can estimate the range of the function. Verify your answer algebraically by evaluating the function. State the domain and range in interval notation.
+$BR
+
+\[ $f_name[0]($x)=$f\text{;}   \quad $a \lt $x \le $b \]
+
+$BR
+Domain: $SPACE \{ans_rule(7) \} $SPACE
+\{AnswerFormatHelp("intervals")\}
+"$BR
+
+
+
+Range: $SPACE \{ans_rule(7) \} $SPACE
+\{AnswerFormatHelp("intervals")\}
+$BR
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+With an increasing function, the maximum value occurs at the right endpoint of the interval.  The interval \( $a \lt $x \le $b  \) does not include a left endpoint, and when we choose values of \($x\) close to but greater than \($a\), we obtain values that are arbitrarily negative, that is, the values of \( $f_name[0]($x) \) have no lower bound.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

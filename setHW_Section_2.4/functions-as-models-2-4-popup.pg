@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Nonlinear Models')
+## DBsection('Functions as Mathematical Models')
+## Date('9/10/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('2.4')
+## Problem1('11')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+"PGstandard.pl",
+"parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+# the arguments of PopUp are [list of answers], 
+#    correct answer
+$popup = PopUp(["?", "one", "two", "three"], "three");
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_TEXT
+There is/are 
+\{ $popup->menu() \}
+word(s) written below.
+$PAR
+there $BR
+are $BR
+three
+END_TEXT
+
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ANS( $popup->cmp() );
+
+Context()->texStrings;
+SOLUTION(EV3(<<'END_SOLUTION'));
+$PAR SOLUTION $PAR
+The correct answer is \{ $popup->correct_ans() \}
+words.
+END_SOLUTION
+Context()->normalStrings;
+
+ENDDOCUMENT();        

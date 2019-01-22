@@ -1,0 +1,145 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--determine exponential from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/13/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('57')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"unionTables.pl",
+"contextFraction.pl"
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+#Context("Fraction");
+
+$P0 = random(5,20,5) *16;
+$b = Compute("1/2");
+
+$f= Formula(" $P0*2**(-x) ");
+
+$P2 = $f->eval(x=>2);
+$P4 = $f->eval(x=>4);
+
+
+#
+#  Graph canvas
+#
+$xmin = -2;
+$xmax=10;
+$ymin = -$P0/8;
+$ymax=1.25*$P0;
+$ylabel = 1.2*$P0;
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[12,11],size=>[300,300]);
+$gr -> lb('reset');
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label (9.5,.5,'x','blue','left','bottom'));
+$gr -> lb(new Label ( 0.3,$ylabel,'y','blue','left','bottom'));
+
+foreach my $i (1..5) {
+ $xscale =4*$i;
+ $yscale = $P0*$i/2;
+  $gr -> lb(new Label ( $xscale,-0.05*$P0, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-0.7,$yscale,$yscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f for x in [ -3, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+$gr->stamps( closed_circle(0,$P0,'red') );
+$gr->stamps( closed_circle(2,$P2,'red') );
+$gr->stamps( closed_circle(4,$P4,'red') );
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+\{
+ColumnTable(
+"The graph represents exponential growth or decay.
+$BR 
+$BR
+(a) Find the initial value and the growth or decay factor.
+$BR
+Initial value:" . 
+ans_rule(3).$SPACE.
+"Growth or decay factor:".
+ans_rule(5).$SPACE.
+"$BR
+$BR
+(b) Write a formula for the function: \(y=\) ".ans_rule(8)
+,
+image(insertGraph($gr), width=>250, height=>250, tex_size=>700).
+$BR.$BCENTER.
+$BR.
+"Graph of exponential growth or decay".
+$ECENTER
+,
+indent => 0, separation => 30, valign => "TOP"
+)
+\}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( Compute("$P0")->cmp() );
+ANS( $b->cmp() );
+ANS($f->cmp());
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The initial value can be read at the \(y\)-intercept.
+Dividing the \(y\)-value at \(x=2\) by the initial value corresponds to \(\dfrac{P_0 b^2}{P_0}=b^2\), so  \(b^2 = $P2/$P0=1/4\), and \(b = 1/2 \).
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

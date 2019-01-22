@@ -1,0 +1,90 @@
+##DESCRIPTION
+##  Algebra problem: Logarithms--evaluating log2 for powers of 2
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'logarithm', 'logarithmic form', 'exponential form', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Properties of Logarithms)
+## Date('3/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.4')
+## Problem1('45')
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"PGML.pl",
+"PGchoicemacros.pl",
+);
+
+Context()->flags->set(     reduceConstants => 0, reduceConstantFunctions => 0 );
+
+do{$loga = random(2,6);
+     $logb = random(2,6);} until ($loga != $logb);
+
+$a = 2**$loga;
+$b = 2**$logb;
+
+$ansa = $loga + $logb;
+$ansb = $loga * $logb;
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Which are equal?",  "(a) and (c)");
+
+$mc->extra(
+"(a) and (b).",
+"(b) and (c).",
+);
+$mc->makeLast("all of the above", "none of the above");
+
+
+
+Context()->texStrings;
+BEGIN_PGML
+
+Evaluate each expression. Which (if any) are equal?
+
+
+
+a. 
+[` \log_2 ([$a] \cdot [$b]) =`][__]{$ansa}
+
+b. 
+[` (\log_2 [$a] )(\log_2 [$b]) =`][__]{$ansb}  
+  
+c. 
+[` \log_2 [$a]  + \log_2 [$b] =`][__]{$ansa}  
+
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+END_PGML
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+
+
+BEGIN_PGML_SOLUTION
+
+a. 
+We know that [` [$a] =2^{[$loga]}  `] ,  so [` \log_2 [$a] = [$loga]`];  [`  [$b] = 2^{[$logb]}  `] ,  so [` \log_2 [$b] = [$logb]`]; and so  [`  \log_2 ([$a] \cdot [$b]) = \log_2 [$a]  + \log_2 [$b] = [$loga] + [$logb] = [$ansa]`] 
+b. 
+[` (\log_2 [$a] )(\log_2 [$b]) = ([$loga])([$logb]) = [$ansb]`]  
+c. 
+As we saw in (a), [` \log_2 [$a]  + \log_2 [$b] =  [$loga] + [$logb] = [$ansa] `]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Algebra problem:  system in three variables
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Three Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.2')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+  "contextFraction.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$k=random(3,4);
+
+$y0 = random(10, 30, 10); #was 20;
+$x0 = $k * $y0; #was 60;
+$z0 = random(5,15, 10); #was 5;
+
+$P = Point($x0, $y0, $z0);
+
+$v = 0.05*$x0 + 0.10 * $y0 + 0.25*$z0;
+
+$value = sprintf("%0.2f", $v );
+$total = $x0 + $y0 + $z0;
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+BEGIN_PGML
+
+
+Solve by using a system of equations.
+
+A box contains $[$value] in nickels, dimes, and quarters. There are [$total] coins in all, with 
+[$k]  times as many nickels as dimes. How many coins of each kind are there?
+
+a. 
+Identify three unknown quantities and choose variables to represent them.
+
+b. 
+If appropriate, make a table organizing the information in the problem.
+
+c. 
+Write three equations about the variables in the problem.
+
+d. 
+Solve the system and answer the question in the problem.
+
+    There are [__]{$x0} nickels, [__]{$y0} dimes, and [__]{$z0} quarters.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+If we choose [`x`], [`y`], and [`z`] to represent respectively the number of nickels, dimes, and quarters, then we can set up the following system.
+
+From the total value of $[$value] we get the equation
+
+>>[`` 0.05x + 0.10 y + 0.25 z = [$value] ``]<<
+
+Because there are [$total] coins: 
+
+>>[`` x +  y +  z = [$total] ``]<<
+
+And because there are [$k] times as many nickles as dimes,
+
+>>[`` x = 3y ``]<<
+
+The solution to the system is [`[$P]`]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

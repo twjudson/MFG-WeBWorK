@@ -1,0 +1,153 @@
+##DESCRIPTION
+##  Algebra problem: linear equation; intercepts 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear equation', 'line','intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('8/15/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.1')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "PGgraphmacros.pl",
+ "PGchoicemacros.pl",
+ "AnswerFormatHelp.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->are(x=>"Real", y=>"Real");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+do { $nx =random(2,12);
+ $dx = random(2,12);}
+ until (gcd($nx,$dx)==1);
+do { $ny =random(2,12);
+ $dy = random(2,12);}
+ until (gcd($ny,$dy)==1);
+
+$a = Compute("$dx/$nx");
+$b = Compute("$dy/$ny ");
+
+$F = Formula(" ($dx *x)/$nx +  ($dy*y)/$ny ")->reduce;
+Context("Numeric");
+$c = 1;
+$f = Formula(" ($c - $dx/$nx *x) /$dy * $ny")->reduce;
+
+$xdel = Compute("1/$dx");
+$ydel = Compute("1/$dy");
+$xstep = $nx;
+$ystep = $ny;
+
+$xmin = min( ($nx-2)/$dx, -2/$dx);
+$ymin = min(  ($ny-2)/$dy, -2/$dy);
+$xmax=max( ($nx+2)/$dx, 2/$dx);
+$ymax=max( ($ny+2)/$dy, 2/$dy);
+$xgrid = $xstep+4;
+$ygrid = $ystep+4;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[480,360]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, .4*$ydel,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .4*$xdel,0.95*$ymax,'y','blue','right','bottom'));
+
+foreach my $i (1..6) {
+$xscale =1*$i;
+$yscale =1*$i;
+$gr -> lb(new Label (-.5*$xdel,-$yscale,-$yscale,'black','center','middle'));
+$gr -> lb(new Label (-.5*$xdel,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( $xscale,-.4*$ydel, $xscale,'black','center','middle'));
+$gr -> lb(new Label (-$xscale,-.4*$ydel,-$xscale,'black','center','middle'));
+}
+
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+
+$gr->stamps( closed_circle(0,$ny/$dy,'red') );
+$gr->stamps( closed_circle($nx/$dx,0,'red') );
+
+
+Context("Fraction");
+$xi = Compute("$nx/$dx");
+$yi = Compute("$ny/$dy");
+
+Context("Point");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+$yint = Point(0,$ny/$dy);
+$xint = Point($nx/$dx,0);
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+
+>>[``[$F] = [$c]``]<<
+
+a. 
+Find the intercepts of the graph.
+
+    The [`x`]-intercept is [_______]{$xint}.  [@AnswerFormatHelp("points") @]*
+
+    The [`y`]-intercept is [_______]{$yint}.  [@AnswerFormatHelp("points") @]*
+
+
+b. 
+Graph the equation by the intercept method.
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The [`x`]-intercept occurs when [`y=0`]: [`[$xint]`]; 
+    The [`y`]-intercept occurs when [`x=0`]: [`[$yint]`]
+    
+ 
+b. 
+   [@ image(insertGraph($gr), width=>360, height=>270, tex_size=>700) @]*
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

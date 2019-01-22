@@ -1,0 +1,97 @@
+##DESCRIPTION
+##  Algebra problem: quadratic model: minimizing variance in weighted average
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'quadratic polynomial', 'parabola', 'vertex', 'intercepts')
+
+## DBsubject('Algebra')
+## DBchapter('Quadratic Functions')
+## DBsection('Problem Solving')
+## Date('4/23/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.4')
+## Problem1('15')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"parserMultiAnswer.pl",
+"PGgraphmacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(a=>"Real",I=>"Real");
+# no variance in assumed sample sizes, could be done
+$m0 = random(800, 880, 20); # was 860;
+$m1 = random(902, 922, 2); #was  918;
+$f = Formula("$m0*a + $m1*(1 - a)");
+$c0 = 24**2; #second sample size was 24
+$c1 = 72**2; #first sample size was 72, chosen for nice value of minimizing value of a
+
+$g = Formula("$c0*a^2 + $c1*(1 - a)^2");
+$B = $c1 * (-2);
+$A = $c0 + $c1;
+
+$a = -$B/(2*$A); # was $a = 0.9;
+#Context()->{format}{number} = "%.2f";   
+
+$I = $f->eval(a=>$a); # was $I = 865.80;
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+During a statistical survey, a public interest group obtains two estimates for the average monthly income of young adults aged 18 to 25. The first estimate is $860 and the second estimate is $918. To refine its estimate, the group will take a weighted average of these two figures:
+>>[``I = [$f]\hphantom{00} \text{ where }\hphantom{00} 0\le a \le 1``]<<
+
+To get the best estimate, the group must choose [`a`] to minimize the expression
+>>[``V = [$g]``]<<
+
+(The numbers that appear in this expression reflect the _variance_ of the data, which measures how closely the data cluster around the mean, or average.) Find the value of [`a`] that minimizes [`V`], and use this value to get a refined estimate for the average income.
+
+The [`a`] that minimizes [`V`] is [`a =`][____]{$a}
+
+The refined estimate of average income is [`I=`][____]{$I} dollars
+
+ 
+
+END_PGML
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The minimum variance occurs at the vertex of the parabola [` V = [$g] = [$A]a^2 +[$B]a + [$c1]`]. The first coordinate of the vertex is [`a_v = \dfrac{-([$B])}{2([$A])} = [$a] `]. We evaluate I = [$f] for [`a = [$a]`] to get [`I = [$I]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

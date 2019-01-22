@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: Roots and Radicals--varying directly with a square root
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'root', 'radical', 'exponent')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Roots and Radicals)
+## Date('1/27/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('3.3')
+## Problem1('45')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"contextScientificNotation.pl",
+"niceTables.pl",
+"unionTables.pl",
+"PGunion.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+Context()->variables->add(y=> 'Real', d=>'Real', k=>'Real', s=>'Real' );
+Context()->flags->set(reduceConstants=>0);
+
+$k = 50;
+$f = Formula("$k * sqrt(d)");
+$temp = random(.5, .8,.1);
+$diameter = $temp**2;
+$speed = $f->eval(k=>$k, d=>$diameter);  
+
+
+##################
+
+BEGIN_TEXT
+
+
+$BR
+In this problem, one quantity varies directly with the square root of the other, that is, \(y = k\sqrt{x}\).  
+$BR
+$BR
+
+The stream speed necessary to move a granite particle is a function of the diameter of the particle; faster river currents can move larger particles. The table shows the stream speed necessary to move particles of different sizes. 
+
+\{
+DataTable(
+  [
+    [['Diameter, \(d\) (cm)', headerrow => 1],'Speed, \(s\) (cm/sec)'  ]  ,
+    ['0.01','5' ],
+    [ '0.04','10'  ],
+    ['0.09','15' ],
+    [ '0.16','20'  ]
+  ], 
+  caption => 'Diameter and Speed of Streams',
+  align => ' | c | c |',
+  midrules=>1,
+);
+\}
+END_TEXT
+##################
+BEGIN_PGML
+
+a.
+Find the value of [`k`] and write a power function relating the variables.  
+[` k=`][___]{$k } , and so using the variables from the table, [`s =`][__________]{$f}.  
+b.
+Use your function to answer the question: What speed is needed to carry a particle with diameter [$diameter] centimeter?  [______]{$speed } cm/sec  
+c.
+Graph your function and verify your answer to part (b) on the graph.  
+
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+ 
+a. To find the value of [`k`], take the values of [`d`] and [`s`] from any of the rows of data in the given table,  substitute them into the equation [` s = k \sqrt{d}`], and solve for [`k`]. Then substitute that value of [`k`] into [` s = k \sqrt{d}`].    
+b. Use your formula from (a) and evaluate for [` d = [$diameter] `].   
+c. Make sure your graph continues at least up to where [` d = [$diameter] `], and verify that there is a point on the curve with coordinates [`([$diameter],[$speed]) `].
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Algebra problem: functions; identifying functions from verbal description
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/17/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('1-6')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGgraphmacros.pl",
+"PGchoicemacros.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+$mc = new_checkbox_multiple_choice();
+$mc -> qa (
+"For which of the following pairs is the second quantity a function of the first? Be prepared to explain your answers.", 
+" Price of an item; sales tax on the item at 4% $BR",
+"Time traveled at constant speed; distance traveled $BR",                
+"Volume of a container full of water; the weight of the water $BR",
+);
+$mc -> extra(
+"Number of years of education; annual income $BR",
+"Annual gross income; amount of Social Security tax withheld $BR",
+);
+$mc -> makeLast("None of the above");
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]***
+
+
+
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+ANS( checkbox_cmp( $mc->correct_ans() ) );
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+The sales tax on an item is determined by the price of the item and the 4% rate; the distance traveled at constant speed is determined by the time traveled; the weight of a water in a container is determined by its volume. But annual income depends on many considerations besides the number of years of education, the price of a ticket can vary even among the passengers on the same flight, and Social Security tax withheld  depends on factors besides the annual gross income.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

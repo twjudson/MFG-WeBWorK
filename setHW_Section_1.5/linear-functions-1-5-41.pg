@@ -1,0 +1,214 @@
+##DESCRIPTION
+##  Algebra problem: equation of line from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear', 'point-slope', 'exponent', 'slope-intercept')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Linear Functions)
+## Date('2/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.5')
+## Problem1('41')
+
+########################################################################
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGgraphmacros.pl",
+   "PGchoicemacros.pl",
+   "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#no randomness coded yet. 
+Context("Fraction");
+
+$m = Compute("  4/5  ")->reduce;
+
+Context("Numeric");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+
+$x0 = 2;
+$y0 = 1;
+$f = Formula(" $y0 + $m*(x-$x0 )");
+$b = $y0-$m1*$x0;
+
+$del1 = -6;
+$x1 = $x0 + $del1;
+$y1 =$f->eval(x=>$x1);;
+
+$x2 = -3;
+$y2 = -2;
+
+$x3 = 0;
+$y3 = -1;
+$x4 = 4;
+$y4 = 2;
+
+$xmin = -5;
+$xmax = 5;
+$ymin = -5;
+$ymax = 5;
+$xgrid = 10;
+$ygrid = 10;
+$xpix = 512;
+$ypix = 512;
+
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[$xpix,$ypix]);
+$gr -> lb('reset'); #remove default label and tick marks
+$gr -> lb(new Label (0.94*$xmax, 0.05,"x",'blue','left','bottom'));
+$gr -> lb(new Label (.2, 0.94*$ymax,"y",'blue','left','bottom'));
+foreach my $i (1..2) {
+$xscale =2*$i;
+$yscale =2*$i;
+$gr -> lb(new Label ( $xscale,0.08*$ymin, $xscale,'black','center','middle'));
+$gr -> lb(new Label (0.08*$xmin,$yscale,$yscale,'black','center','middle'));
+$gr -> lb(new Label ( -$xscale,0.08*$ymin, -$xscale,'black','center','middle'));
+$gr -> lb(new Label (0.08*$xmin,-$yscale,-$yscale,'black','center','middle'));
+}
+add_functions( $gr,
+"$f for x in [$xmin, $xmax] using color:red and weight:2",
+);
+
+$gr->stamps( closed_circle($x0,$y0,'black') );
+$gr -> lb(new Label ( ($x0+.3), ($y0),"($x0,$y0)",'black','left','bottom'));
+
+$gr->stamps( closed_circle($x1,$y1,'black') );
+$gr -> lb(new Label ( ($x1+.4), $y1,"($x1,$y1)",'black','left','bottom'));
+
+$gr->stamps( closed_circle($x2,$y2,'black') );
+$gr -> lb(new Label ( $x2, $y2+.1,"($x2,$y2)",'black','right','bottom'));
+
+$gr->stamps( closed_circle($x3,$y3,'black') );
+$gr -> lb(new Label ( $x3, $y3-.4,"($x3,$y3)",'black','left','bottom'));
+
+$gr->stamps( closed_circle($x4,$y4,'black') );
+$gr -> lb(new Label ( $x4+.2, $y4,"($x4,$y4)",'black','right','top'));
+
+$xp = round(.5*$xpix);
+$yp = round(.5*$ypix);
+ 
+$mc = new_multiple_choice();
+$mc->qa(
+"The point  \(($x0,$y0)\) is",  
+"a solution to both equations.");
+
+$mc->makeLast(
+"a solution of \(y=q+px\).",
+"a solution of \(y=v+tx\).",
+"a solution to both equations.", 
+"a solution to neither equation."
+);
+ 
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"The point  \(($x1,$y1)\) is",  
+"a solution of \(y=q+px\).");
+
+$mc1->makeLast(
+"a solution of \(y=q+px\).",
+"a solution of \(y=v+tx\).",
+"a solution to both equations.", 
+"a solution to neither equation."
+);
+ 
+$mc2 = new_multiple_choice();
+$mc2->qa(
+"The point  \(($x2,$y2)\) is",  
+"a solution of \(y=v+tx\).");
+
+$mc2->makeLast(
+"a solution of \(y=q+px\).",
+"a solution of \(y=v+tx\).",
+"a solution to both equations.", 
+"a solution to neither equation."
+);
+ 
+$mc3 = new_multiple_choice();
+$mc3->qa(
+"The point  \(($x3,$y3)\) is",  
+"a solution to neither equation.");
+
+$mc3->makeLast(
+"a solution of \(y=q+px\).",
+"a solution of \(y=v+tx\).",
+"a solution to both equations.", 
+"a solution to neither equation."
+);
+ 
+$mc4 = new_multiple_choice();
+$mc4->qa(
+"The point  \(($x4,$y4)\) is",  
+"a solution to neither equation.");
+
+$mc4->makeLast(
+"a solution of \(y=q+px\).",
+"a solution of \(y=v+tx\).",
+"a solution to both equations.", 
+"a solution to neither equation."
+);
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+
+>>[@ image(insertGraph($gr), width=>$xp, height=>$yp, tex_size=>700) @]*<<
+
+a. 
+Find the slope of the line. (Note that not all the labeled points lie on the line.)
+
+    [`m=`][____]{$m}
+
+
+b. 
+Find an equation for the line.
+
+    [` y=`][________]{$f}
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 1;
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+From the coordinates of the two points labeled on the line, we can compute that the slope [`m=[$m]`].
+
+b. 
+We can use either point on the line and the point-slope form of the line.
+
+We can do the same for [`L_2`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();            

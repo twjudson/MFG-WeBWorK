@@ -1,0 +1,109 @@
+##DESCRIPTION
+##  Algebra problem: rational functions: round trip travel time in current
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote', 'polynomial division')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/5/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('39')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(t=>"Real",s=>"Real");
+#Context()->noreduce('(-x)-y','(-x)+y', '(-x)/y'); #so that -x-y does not become -(x+y)
+
+$d = random(10,50,10); #was 50;
+$v0 = random(1,8); #was 8;
+$oneway = $d/2;
+$vs = $v0**2;
+
+$dt = Formula(" $oneway / (s+$v0)")->reduce;
+$ut = Formula(" $oneway / (s-$v0)")->reduce;
+$rt = Formula(" $d*s / (s^2-$vs)")->reduce;
+
+
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+
+River Queen Tours offers a [$d]-mile round-trip excursion on the Mississippi River on a paddle wheel boat. The current in the Mississippi is [$v0] miles per hour.
+a. 
+Express the time required for the downstream journey as a function of the speed, [`s`], of the paddle wheel boat in still water.
+
+    Downstream travel time: [_______]{$dt} 
+
+b. 
+Use transformations to sketch the graph.Write a function for the time required for the return trip upstream.
+
+    Return trip travel time: [_______]{$ut} 
+
+c. 
+Write and simplify an expression for the time needed for the round trip as a function of the boat's speed.
+
+    Round trip travel time: [_________]{$rt} 
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The distance downstream is [$oneway], and the current assists the boat's progress to increase the speed to [`s + [$v0]`], so [`\displaystyle{ \frac{\text{distance}}{\text{speed}} = [$dt] }`]
+
+b. 
+The distance for the return trip is also [$oneway], and the current slows the boat's progress to the speed to [`s - [$v0]`], so [`\displaystyle{ \frac{\text{distance}}{\text{speed}} = [$ut] }`]
+
+c. 
+The total time for the round trip is [``[$dt]+[$ut] = [$rt]``].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

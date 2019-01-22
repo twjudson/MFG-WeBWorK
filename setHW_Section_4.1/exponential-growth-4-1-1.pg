@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/6/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('1')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+
+$percent = random(4, 16, 4);
+$factor = 1 + $percent/100;
+
+$cost = random(25, 200, 25);
+
+$answer = $factor*$cost;
+$answer2 = $factor*$answer;
+
+
+
+
+##################
+
+
+BEGIN_PGML
+
+
+a. 
+A parking permit at Huron College cost $[$cost] last year, but this year the price increased by [$percent]%. What is the price this year?  $[_____]{$answer}  
+b. 
+If the price of a parking permit increases by [$percent]% again next year, what will the price be then?   $[_____]{$answer2}
+
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+
+
+ BEGIN_PGML_SOLUTION
+ 
+a. An increase of [$percent] is equivalent to an increase by a factor of [$factor]. So we multiply $[$cost] by [$factor].    
+b. We multiply our answer to part (a) by [$factor].    
+
+ END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

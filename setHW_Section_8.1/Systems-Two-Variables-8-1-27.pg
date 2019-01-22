@@ -1,0 +1,209 @@
+##DESCRIPTION
+##  Algebra problem: two linear equations in two variables: adult and student tickets
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'linear system', 'consistent', 'independent', 'dependent', 'inconsistent')
+
+## DBsubject('Algebra')
+## DBchapter('Linear Systems')
+## DBsection('Linear Systems in Two Variables')
+## Date('11/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('8.1')
+## Problem1('27')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+  "niceTables.pl",
+"parserMultiAnswer.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(y=>'Real');
+Context()->noreduce('(-x)-y','(-x)+y','(-x)/y','x/(-y)');
+
+#$x0 = 36; $y0 = 46;
+do{
+$x0 = random(35, 55);
+$y0 = random(40, 60);
+} until ($x0 != $y0);
+$n = $x0 + $y0; #was 82;
+$a = 7.50; $s=4.25; 
+$T = $x0*$a + $y0*$s; #was 465.50; 
+
+$ad = sprintf("%0.2f", $a );
+$sd = sprintf("%0.2f", $s );
+$td = sprintf("%0.2f", $T );
+$ra = Formula(" $a * x");
+$rs = Formula(" $s * y");
+$rad = " $a  x";
+$rsd = " $s  y";
+
+$f = Formula(" x + y")->reduce;
+$g =  Formula("$ra + $rs ")->reduce;
+
+$fac2 = Formula(" $n ");
+$multians = MultiAnswer($f, $fac2)->with(
+  singleResult => 0,
+  checker => sub {
+      my ( $correct, $student, $self ) = @_;
+      my ( $f1stu, $f2stu ) = @{$student};
+      my ( $f1, $f2 ) = @{$correct};
+      if ( ($f1 == $f1stu && $f2 == $f2stu) ||
+           ($f1 == $f2stu && $f2 == $f1stu) ) {
+          return [1,1];
+      } else {
+          if ($f1 == $f1stu || $f2 == $f1stu) {
+              return [1,0];
+          } elsif ($f1 == $f2stu || $f2 == $f2stu) {
+              return [0,1];
+          } else {
+              return [0,0];
+          }
+      }
+  }
+);
+
+
+
+$fac1 = Formula(" $T ");
+$multians2 = MultiAnswer($fac1, $g)->with(
+  singleResult => 0,
+  checker => sub {
+      my ( $correct, $student, $self ) = @_;
+      my ( $f1stu, $f2stu ) = @{$student};
+      my ( $f1, $f2 ) = @{$correct};
+      if ( ($f1 == $f1stu && $f2 == $f2stu) ||
+           ($f1 == $f2stu && $f2 == $f1stu) ) {
+          return [1,1];
+      } else {
+          if ($f1 == $f1stu || $f2 == $f1stu) {
+              return [1,0];
+          } elsif ($f1 == $f2stu || $f2 == $f2stu) {
+              return [0,1];
+          } else {
+              return [0,0];
+          }
+      }
+  }
+);
+
+Context("Point");
+$P = Point("($x0,$y0)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Solve by graphing a system of equations.
+
+ The admissions at a Bengals' baseball game was $[$ad] for adults and $[$sd] for students. The ticket office took in $[$td] for [$n] paid admissions. How many adults and how many students attended the game?
+
+a. 
+Write algebraic expressions to fill in the table.
+
+    [@
+DataTable(
+  [
+    [ ' ', 'Number of tickets',  'Cost per ticket', 'Revenue' ]  ,
+    ['Adults', '\(x \)', ans_rule(4), ans_rule(4) ],
+    ['Students',  '\(y \)', ans_rule(4), ans_rule(4)  ],
+    ['Total', ans_rule(4), '\(  - \)', ans_rule(6)  ]
+  ], 
+  caption => 'Ticket numbers and revenue', 
+  align => '| c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+Write an equation about the number of tickets sold.
+
+    [_____][`=`] [_____]
+
+c. 
+Write a second equation about the revenue from the tickets.
+
+    [_________][` =`] [__________]
+
+d. 
+Graph both equations and solve the system.
+
+    [___] adults and [___] students attended the game. 
+
+
+
+END_PGML
+  
+Context()->normalStrings;
+
+ANS(Compute("$a")->cmp());
+ANS($ra->cmp());
+ANS(Compute("$s")->cmp());
+ANS($rs->cmp());
+ANS(Compute("$n")->cmp());
+ANS(Compute("$T")->cmp());
+ANS( $multians->cmp() ); 
+ANS( $multians2->cmp() ); 
+ANS(Compute("$x0")->cmp());
+ANS(Compute("$y0")->cmp());
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+    [@
+DataTable(
+  [
+    [ ' ', 'Number of tickets',  'Cost per ticket', 'Revenue' ]  ,
+    ['Adults', '\(x \)',  "\\( $ad \\)", "\\( $rad \\)" ],
+    ['Students',  '\(y \)', "\\( $sd \\)", "\\( $rsd \\)"  ],
+    ['Total', "\\( $n \\)", '\(  - \)', "\\( $td \\)"  ]
+  ], 
+  caption => 'Ticket numbers and revenue', 
+  align => '| c | c | c | c | ',
+  midrules=>1,
+ );
+@]***
+
+b. 
+[` [$f] = [$n]`]
+
+c. 
+[` [$g] = [$T]`]
+
+d. 
+We solve the system consisting of the equations in (b) and (c) to get [$x0] adults, [$y0] students.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

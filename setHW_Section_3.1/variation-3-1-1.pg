@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'inequality', 'fraction')
+
+## DBsubject('Algebra')
+## DBchapter('Power Functions')
+## DBsection('Variation')
+## Date('2/7/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and GraphsAlgebra for College Students')
+## EditionText1('')
+## AuthorText1('Katherine Yoshiwara')
+## Section1('3.1')
+## Problem1('1')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserAssignment.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+TEXT(beginproblem());
+
+######################################
+#  Setup
+
+Context("Numeric")->variables->are(T=>"Real",p=>"Real");
+parser::Assignment->Allow;
+parser::Assignment->Function("f");
+
+@price = (18, 28, 12);
+@tax = (1.17, 1.82, 0.78);
+$rate = Real("0.065");
+$eqn = Formula("T = 0.065p");
+######################################
+#  Main text
+
+BEGIN_TEXT
+Delbert's credit card statement lists three purchases he made while on a business trip in the Midwest. His company's accountant would like to know the sales tax rate on the purchases. 
+$BR
+$BR
+(a)
+Compute the ratio of the tax to the price of each item. Is the tax proportional to the price?
+$BR
+$PAR
+$BCENTER
+\{begintable(4)\}
+\{row("Price of item", $price[0],  $price[1], $price[2]) \}
+\{row("Tax", $tax[0],  $tax[1], $tax[2]) \}
+\{row( "Tax/Price", ans_rule(10), ans_rule(10), ans_rule(10) )\}
+\{endtable()\}
+$ECENTER
+$BR
+$BR
+(b) What is the tax rate? \{$rate->ans_rule\}
+$BR
+$BR
+(c) Express the tax, \(T\), as a function of the price, \(p\) of the item. \{$rate->ans_rule\}
+END_TEXT
+
+######################################
+#  Answers
+
+$showPartialCorrectAnswers = 1;
+
+@answers = ("0.065", "0.065", "0.065", "0.065", "T = 0.065p");
+
+ANS($rate->cmp());
+ANS($rate->cmp);
+ANS($rate->cmp);
+ANS($rate->cmp);
+ANS($eqn->cmp);
+
+######################################
+
+;
+ENDDOCUMENT();

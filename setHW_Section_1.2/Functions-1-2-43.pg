@@ -1,0 +1,115 @@
+##DESCRIPTION
+##  Algebra problem: functions; evaluate quadratic function defined by formula
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('43')
+
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+ "contextFraction.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->add(v=>"Real");
+
+do{
+$a = random(2,4);
+$b = non_zero_random(-5,5);
+$c = non_zero_random(-9,9);
+} until ($b %3 != 0);
+$f = Formula("$a*v**2 + $b* v +$c")->reduce;
+$xa = 0;
+$ansa = $f->eval(v=>$xa);
+
+$xb = random(-3,-1);
+$ansb = $f->eval(v=>$xb);
+
+$xd = random(-7,-3) + random(1,9)/10;
+$ansd = $f->eval(v=>$xd);
+
+Context("Fraction");
+Context()->flags->set( reduceConstants => 0, reduceConstantFunctions => 0,  );
+do{$denom = random(3,4);
+$num=random(1,5)
+} until (gcd($num,$denom) ==1);
+$xc = Compute("$num/$denom");
+$ansc = $f->eval(v=>$xc);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+Evaluate the function for the given values.
+
+[``f(x) = [$f]``]
+
+a. 
+[`f([$xa])=`][___]{$ansa}
+    
+b. 
+[`f([$xb])=`][___]{$ansb}
+
+c. 
+[`f([$xc])=`][___]{$ansc}
+
+d. 
+[`f([$xd])=`][___]{$ansd}
+
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+
+a. 
+[`f([$xa]) = [$a] ([$xa])^2 [$b] ([$xa]) +[$c]= [$ansa]`]
+b. 
+[`f([$xb]) = [$a] ([$xb])^2 [$b] ([$xb]) +[$c] = [$ansb]`]
+c. 
+[`f([$xc]) = [$a] ([$xc])^2 [$b] ([$xc]) +[$c] = [$ansc]`]
+d. 
+[`f([$xd]) =[$a] ([$xd])^2 [$b] ([$xd]) +[$c]= [$ansd]`]
+
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

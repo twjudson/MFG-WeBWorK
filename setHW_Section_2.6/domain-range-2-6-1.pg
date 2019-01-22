@@ -1,0 +1,168 @@
+##DESCRIPTION
+##  Algebra problem: identify domain and range from graph
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'domain', 'range', 'graph')
+
+## DBsubject(Algebra)
+## DBchapter(Functions)
+## DBsection(Domain and range)
+## Date('1/20/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('2.6')
+## Problem1('1')
+
+########################################################################
+DOCUMENT();
+
+loadMacros(
+"PGstandard.pl",
+"MathObjects.pl",
+"contextInequalities.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"unionTables.pl",
+);
+
+TEXT(beginproblem());
+
+$refreshCachedImages = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+@c0= (-4, -2, 0, 2, 3,   4,  5); #x-coordinates of selected lattice points
+@d0= (6,   2, 3, 2, -1, -4, -2); #y-coordinates
+
+$horizontal = random(-3,2); #translations and flips of basic curve
+$vertical = random(-4,2);
+$xflip = random(-1,1,2);
+$yflip = random(-1,1,2);
+
+for ( $i=0; $i<7; $i++ ) {
+    $A[$i] = $xflip*($c0[$i]+ $horizontal);
+    $B[$i] = $yflip*( $d0[$i]+ $vertical);
+}
+
+# define spline to pass through points nicely
+
+$g[0] = Formula("(x+2)^2+ 2");
+$g[1] = Formula("-(x^3)/4-3(x^2)/4+3");
+$g[2]= Formula("-(x^3)/8 - (x^2)/4  +x/2 + 3");
+$g[3] = Formula("(x^3)/2 -11 (x^2)/2 +15 x-10");
+$g[4] = Formula("3(x^3)/2 -27 (x^2)/2 +36 x -28");
+$g[5]= Formula("2*(x-4)^2 - 4");
+
+for ( $i=0; $i<6; $i++ ) {
+    $f[$i] = $yflip* ($vertical+$g[$i]->substitute(x => "$xflip*x- $horizontal"))
+}
+
+
+#
+#  Graph canvas
+#
+$gr = init_graph(-8,-9,8,9,axes=>[0,0],grid=>[16,18],size=>[250,300]);
+$gr -> lb('reset');
+
+#
+#  Graph labels and functions
+#
+$gr -> lb(new Label ( 7.2,0,'s','blue','left','bottom'));
+$gr -> lb(new Label ( 0.25,8.,'G(s)','blue','left','bottom'));
+
+foreach my $i (1..2) {
+  $j = 10*$i -15;
+  $gr -> lb(new Label ( $j,-0.5, $j,'black','center','middle'));
+  $gr -> lb(new Label (-0.5,$j,$j,'black','center','middle'));
+}
+
+add_functions( $gr,
+               "$f[0] for x in [$A[0],$A[1]] using color:red and weight:2",  
+               "$f[1] for x in [$A[1],$A[2]] using color:red and weight:2",  
+               "$f[2] for x in [$A[2],$A[3]] using color:red and weight:2",
+               "$f[3] for x in [$A[3],$A[4]] using color:red and weight:2",
+               "$f[4] for x in [$A[4],$A[5]] using color:red and weight:2",
+               "$f[5] for x in [$A[5],$A[6]] using color:red and weight:2");
+
+
+for ( $i=0; $i<7; $i++ ) {
+   $gr->stamps( closed_circle($A[$i],$B[$i],'red') );
+}
+
+Context("Inequalities")->variables->are(s=>"Real");
+Context()->flags->set(formatStudentAnswer=>'parsed');
+
+$xmin=min($A[0],$A[6]);
+$xmax=max($A[0],$A[6]);
+$ymin=min($B[0],$B[5]);
+$ymax=max($B[0],$B[5]);
+
+$domain = Compute("[$xmin,$xmax]");
+Context()->variables->add(y=>"Real");
+$range = Compute("[$ymin,$ymax]");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+\{
+ColumnTable(
+"Find the domain and range of the function graphed.
+$BR
+$BR
+(a) Domain:" . 
+ans_rule(7).$SPACE.
+AnswerFormatHelp("intervals").
+"$BR
+$BR
+(b) Range: ".ans_rule(7).
+AnswerFormatHelp("intervals")
+,
+image(insertGraph($gr), width=>250, height=>300, tex_size=>700).
+$BR.$BCENTER.
+$BR.
+"Graph of \( y = G(s) \)".
+$ECENTER
+,
+indent => 0, separation => 30, valign => "TOP"
+)
+\}
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+
+$showPartialCorrectAnswers = 1;
+
+ANS( $domain->cmp() );
+ANS( $range->cmp() );
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->texStrings;
+BEGIN_SOLUTION
+${PAR}SOLUTION:${PAR}
+The domain includes all the `s`-values from the left-most point on the curve to the right-most point on the curve.
+The range includes all the `y`-values from the bottom-most point on the curve to the top-most point on the curve.
+END_SOLUTION
+Context()->normalStrings;
+
+COMMENT('MathObject version.');
+
+ENDDOCUMENT();     

@@ -1,0 +1,136 @@
+##DESCRIPTION
+##  Algebra problem: rational functions and polynomial division
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'asymptote', 'polynomial division')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.4')
+## Problem1('55')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"PGchoicemacros.pl",
+  "parserPopUp.pl",
+  "parserOneOf.pl",
+"niceTables.pl",
+"AnswerFormatHelp.pl",
+"PGgraphmacros.pl",
+"contextInequalities.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->noreduce('(-x)-y','(-x)+y', '(-x)/y'); #so that -x-y does not become -(x+y)
+
+$a = non_zero_random(-4,4);
+$asq = $a**2;
+
+
+
+$f = Formula(" (x-$a) / (x**2 - $asq) ")->reduce;
+$f0 = Formula(" 1/(x+$a)")->reduce;
+$b = $f0->eval(x=>$a);
+
+Context("Inequalities");
+Context()->variables->add(y=>"Real");
+$domain = Compute(" x !=$a and x!=-$a");
+
+$xmin = -8;
+$ymin =-8;
+$xmax= 8;
+$ymax= 8;
+$xgrid = ($xmax - $xmin)/1;
+$ygrid = ($ymax - $ymin)/1;
+
+$gr = init_graph($xmin,$ymin,$xmax,$ymax,axes=>[0,0],grid=>[$xgrid,$ygrid],size=>[250,250]);
+$gr -> lb('reset'); #remove default label and tick marks
+
+$gr -> lb(new Label (0.9*$xmax, 0.5,'x','blue','left','bottom'));
+$gr -> lb(new Label ( .5,0.995*$ymax,'y','blue','left','top'));
+
+foreach my $i (1..7) {
+ $xscale =2*$i;
+ $yscale =2*$i;
+  $gr -> lb(new Label ( $xscale,-.5, $xscale,'black','center','middle'));
+  $gr -> lb(new Label (-.5,$yscale,$yscale,'black','right','middle'));
+  $gr -> lb(new Label ( -$xscale,-.5, -$xscale,'black','center','middle'));
+  $gr -> lb(new Label (-.5,-$yscale,-$yscale,'black','right','middle'));
+}
+$am = -$a-.001;
+$ap = -$a + .001;
+add_functions( $gr,
+               "$f0 for x in [-10, $am] using color:red and weight:2",
+               "$f0 for x in [$ap, 10] using color:red and weight:2");
+($gr->fn)[0]->steps(200);
+$gr->stamps( open_circle($a,$b,'red') );
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+>><<
+
+
+>>[``y = [$f]``]<<
+
+a. 
+Find the domain of the function. [______________]{$domain} 
+
+b. 
+Reduce the fraction to lowest terms. [______]{$f0}
+
+c. 
+Graph the function. (**Hint**: The graph of the original function is identical to the graph of the function in part (b) except that certain points are excluded from the domain.) Indicate a hole in the graph by an open circle.
+
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+a. 
+The function is defined except when the denominator is 0, namely when [`x=\pm[$a]`]. So the domain consists of all number except [`\pm[$a]`].
+
+b. 
+[`(x-[$a])`] can be factored out of both the numerator and the denominator of the given fraction, which reduces to [`[$f0]`].
+
+c. 
+[@ image( insertGraph($gr), width=>250, height=>250, ) @]***  
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

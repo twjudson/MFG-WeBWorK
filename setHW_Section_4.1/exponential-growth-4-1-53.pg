@@ -1,0 +1,100 @@
+##DESCRIPTION
+##  Algebra problem: Exponential growth and decay--determine exponential from table
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'exponential', 'percent increase', 'percent decrease')
+
+## DBsubject(Algebra)
+## DBchapter(Exponential Functions)
+## DBsection(Exponential growth and decay)
+## Date('2/12/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('4.1')
+## Problem1('53')
+
+########################################################################
+DOCUMENT(); 
+
+loadMacros(
+      "PGstandard.pl", # Standard macros for PG language
+      "MathObjects.pl",
+      "contextLimitedPowers.pl",
+      "PGchoicemacros.pl",
+"PGML.pl",
+"niceTables.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+
+
+###########################
+
+Context("Numeric");
+#
+#
+
+Context("Numeric");
+#Context()->flags->set(reduceConstants=>0);
+Context()->variables->are(b=>"Real", t=>"Real");
+
+$P[0] = random(100, 5000, 100);
+$b = random(11, 15) / 10;
+$f = Formula("$P[0] * $b^t");
+
+foreach my $i ( 1..4 ) { 
+$P[$i] = $f->eval(t=>$i);
+}
+
+
+
+#Context()->{format}{number} = "%.2f";
+
+
+##################
+
+BEGIN_PGML
+
+
+The table describes exponential growth or decay. Find the growth or decay factor.
+Complete the table. Round values to two decimal places if necessary.  
+The growth or decay factor is  [____]{$b}
+[@
+DataTable(
+  [
+    [ '\( n \)', '0',  '1', '2', '3', '4' ]  ,
+    [ "\\( B \\)","\\($P[0]\\)" , ans_rule(4) , ans_rule(4), "\\($P[3]\\)", ans_rule(4)  ]
+  ], 
+  caption => 'Table of values for two functions', 
+  align => '| c | c | c | c |  c | c | ',
+  midrules=>1,
+ );
+@]***
+
+
+END_PGML
+
+##############################################################
+#
+#  Answers
+foreach my $i (1..4) {
+if ($i != 3) {
+ANS($P[$i]->cmp(  tolType => 'absolute',  tolerance => .005,));
+}
+};
+BEGIN_PGML_SOLUTION
+
+When we divide the value of [`B`] at [`n=3`] by  the value of [`B`] at [`n=0`], we are computing [`\dfrac{B_0 b^3}{B_0} = b^3`], so  [` b^3=[$P[3]]/[$P[0]] `], and [` b = [$b]`]. Then for each increment of [`\Delta n = 1`], the value of [`B`] is multiplied by [$b].
+
+END_PGML_SOLUTION
+ 
+
+
+ENDDOCUMENT(); 

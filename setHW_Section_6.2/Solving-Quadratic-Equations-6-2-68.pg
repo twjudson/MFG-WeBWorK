@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Algebra problem: quadratic (with square already completed); literal equations
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'polynomials', 'quadratic formula')
+
+## DBsubject(Algebra)
+## DBchapter(Quadratic Functions)
+## DBsection(Solving Quadratic Equations)
+## Date('4/3/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('6.3')
+## Problem1('68')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+"AnswerFormatHelp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+Context()->variables->add(a=>"Real",c=>"Real");
+#No variation
+
+
+$product = Formula(" c/a");
+
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+  
+What is the product of the two solutions of the quadratic equation [`ax^2 + bx + c = 0`]?  
+_Hint_:  Do *not* try to multiply the two solutions given by the quadratic formula! Think about the factored form of the equation
+  
+
+[________]{$product}   
+
+
+END_PGML
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+If the solutions to the quadratic equation are [`r_1`] and [`r_2`], then [`(x-r_1)`] and [`(x-r_2)`] must be the monic linear factors of [`ax^2 + bx + c`]. This means that  
+>>[``ax^2 + bx + c =  a(x-r_1)(x-r_2)``]<<
+If we expand the right side and compare its constant term with that of the original quadratic, we see that [`c = a r_1 r_2`], so that the product of the roots is [`r_1 r_2 = c/a`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,112 @@
+##DESCRIPTION
+##  Algebra problem: rational functions, sidereal and synodic periods of planets
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('55')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+$d1 = random(3,5); #was 3 
+$k = $d1 -1;
+$n1 = -($d1 + 1); # was -4; 
+$d2=$d1*$k;
+$n2= -1; 
+$q = $d1*$d2;
+$l = -($n1*$d2 + $n2 * $d1);
+$a= $n1*$n2;
+
+$b = $d1;
+$c = 1+ $d2 - $a;
+$d = $d1;
+$e = 1;
+
+#$a = 4; $b = 3; $c =3; $d=3; $e = 1; 
+$a2 = $a**2;
+$ab = $a*$b;
+$apb = $a + $b;
+$abc = $ab + $c;
+
+$quad = $b * $d * $k;
+$linear = $a*$d+$b*$c + $b*$k;
+$constant = $a*$e ; 
+
+
+$f = Formula("$a/($b*x) + $c/($d*x + $e) + [$k]")->reduce;
+$g = Formula(" 0");
+
+Context("Fraction");
+$r1 = Fraction("$n1/$d1");
+$r2 = Fraction("$n2/$d2");
+$ans = List("$r1, $r2");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+Solve the equation algebraically.
+
+>>[``  [$f] = 0 ``]<<
+
+    [`x=`][____________]{$ans}  [@AnswerFormatHelp("numbers") @]*
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`` \begin{aligned}
+[$f] &= 0 \\
+ [$a]([$d] x + [$e]) + [$c]([$b]x) + [$k]([$b]x) ([$d] x + [$e])&=0 \\
+[$quad]x^2 +[$linear]x +[$constant] &=0 \\
+ ( [$d1]x-[$n1]) ( [$d2]x  -[$n2])  &=0 \\
+[$d1]x-[$n1] = 0 \qquad \text{ or } \qquad  [$d2]x = [$n2] \\
+x = \frac{[$n1]}{[$d1]} \qquad \text{ or } \qquad  x = \frac{[$n2]}{ [$d2]} 
+\end{aligned}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

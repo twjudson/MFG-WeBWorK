@@ -1,0 +1,117 @@
+##DESCRIPTION
+##  Algebra problem: functions; graphs defining functions; temperature vs depth
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'function')
+
+## DBsubject(Algebra)
+## DBchapter(Functions and their Graphs)
+## DBsection(Functions)
+## Date('8/22/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('1.2')
+## Problem('57')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+  "PGchoicemacros.pl",
+  "contextCurrency.pl",
+  );
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+
+
+$mc = new_multiple_choice();
+$mc->qa(
+"Is depth a function of temperature? ",  "No");
+$mc->extra(
+"Yes",
+);
+
+
+$mc1 = new_multiple_choice();
+$mc1->qa(
+"Is temperature a function of depth? ",  "Yes");
+$mc1->extra(
+"No"
+);
+
+
+$mc2 = new_multiple_choice();
+$mc2->qa(
+"The axes are scaled in an unusual way. Why is it useful to present the graph in this way?",  "Moving downwards on the graph corresponds to moving downwards in the ocean.");
+
+$mc2->extra(
+"Temperature is usually measured in km."
+);
+
+
+ 
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The graph shows the temperature of the ocean at various depths. (Source: Open University)
+
+>>[@
+ image( "fig-ex-1-2-57.png", width=>213, height=>292,  
+tex_size=>700, extra_html_tags=>'alt="Three graphs"' )
+@]***<<
+
+a. 
+[@ $mc -> print_q() @]***
+[@ $mc -> print_a() @]*** 
+
+b. 
+[@ $mc1 -> print_q() @]***
+[@ $mc1 -> print_a() @]*** 
+
+c. 
+[@ $mc2 -> print_q() @]***
+[@ $mc2 -> print_a() @]***
+
+
+
+
+END_PGML
+Context()->normalStrings;
+$showPartialCorrectAnswers = 0;
+ANS( radio_cmp( $mc->correct_ans() ) );
+ANS( radio_cmp( $mc1->correct_ans() ) );
+ANS( radio_cmp( $mc2->correct_ans() ) );
+
+##############################################################
+#
+BEGIN_PGML_SOLUTION
+
+a. 
+The temperature of [`20^\circ`] corresponds to many depths.
+b. 
+Each depth corresponds to a single temperature.
+
+END_PGML_SOLUTION
+
+
+ENDDOCUMENT();        

@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Algebra problem: rational functions, sidereal and synodic periods of planets
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'rational function', 'polynomial division', 'extraneous roots')
+
+## DBsubject('Algebra')
+## DBchapter('Polynomial and Rational Functions')
+## DBsection('Graphing Rational Functions')
+## Date('11/10/2018')
+## Author('Yoshiwara')
+## Institution('')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('5')
+## AuthorText1('Yoshiwara')
+## Section1('7.5')
+## Problem1('47')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGML.pl",
+   "PGchoicemacros.pl",
+   "AnswerFormatHelp.pl",
+   "PGgraphmacros.pl",
+   "contextFraction.pl",
+  "parserPopUp.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+Context()->variables->are(P=>"Real", E=>"Real", S=>"Real");
+
+$ans = Formula(" (ES) / (E+S) ");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_PGML
+
+The sidereal period of a planet is the time for the planet to make one trip around the Sun (as seen from the Sun itself). The synodic period is the time between two successive conjunctions of the planet and the Sun, as seen from Earth. The relationship among the sidereal period, [`P`], of a planet, the synodic period, [`S`], of the planet, and the sidereal period of Earth, [`E`], is given by
+
+
+>>[``  \frac{1}{P} = \frac{1}{S} + \frac{1}{E} ``]<<
+
+when the planet is closer to the Sun than the Earth is. Solve for [`P`] in terms of [`S`] and 
+[`E`].
+
+    [`P=`][____________]{$ans} 
+END_PGML
+  
+Context()->normalStrings;
+
+
+
+##############################################################
+#
+
+BEGIN_PGML_SOLUTION
+
+[`` \begin{aligned}
+ \frac{1}{P} &= \frac{1}{S} + \frac{1}{E}  \\
+ \frac{1}{P} &= \frac{1}{S}\cdot \frac{E}{E} + \frac{1}{E} \cdot \frac{S}{S}  \\
+ \frac{1}{P} &= \frac{E+S}{ES}  \\
+P  &= \frac{ES}{E+S}
+\end{aligned}``]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();        

@@ -1,0 +1,143 @@
+##DESCRIPTION
+##  Algebra problem: true or false for inequality 
+##ENDDESCRIPTION
+
+##KEYWORDS('algebra', 'nonlinear', 'extracting roots')
+
+## DBsubject('Algebra')
+## DBchapter('Functions and their Graphs')
+## DBsection('Graphs of Functions')
+## Date('8/18/2018')
+## Author('T. W. Judson')
+## Institution('Stephen F. Austin State University')
+## TitleText1('Modeling, Functions, and Graphs')
+## EditionText1('3')
+## AuthorText1('K. Yoshiwara')
+## Section1('1.3')
+## Problem1('21')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "AnswerFormatHelp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$a = random(8,14,2);
+
+$ans_equal = Compute("(6 - $a)/2");
+
+Context("Interval");
+# to allow open or closed intervals, uncomment the following line.
+# Context()->flags->set(ignoreEndpointTypes=>1);
+
+$ans_greater_than = Compute("(-inf,(6 - $a)/2)");
+$ans_less_than = Compute("((6 - $a)/2, inf)");
+
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+The figure shows a graph of \(y = -2x + 6\).
+
+$BR
+$BR
+
+
+\{ image( "fig-ex-1-3-21.png",  width=>300, height=>300  ) \}
+
+$BR
+$BR
+
+a.  
+Use the graph to find all values of \(x \) for which
+
+$BR
+$BR
+
+I. \(y = $a\) \{ ans_rule(5) \}
+
+$BR
+$BR
+
+II. \(y > $a\) \{ ans_rule(5) \} Use interval notation.
+
+
+$BR
+$BR
+
+III.  \(y < $a\) \{ ans_rule(5) \} Use interval notation.
+
+$BR
+$BR
+
+b. Use the graph to solve
+
+$BR
+$BR
+
+I. \(-2x + 6 = $a\) \{ ans_rule(5) \}
+
+$BR
+$BR
+
+II. \(-2x + 6 > $a\) \{ ans_rule(5) \} Use interval notation.
+
+
+$BR
+$BR
+
+III.  \(-2x + 6 < $a\) \{ ans_rule(5) \} Use interval notation.
+
+$BR
+$BR
+
+Why are your answers the same?
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans_equal->cmp());
+
+ANS($ans_greater_than->cmp());
+
+ANS($ans_less_than->cmp());
+
+ANS($ans_equal->cmp());
+
+ANS($ans_greater_than->cmp());
+
+ANS($ans_less_than->cmp());
+
+ENDDOCUMENT();        
